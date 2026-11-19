@@ -1,0 +1,671 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#8fd3ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ต้าเหลียน">
+<title>ต้าเหลียนหน้าหนาว</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: kawaii sticker travel journal — dotted cream paper, white-outlined cartoon stickers scattered on every section, washi-tape headings; each day opens with its own sticker scene */
+:root{
+  --bg:#fff8ef; --dot:#f1e2cf; --surface:#ffffff; --ink:#3b2f45; --muted:#7d6f86; --line:#f0dfcc;
+  --k-pink:#ff8fb1; --k-pink-soft:#ffe3ec; --k-yellow:#ffd25e; --k-yellow-soft:#fff2c9;
+  --k-sky:#8fd3ff; --k-sky-soft:#e2f4ff; --k-blue:#4f8de8; --k-mint:#7fdcbc; --k-mint-soft:#dcf7ec;
+  --k-red:#f0605a; --k-orange:#ffa75e; --k-cream:#fff6e4; --k-brown:#b98059; --k-ink:#3b2f45; --k-white:#ffffff;
+  --accent:#e85a8c; --ok:#2e8a64;
+  --f-display:"Mali","Noto Sans Thai",system-ui,sans-serif;
+  --f-body:"Noto Sans Thai",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#1f1a2b; --dot:#2c2540; --surface:#2a2338; --ink:#f6eefa; --muted:#bcaecb; --line:#3b3250;
+  --k-pink-soft:#4a2a3c; --k-yellow-soft:#4a3f22; --k-sky-soft:#1f3850; --k-mint-soft:#1e3d33;
+  --accent:#ff8fb8; --ok:#7fdcbc; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#1f1a2b; --dot:#2c2540; --surface:#2a2338; --ink:#f6eefa; --muted:#bcaecb; --line:#3b3250;
+  --k-pink-soft:#4a2a3c; --k-yellow-soft:#4a3f22; --k-sky-soft:#1f3850; --k-mint-soft:#1e3d33;
+  --accent:#ff8fb8; --ok:#7fdcbc; color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0}
+img{max-width:100%}
+[hidden]{display:none!important}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);background-image:radial-gradient(var(--dot) 1.6px,transparent 1.6px);background-size:22px 22px;color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.7;padding-block:0 72px}
+.pad{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+.wrap{max-width:860px;margin:0 auto}
+h1,h2,h3,h4{text-wrap:balance;line-height:1.3;margin:0;font-family:var(--f-display)}
+a{color:var(--accent)}
+button{font:inherit;color:inherit;cursor:pointer}
+:focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+
+/* svg fills */
+.f-pink{fill:var(--k-pink)}.f-yellow{fill:var(--k-yellow)}.f-sky{fill:var(--k-sky)}.f-blue{fill:var(--k-blue)}.f-mint{fill:var(--k-mint)}
+.f-red{fill:var(--k-red)}.f-orange{fill:var(--k-orange)}.f-cream{fill:var(--k-cream)}.f-brown{fill:var(--k-brown)}.f-ink{fill:var(--k-ink)}.f-white{fill:var(--k-white)}
+.s-ink{stroke:var(--k-ink);fill:none;stroke-linecap:round;stroke-linejoin:round}
+.s-white{stroke:var(--k-white);fill:none;stroke-linecap:round}
+.s-blue{stroke:var(--k-blue);fill:none;stroke-linecap:round}
+.s-pink{stroke:var(--k-pink);fill:none;stroke-linecap:round}
+
+/* sticker */
+.stk{display:inline-block;width:var(--s,72px);height:var(--s,72px);transform:rotate(var(--r,0deg));transition:transform .25s cubic-bezier(.3,1.6,.6,1);
+  filter:drop-shadow(2.5px 0 0 var(--k-white)) drop-shadow(-2.5px 0 0 var(--k-white)) drop-shadow(0 2.5px 0 var(--k-white)) drop-shadow(0 -2.5px 0 var(--k-white)) drop-shadow(0 5px 6px rgba(59,47,69,.22))}
+.stk svg{width:100%;height:100%;display:block;overflow:visible}
+.stk:hover{transform:rotate(calc(var(--r,0deg) * -1)) scale(1.12)}
+@media (prefers-reduced-motion:no-preference){.bob{animation:bob 3.2s ease-in-out infinite}.bob2{animation:bob 3.8s ease-in-out .6s infinite}}
+@keyframes bob{50%{translate:0 -8px}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;background:linear-gradient(170deg,var(--k-sky) 0%,#b7c8ff 55%,var(--k-pink) 130%);color:var(--k-ink)}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero .wrap{position:relative;padding-block:56px 44px}
+.hero .layout{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:20px;align-items:center}
+.kicker{display:inline-block;font-family:var(--f-mono);font-size:13px;letter-spacing:.06em;background:var(--k-white);color:var(--k-ink);padding:3px 12px;border-radius:999px;transform:rotate(-2deg)}
+.hero h1{font-size:clamp(52px,12vw,96px);font-weight:700;color:var(--k-white);line-height:1.05;margin-top:12px;
+  text-shadow:3px 3px 0 var(--k-pink),-2px -2px 0 var(--k-blue),0 8px 18px rgba(59,47,69,.25)}
+.hero h1 .zh{font-size:.45em;vertical-align:middle;background:var(--k-red);color:var(--k-white);text-shadow:none;padding:2px 12px;border-radius:12px;margin-left:8px;display:inline-block;transform:rotate(4deg)}
+.hero .sub{font-family:var(--f-display);font-size:clamp(18px,3.4vw,23px);font-weight:600;margin-top:6px;color:var(--k-ink)}
+.hero p.lede{max-width:50ch;margin:10px 0 0;color:var(--k-ink)}
+.prefs{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.prefs span{font-size:13px;font-weight:600;padding:3px 12px;border-radius:999px;background:var(--k-white);color:var(--k-ink);box-shadow:0 2px 0 rgba(59,47,69,.15)}
+.prefs span:nth-child(3n+1){transform:rotate(-2deg)}.prefs span:nth-child(3n){transform:rotate(2deg)}
+.stickerpile{position:relative;height:260px}
+.stickerpile .stk{position:absolute}
+.count{display:flex;gap:10px;margin-top:22px;flex-wrap:wrap}
+.count div{min-width:74px;padding:8px 10px;border-radius:16px;background:var(--k-white);color:var(--k-ink);text-align:center;box-shadow:0 4px 0 rgba(59,47,69,.18)}
+.count div:nth-child(odd){transform:rotate(-2deg)}.count div:nth-child(even){transform:rotate(2deg)}
+.count b{display:block;font-family:var(--f-display);font-size:28px;font-variant-numeric:tabular-nums;line-height:1.2;color:var(--accent)}
+.count span{font-size:12px;color:var(--k-ink)}
+.cta{margin-top:22px;display:flex;gap:10px;flex-wrap:wrap}
+.btn{border:0;border-radius:999px;padding:10px 20px;font-family:var(--f-display);font-weight:700;font-size:15px;box-shadow:0 4px 0 rgba(59,47,69,.25);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(59,47,69,.25)}
+.btn.pink{background:var(--k-pink);color:var(--k-white)}
+.btn.white{background:var(--k-white);color:var(--k-ink)}
+.btn.yellow{background:var(--k-yellow);color:var(--k-ink)}
+.facts{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px;font-size:14px}
+.facts span{background:rgba(255,255,255,.7);color:var(--k-ink);padding:2px 10px;border-radius:8px}
+.facts b{font-family:var(--f-mono);font-weight:500;margin-right:6px}
+.wave{display:block;width:100%;height:28px}
+.wave path{fill:var(--bg)}
+
+/* ticket picker */
+.picker{position:sticky;top:env(safe-area-inset-top,0px);z-index:6;background:var(--bg);border-bottom:2px dashed var(--line)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--bg)}
+.tickets{display:flex;gap:12px;overflow-x:auto;padding-block:12px;scrollbar-width:none}
+.tickets::-webkit-scrollbar{display:none}
+.ticket{flex:none;display:flex;align-items:center;gap:10px;border:0;background:var(--surface);border-radius:18px;padding:6px 14px 6px 6px;text-align:left;box-shadow:0 3px 0 var(--line);transition:transform .2s}
+.ticket .ic{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--k-sky-soft)}
+.ticket .ic svg{width:30px;height:30px}
+.ticket .d{font-family:var(--f-display);font-size:18px;font-weight:700;line-height:1.1;display:block}
+.ticket .t{font-size:12px;color:var(--muted);white-space:nowrap}
+.ticket[aria-selected="true"]{background:var(--k-pink);color:var(--k-white);transform:rotate(-2deg) scale(1.04)}
+.ticket[aria-selected="true"] .t{color:var(--k-white)}
+.ticket[aria-selected="true"] .ic{background:var(--k-white)}
+
+/* day */
+.dayview{padding-block:26px 0}
+.scene{position:relative;height:190px;border-radius:26px;overflow:hidden;border:4px solid var(--k-white);box-shadow:0 6px 0 var(--line)}
+.scene .sky{position:absolute;inset:0}
+.scene .stk{position:absolute}
+.scene .label{position:absolute;left:18px;bottom:16px;background:var(--k-white);color:var(--k-ink);font-family:var(--f-display);font-weight:700;padding:4px 14px;border-radius:12px;transform:rotate(-3deg);font-size:15px;box-shadow:0 3px 0 rgba(59,47,69,.18)}
+.dayhead{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px;margin-top:20px}
+.dayhead h2{font-size:clamp(24px,5vw,32px);font-weight:700}
+.dayhead .sub{color:var(--muted);font-size:15px;margin-top:4px;max-width:60ch}
+.daycost{font-family:var(--f-display);font-weight:600;font-size:14px;color:var(--ok);background:var(--k-mint-soft);display:inline-block;padding:2px 12px;border-radius:999px;margin-top:8px}
+.nav2{display:flex;gap:8px}
+.nav2 button{width:44px;height:44px;border-radius:50%;border:0;background:var(--k-yellow);color:var(--k-ink);font-size:18px;font-weight:700;box-shadow:0 3px 0 rgba(59,47,69,.2)}
+.nav2 button:disabled{opacity:.35;cursor:default}
+.sunbar{margin-top:16px;position:relative;height:30px;border-radius:999px;overflow:hidden;background:linear-gradient(90deg,#6c6fc9 0%,var(--k-sky) 18%,var(--k-yellow-soft) 55%,var(--k-orange) 74%,#6c6fc9 80%,#3d3a78 100%)}
+.sunbar span{position:absolute;top:50%;transform:translateY(-50%);font-family:var(--f-mono);font-size:11px;padding:0 10px;color:var(--k-white)}
+.sunbar .l{left:0}.sunbar .r{right:0}
+.sunbar .s{left:74%;transform:translate(-50%,-50%);background:var(--k-white);border-radius:999px;color:var(--k-ink)}
+.sunnote{font-size:13px;color:var(--muted);margin-top:6px}
+
+.timeline{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:16px}
+.stop{display:grid;grid-template-columns:70px 1fr;gap:14px;opacity:0;transform:translateY(10px);animation:rise .45s ease forwards}
+@keyframes rise{to{opacity:1;transform:none}}
+.stop .when{font-family:var(--f-display);font-weight:600;font-size:13px;color:var(--muted);padding-top:18px;text-align:right;line-height:1.3}
+.card{background:var(--surface);border-radius:20px;padding:16px 18px 14px 74px;min-width:0;position:relative;box-shadow:0 4px 0 var(--line);border:2px solid var(--line)}
+.card .cstk{position:absolute;left:12px;top:14px;--s:48px}
+.stop:nth-child(odd) .card{transform:rotate(-.4deg)}.stop:nth-child(even) .card{transform:rotate(.4deg)}
+.stop.sunset .card{background:linear-gradient(180deg,var(--k-yellow-soft),var(--surface) 70%);border-color:var(--k-yellow)}
+.stop.tram .card{background:linear-gradient(180deg,var(--k-pink-soft),var(--surface) 70%);border-color:var(--k-pink)}
+.card h3{font-size:18px;font-weight:700;padding-right:60px}
+.photo{margin:12px 0 4px -58px;background:var(--k-white);padding:8px 8px 6px;border-radius:6px;box-shadow:0 4px 10px rgba(59,47,69,.18);transform:rotate(-1deg);max-width:calc(100% + 58px)}
+.stop:nth-child(even) .photo{transform:rotate(1deg)}
+.photo img{display:block;width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:3px;background:var(--k-sky-soft)}
+.photo figcaption{font-size:12px;color:#6b5f73;margin-top:5px;line-height:1.4}
+.photo figcaption b{font-family:var(--f-display);color:#3b2f45;font-size:13px}
+.photo figcaption a{color:#6b5f73}
+.card p{margin:4px 0 0;font-size:15px}
+.zh{font-size:14px;color:var(--muted);margin-top:6px;display:flex;flex-wrap:wrap;gap:4px 10px;align-items:center}
+.zh a{font-size:13px;text-decoration:none;border-bottom:1.5px solid currentColor;font-weight:600}
+.copy{border:0;background:var(--k-sky-soft);color:var(--ink);border-radius:999px;font-size:12px;padding:2px 10px}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.tag{font-size:12px;font-weight:600;padding:1px 10px;border-radius:999px;background:var(--bg);color:var(--muted)}
+.tag.c1{background:var(--k-sky-soft);color:var(--ink)}
+.tag.c2{background:var(--k-pink-soft);color:var(--ink)}
+.tag.sun{background:var(--k-yellow);color:var(--k-ink)}
+.tag.cost{background:var(--k-mint-soft);color:var(--ok);font-family:var(--f-mono)}
+.tag.photo{background:var(--k-yellow-soft);color:var(--ink)}
+.heart{position:absolute;top:12px;right:12px;display:flex;align-items:center;gap:4px;border:0;background:var(--k-pink-soft);border-radius:999px;padding:5px 11px 5px 9px;font-size:13px;font-weight:700;color:var(--accent);transition:transform .15s}
+.heart svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:2.2}
+.heart.on{background:var(--k-pink);color:var(--k-white)}
+.heart.on svg{fill:currentColor}
+.heart.both{background:var(--k-red);color:var(--k-white)}
+.heart.pop{animation:pop .4s cubic-bezier(.3,1.8,.5,1)}
+@keyframes pop{50%{transform:scale(1.35) rotate(-8deg)}}
+.alt{margin:16px 0 0 84px;border:2px dashed var(--k-pink);border-radius:18px;padding:12px 16px;font-size:15px;background:var(--surface)}
+.alt b{font-family:var(--f-display)}
+
+/* sections */
+section.block{padding-block:64px 0;position:relative}
+.tape{display:inline-block;font-family:var(--f-display);font-weight:700;font-size:13px;padding:3px 16px;transform:rotate(-2deg);background:repeating-linear-gradient(45deg,var(--k-yellow) 0 8px,var(--k-yellow-soft) 8px 16px);color:var(--k-ink);border-radius:3px;opacity:.95}
+.block h2{font-size:clamp(26px,5.4vw,34px);font-weight:700;margin-top:8px}
+.block .sub{color:var(--muted);margin:6px 0 20px;max-width:60ch}
+.corner{position:absolute;right:0;top:44px;--s:76px}
+
+.panel{background:var(--surface);border-radius:24px;padding:20px;border:2px solid var(--line);box-shadow:0 5px 0 var(--line)}
+.btotal{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 16px;margin-bottom:16px}
+.btotal b{font-family:var(--f-display);font-size:clamp(32px,7vw,44px);color:var(--accent);font-variant-numeric:tabular-nums}
+.btotal span{color:var(--muted);font-size:14px}
+.stack{display:flex;height:18px;border-radius:999px;overflow:hidden;margin-bottom:16px;border:3px solid var(--k-white);box-shadow:0 2px 0 var(--line)}
+.stack i{display:block;height:100%}
+.brows{display:grid;gap:10px}
+.brow{display:grid;grid-template-columns:16px minmax(0,1fr) auto;gap:10px;align-items:start;font-size:15px}
+.brow .sw{width:14px;height:14px;border-radius:50%;margin-top:6px}
+.brow .amt{font-family:var(--f-mono);font-size:14px;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.brow small{display:block;color:var(--muted);font-size:13px}
+.rate{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:16px;font-size:14px;color:var(--muted)}
+.rate input{width:76px;font:inherit;font-family:var(--f-mono);padding:4px 8px;border:2px solid var(--line);border-radius:10px;background:var(--bg);color:var(--ink)}
+.saves{margin-top:14px;font-size:14px;border-top:2px dashed var(--line);padding-top:12px}
+.saves ul{margin:4px 0 0;padding-left:18px}
+
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.note{background:var(--surface);border-radius:20px;padding:16px 18px;min-width:0;border:2px solid var(--line);box-shadow:0 4px 0 var(--line);position:relative}
+.note:nth-child(odd){transform:rotate(-.6deg)}.note:nth-child(even){transform:rotate(.6deg)}
+.note::before{content:"";position:absolute;top:-10px;left:50%;width:70px;height:20px;transform:translateX(-50%) rotate(-3deg);background:var(--k-pink-soft);opacity:.9;border-radius:2px}
+.note:nth-child(2)::before{background:var(--k-sky-soft)}.note:nth-child(3)::before{background:var(--k-mint-soft)}.note:nth-child(4)::before{background:var(--k-yellow-soft)}
+.note h3{font-size:17px;margin-bottom:6px}
+.note ul{margin:0;padding-left:18px;font-size:15px}
+.note li{margin-bottom:4px}
+.note.do h3{color:var(--ok)}.note.dont h3{color:var(--k-red)}
+.prep{list-style:none;padding:0;margin:0}
+.prep li{margin-bottom:6px}
+.prep label,.check label{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-size:15px}
+.prep input,.check input{margin-top:6px;accent-color:var(--k-pink);width:17px;height:17px;flex:none}
+.prep input:checked+span,.check input:checked+span{color:var(--muted);text-decoration:line-through}
+
+.picks{display:flex;flex-wrap:wrap;gap:10px}
+.pick{display:flex;align-items:center;gap:6px;background:var(--k-pink-soft);color:var(--ink);border-radius:999px;padding:5px 14px;font-size:14px;font-weight:600;box-shadow:0 3px 0 var(--line)}
+.pick:nth-child(odd){transform:rotate(-2deg)}.pick:nth-child(even){transform:rotate(1.5deg)}
+.pick.both{background:var(--k-red);color:var(--k-white)}
+.empty{color:var(--muted);font-size:15px;border:2px dashed var(--line);border-radius:18px;padding:16px;background:var(--surface)}
+.sync{font-size:13px;color:var(--muted);margin-top:12px}
+
+.roulette{display:grid;grid-template-columns:96px minmax(0,1fr) auto;gap:18px;align-items:center}
+.roulette .wheel{--s:96px}
+.slot{min-height:90px;min-width:0}
+.slot .name{font-family:var(--f-display);font-size:clamp(22px,4.6vw,30px);font-weight:700}
+.slot .zhn{font-family:var(--f-mono);font-size:14px;color:var(--accent)}
+.slot .why{font-size:14px;color:var(--muted);margin-top:4px}
+.slot.spin .name,.slot.spin .zhn{filter:blur(1.5px)}
+.spinning .wheel{animation:spin .6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.foodlist{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px;margin-top:16px}
+.food{display:grid;grid-template-columns:44px minmax(0,1fr);gap:10px;align-items:center;border-radius:18px;padding:10px 14px 10px 10px;background:var(--surface);border:2px solid var(--line);font-size:14px;min-width:0}
+.food .stk{--s:40px}
+.food b{font-family:var(--f-display);font-size:15px;display:block}
+.food span{font-family:var(--f-mono);font-size:12px;color:var(--accent)}
+.phrase{margin-top:16px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;background:var(--k-mint-soft);border-radius:20px;padding:12px 16px;border:2px dashed var(--k-mint)}
+.phrase b{font-family:var(--f-display);font-size:26px;color:var(--ok)}
+.phrase span{font-size:14px;flex:1 1 220px}
+.bar{height:14px;border-radius:999px;background:var(--line);margin-bottom:16px;overflow:hidden;border:3px solid var(--k-white)}
+.bar i{display:block;height:100%;background:repeating-linear-gradient(45deg,var(--k-pink) 0 10px,var(--k-pink-soft) 10px 20px);width:0;transition:width .3s}
+.check{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:8px 18px}
+
+footer{margin-top:64px;padding-top:18px;border-top:2px dashed var(--line);font-size:14px;color:var(--muted);display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+footer ul{padding-left:18px;margin:6px 0 0}
+footer > div{flex:1 1 260px;min-width:0}
+
+.sunbar span{white-space:nowrap}
+.tags{align-items:center;line-height:1.6}
+.rate input{font-size:16px}
+@media (max-width:640px){
+  .hero .layout{grid-template-columns:1fr}
+  .stickerpile{height:auto;order:-1;display:flex;justify-content:space-between;align-items:center;padding:4px 4px 8px}
+  .stickerpile > span{position:static!important}
+  .stickerpile .stk{position:static;width:52px;height:52px}
+  .scene > span{transform:scale(.72);transform-origin:top left}
+  .card{padding:14px 14px 12px}
+  .card .cstk{position:static;float:left;margin:0 10px 2px 0}
+  .card .cstk .stk{width:40px;height:40px}
+  .card h3{min-height:40px;font-size:17px}
+  .photo{margin:10px 0 4px;max-width:100%;clear:both}
+  .sunbar .s{left:70%}
+  .dayhead h2{font-size:24px}
+  .stop{grid-template-columns:1fr;gap:4px}
+  .stop .when{text-align:left;padding-top:0}
+  .alt{margin-left:0}
+  .roulette{grid-template-columns:1fr}
+  .roulette .wheel{--s:72px}
+  .corner{--s:56px;top:50px}
+  .scene{height:160px}
+}
+@media (prefers-reduced-motion:reduce){
+  .stop{animation:none;opacity:1;transform:none}
+  .heart.pop,.spinning .wheel{animation:none}
+  .stk,.stk:hover{transition:none}
+}
+.hero .wrap{padding-top:calc(56px + env(safe-area-inset-top,0px))}
+body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
+</style>
+</head>
+<body>
+<header class="hero">
+  <canvas id="snow" aria-hidden="true"></canvas>
+  <div class="wrap pad">
+    <div class="layout">
+      <div>
+        <span class="kicker">BKK ✈ DLC · 27.12.2026 → 01.01.2027</span>
+        <h1>ต้าเหลียน<span class="zh">大连</span></h1>
+        <div class="sub">ทะเลหน้าหนาว ตึกยุโรป และปีใหม่ของเราสองคน</div>
+        <p class="lede">ทริปชิล วันละ 3–4 ที่ เน้นมุมถ่ายรูป คาเฟ่ และชอปปิง แบบคุมงบ กดหัวใจที่ที่อยากไปเก็บไว้ได้เลย</p>
+        <div class="prefs" aria-label="สไตล์ทริป"><span>งบประหยัด</span><span>ชิล ๆ</span><span>ถ่ายรูปสวย</span><span>คาเฟ่ ชอปปิง</span><span>ไม่เผ็ด</span><span>ไม่กินหอยเม่น</span></div>
+        <div class="count" aria-live="polite">
+          <div><b id="cd-d">--</b><span>วัน</span></div>
+          <div><b id="cd-h">--</b><span>ชั่วโมง</span></div>
+          <div><b id="cd-m">--</b><span>นาที</span></div>
+          <div><b id="cd-s">--</b><span>วินาที</span></div>
+        </div>
+        <div class="cta">
+          <button class="btn pink" id="go">ดูแผนเที่ยว</button>
+          <button class="btn white" id="go-budget">ดูงบ</button>
+          <button class="btn yellow" id="go-food">วันนี้กินอะไรดี</button>
+        </div>
+        <div class="facts">
+          <span><b>−4–3°C</b>ลมแรง หนาวกว่าตัวเลข</span>
+          <span><b>~16:35</b>พระอาทิตย์ตก</span>
+          <span><b>~17,500฿</b>งบ 2 คน</span>
+        </div>
+      </div>
+      <div class="stickerpile" id="pile" aria-hidden="true"></div>
+    </div>
+  </div>
+  <svg class="wave" viewBox="0 0 1200 28" preserveAspectRatio="none" aria-hidden="true"><path d="M0 28 V14 Q50 0 100 14 T200 14 T300 14 T400 14 T500 14 T600 14 T700 14 T800 14 T900 14 T1000 14 T1100 14 T1200 14 V28Z"/></svg>
+</header>
+
+<div class="picker pad" id="plan">
+  <div class="wrap"><div class="tickets" role="tablist" aria-label="เลือกวัน" id="tickets"></div></div>
+</div>
+
+<main class="wrap pad">
+  <section class="dayview" id="dayview" role="tabpanel" aria-live="polite"></section>
+
+  <section class="block" id="budget-sec">
+    <span class="corner" data-stk="suitcase" data-r="8" aria-hidden="true"></span>
+    <span class="tape">งบ 2 คน · ไม่รวมตั๋วเครื่องบิน</span>
+    <h2>งบแบบประหยัด</h2>
+    <p class="sub">ค่าประมาณจากราคาในคลิปและราคาทั่วไปของต้าเหลียน แก้อัตราแลกเปลี่ยนด้านล่างได้ ตัวเลขเงินบาทจะคำนวณใหม่ทันที</p>
+    <div class="panel">
+      <div class="btotal"><b id="b-thb">--</b><span id="b-cny">--</span></div>
+      <div class="stack" id="b-stack" aria-hidden="true"></div>
+      <div class="brows" id="b-rows"></div>
+      <div class="rate"><label for="rate">1 หยวน =</label><input id="rate" type="number" step="0.1" min="1" max="10" value="5"><span>บาท (ค่าประมาณ ควรเช็กเรตจริงก่อนแลก)</span></div>
+      <div class="saves"><b>ที่ตัดออกเพื่อคุมงบ</b><ul>
+        <li>สวนสัตว์ทะเลเหล่าหู่ทาน และกระเช้าข้ามทะเล ค่าตั๋วค่อนข้างสูง</li>
+        <li>เปลี่ยนจากโรงแรม Atour เป็นเครือราคากลาง เช่น 全季 (Ji Hotel) หรือ 汉庭 ในย่านจงซาน</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <section class="block" id="prep-sec">
+    <span class="corner" data-stk="plane" data-r="-10" aria-hidden="true"></span>
+    <span class="tape">ไทม์ไลน์ก่อนบิน 27 ธ.ค.</span>
+    <h2>ต้องทำอะไรเมื่อไหร่</h2>
+    <p class="sub">เหลือเวลาราว 5 สัปดาห์ ติ๊กได้ จำไว้ในเครื่องนี้</p>
+    <div class="grid4">
+      <div class="note"><h3>ภายในสิ้นเดือน พ.ย.</h3><ul class="prep">
+        <li><label><input type="checkbox" id="t1"><span>จองโรงแรมย่านจงซาน (ช่วงปีใหม่ห้องเต็มเร็ว)</span></label></li>
+        <li><label><input type="checkbox" id="t2"><span>ซื้อประกันการเดินทาง</span></label></li>
+        <li><label><input type="checkbox" id="t3"><span>เช็กอายุพาสปอร์ต และเช็กกับสถานทูตว่าฟรีวีซ่ายังใช้ได้ (บางแหล่งบอกว่ามาตรการมีถึง 31 ธ.ค. 2026 แต่ยังยืนยันไม่ได้)</span></label></li>
+        <li><label><input type="checkbox" id="t4"><span>สมัคร Alipay และผูกบัตร</span></label></li></ul></div>
+      <div class="note"><h3>ต้น ธ.ค.</h3><ul class="prep">
+        <li><label><input type="checkbox" id="t5"><span>เซฟคาเฟ่และมุมถ่ายรูปที่อยากไปจาก 小红书</span></label></li>
+        <li><label><input type="checkbox" id="t6"><span>แจ้งธนาคารว่าจะใช้บัตรที่จีน</span></label></li>
+        <li><label><input type="checkbox" id="t7"><span>ซื้อ eSIM หรือแพ็กโรมมิ่ง</span></label></li></ul></div>
+      <div class="note"><h3>2 สัปดาห์ก่อน (~13 ธ.ค.)</h3><ul class="prep">
+        <li><label><input type="checkbox" id="t8"><span>ยืนยันการจองทั้งหมด เซฟไว้ในเครื่องแบบออฟไลน์</span></label></li>
+        <li><label><input type="checkbox" id="t9"><span>ลองจ่ายเงินด้วย Alipay สักครั้ง</span></label></li>
+        <li><label><input type="checkbox" id="t10"><span>เช็กประกาศงานเคานต์ดาวน์ตงกั่ง</span></label></li></ul></div>
+      <div class="note"><h3>สัปดาห์สุดท้าย</h3><ul class="prep">
+        <li><label><input type="checkbox" id="t11"><span>ดูพยากรณ์อากาศ เลือกวันแดดดีไว้เที่ยวซิงไห่</span></label></li>
+        <li><label><input type="checkbox" id="t12"><span>จัดกระเป๋าตามเช็กลิสต์ด้านล่าง</span></label></li>
+        <li><label><input type="checkbox" id="t13"><span>เช็กอินออนไลน์ 24 ชั่วโมงก่อนบิน</span></label></li></ul></div>
+    </div>
+  </section>
+
+  <section class="block" id="picks-sec">
+    <span class="corner" data-stk="heart" data-r="12" aria-hidden="true"></span>
+    <span class="tape">ที่ที่เราอยากไป</span>
+    <h2>หัวใจของเราสองคน</h2>
+    <p class="sub">กดหัวใจที่การ์ดสถานที่ ที่นี่จะรวมทุกที่ที่กดไว้ หัวใจจำไว้ในเครื่องที่กดเท่านั้น</p>
+    <div class="picks" id="picks"></div>
+    <div class="sync" id="sync">กำลังเชื่อมต่อ...</div>
+  </section>
+
+  <section class="block" id="food-sec">
+    <span class="corner" data-stk="bowl" data-r="-8" aria-hidden="true"></span>
+    <span class="tape">มื้อเย็น · ไม่เผ็ด</span>
+    <h2>วันนี้กินอะไรดี</h2>
+    <p class="sub">ตัดสินใจไม่ได้ก็ให้หน้านี้สุ่มให้ ทุกเมนูไม่เผ็ดและไม่มีหอยเม่น</p>
+    <div class="panel roulette" id="roul">
+      <span class="wheel" data-stk="ferris" data-r="0" aria-hidden="true"></span>
+      <div class="slot" id="slot" aria-live="polite">
+        <div class="name">กดสุ่มได้เลย</div>
+        <div class="zhn">大连美食</div>
+        <div class="why">สุ่มจาก 7 เมนู</div>
+      </div>
+      <button class="btn pink" id="spin">สุ่มมื้อเย็น</button>
+    </div>
+    <div class="foodlist" id="foodlist"></div>
+    <div class="phrase"><b>不要辣</b><span>อ่านว่า "ปู้ เย่า ล่า" แปลว่าไม่เอาเผ็ด บอกตอนสั่งทุกครั้ง โดยเฉพาะร้านเกาหลีและหม้อไฟ (ให้เลือกน้ำซุปใส 清汤)</span><button class="copy" data-copy="不要辣">คัดลอก</button></div>
+  </section>
+
+  <section class="block" id="tips-sec">
+    <span class="corner" data-stk="snow" data-r="10" aria-hidden="true"></span>
+    <span class="tape">มารยาทและข้อควรรู้</span>
+    <h2>ทำและไม่ควรทำในจีน</h2>
+    <div class="grid4" style="margin-top:22px">
+      <div class="note do"><h3>ควรทำ</h3><ul>
+        <li>พกพาสปอร์ตตลอด โรงแรมและสถานที่ท่องเที่ยวหลายที่ต้องใช้ตอนซื้อตั๋ว</li>
+        <li>จ่ายเงินด้วย Alipay หรือ WeChat Pay ร้านเล็กบางร้านไม่รับบัตร</li>
+        <li>พกทิชชูเอง ห้องน้ำสาธารณะส่วนใหญ่ไม่มีให้</li>
+        <li>ดื่มน้ำขวดหรือน้ำต้ม ไม่ดื่มน้ำก๊อก</li>
+        <li>ขออนุญาตก่อนถ่ายรูปคนแปลกหน้า</li></ul></div>
+      <div class="note dont"><h3>ไม่ควรทำ</h3><ul>
+        <li>ไม่ต้องให้ทิป ที่จีนไม่มีธรรมเนียมนี้</li>
+        <li>ไม่ปักตะเกียบตั้งไว้ในชามข้าว</li>
+        <li>ไม่ต่อราคาในห้างหรือร้านที่ติดป้ายราคา ต่อได้เฉพาะตลาด</li>
+        <li>ไม่พูดเรื่องการเมืองกับคนท้องถิ่น</li></ul></div>
+      <div class="note"><h3>ความปลอดภัย</h3><ul>
+        <li>ที่สนามบินไม่ขึ้นรถที่มาเรียกลูกค้าเอง ใช้คิวแท็กซี่ทางการหรือ DiDi</li>
+        <li>เก็บใบเสร็จแท็กซี่ไว้ เผื่อลืมของในรถ</li>
+        <li>ระวังพื้นเป็นน้ำแข็งลื่น โดยเฉพาะทางลาดย่านหนานซาน</li>
+        <li>จดเบอร์ฉุกเฉิน ตำรวจ 110 รถพยาบาล 120</li></ul></div>
+      <div class="note"><h3>แอปที่ต้องมี</h3><ul>
+        <li>Alipay หรือ WeChat Pay ผูกบัตรไทยได้</li>
+        <li>Amap (高德地图) ดูแผนที่ และ DiDi เรียกรถ</li>
+        <li>VPN หรือซิมโรมมิ่ง เพราะ LINE, Google และ IG ใช้ไม่ได้</li>
+        <li>小红书 หาคาเฟ่และมุมถ่ายรูป</li></ul></div>
+      <div class="note"><h3>จากคนที่ไปมาแล้ว</h3><ul>
+        <li>ฟ้ามืดราว 16:40 น. จุดชมพระอาทิตย์ตกต้องไปก่อนบ่ายสามครึ่ง</li>
+        <li>แท็กซี่ในเมืองราว 20 หยวนต่อเที่ยว</li>
+        <li>วันมีแดดกับวันครึ้มสวยต่างกันมาก ให้สลับวันที่ 31 ไปวันที่แดดดีที่สุด</li>
+        <li>ใส่เสื้อสีแดงหรือขาวไปทะเลหน้าหนาว ถ่ายรูปสวยมาก</li></ul></div>
+    </div>
+  </section>
+
+  <section class="block" id="pack-sec">
+    <span class="corner" data-stk="camera" data-r="-6" aria-hidden="true"></span>
+    <span class="tape">เช็กลิสต์</span>
+    <h2>ของที่ต้องเตรียม</h2>
+    <p class="sub">ติ๊กแล้วจะจำไว้ในเบราว์เซอร์เครื่องนี้เท่านั้น</p>
+    <div class="bar"><i id="bar"></i></div>
+    <ul class="check" id="check"></ul>
+  </section>
+
+  <footer>
+    <span data-stk="star" data-r="-8" style="--s:48px" aria-hidden="true"></span>
+    <div>
+      <b>ที่มา</b>
+      <ul>
+        <li>คลิป 1 · Brinkkty · <a href="https://www.youtube.com/watch?v=_m7IEdghQu4" target="_blank" rel="noopener">เที่ยวจีนคนเดียว..ต้าเหลียน</a></li>
+        <li>คลิป 2 · GIGAJAY · <a href="https://www.youtube.com/watch?v=wgNu9nGk4Oo" target="_blank" rel="noopener">ต้าเหลียน เมืองสุดชิลริมทะเล ตึกยุโรป</a></li>
+        <li>ภาพถ่ายสถานที่จาก Wikimedia Commons ใช้ตามสัญญาอนุญาต CC ที่ระบุใต้แต่ละภาพ ภาพย่อขนาดเพื่อแสดงผล</li>
+        <li>ราคาและเวลาเปิดปิดเป็นค่าประมาณ ควรเช็กอีกครั้งก่อนไป</li>
+      </ul>
+    </div>
+  </footer>
+</main>
+
+<script>
+(function(){
+/* ---------- cartoon stickers (viewBox 0 0 100 100) ---------- */
+var FACE='<circle class="f-ink" cx="0" cy="0" r="0"/>';
+function face(x,y,s){s=s||1;return '<g transform="translate('+x+' '+y+') scale('+s+')"><circle class="f-ink" cx="-7" cy="0" r="2.6"/><circle class="f-ink" cx="7" cy="0" r="2.6"/><path class="s-ink" stroke-width="2.4" d="M-4 4 Q0 8 4 4"/><circle class="f-pink" cx="-12" cy="5" r="3.2" opacity=".8"/><circle class="f-pink" cx="12" cy="5" r="3.2" opacity=".8"/></g>';}
+var SVG={
+ plane:'<path class="f-sky" d="M18 30 L10 14 L22 14 L36 30Z"/><path class="f-white" d="M8 48 Q8 34 24 34 L72 34 Q94 34 94 46 Q94 58 72 58 L24 58 Q8 58 8 48Z"/><path class="f-pink" d="M8 48 Q8 54 14 57 L72 57 Q90 57 93 50 L8 50Z"/><path class="f-blue" d="M40 52 L60 52 L48 84 L36 84Z"/><path class="f-sky" d="M82 38 Q91 40 92 45 L82 45Z"/><circle class="f-sky" cx="48" cy="43" r="3.4"/><circle class="f-sky" cx="58" cy="43" r="3.4"/><circle class="f-sky" cx="68" cy="43" r="3.4"/>',
+ suitcase:'<path class="s-ink" stroke-width="5" d="M38 26 V16 H62 V26"/><rect class="f-yellow" x="16" y="24" width="68" height="62" rx="12"/><rect class="f-orange" x="28" y="24" width="7" height="62"/><rect class="f-orange" x="65" y="24" width="7" height="62"/><circle class="f-pink" cx="50" cy="44" r="8"/><rect class="f-sky" x="40" y="62" width="20" height="13" rx="3" transform="rotate(-8 50 68)"/><circle class="f-ink" cx="28" cy="91" r="5"/><circle class="f-ink" cx="72" cy="91" r="5"/>',
+ camera:'<rect class="f-pink" x="30" y="20" width="24" height="14" rx="4"/><rect class="f-pink" x="10" y="28" width="80" height="56" rx="14"/><circle class="f-white" cx="50" cy="56" r="20"/><circle class="f-blue" cx="50" cy="56" r="13"/><circle class="f-white" cx="45" cy="51" r="4"/><rect class="f-yellow" x="70" y="35" width="12" height="8" rx="3"/><circle class="f-white" cx="22" cy="38" r="3"/>',
+ tram:'<path class="s-ink" stroke-width="3" d="M50 18 L40 4 M50 18 L60 4 M36 4 H64"/><rect class="f-cream" x="24" y="14" width="52" height="10" rx="4"/><rect class="f-red" x="12" y="22" width="76" height="56" rx="14"/><rect class="f-cream" x="20" y="30" width="17" height="18" rx="4"/><rect class="f-cream" x="41.5" y="30" width="17" height="18" rx="4"/><rect class="f-cream" x="63" y="30" width="17" height="18" rx="4"/><rect class="f-yellow" x="12" y="56" width="76" height="6"/>'+face(50,68,.9)+'<circle class="f-ink" cx="28" cy="84" r="7"/><circle class="f-ink" cx="72" cy="84" r="7"/><circle class="f-white" cx="28" cy="84" r="2.5"/><circle class="f-white" cx="72" cy="84" r="2.5"/>',
+ building:'<rect class="f-cream" x="14" y="44" width="72" height="46" rx="4"/><path class="f-blue" d="M30 46 Q50 6 70 46Z"/><rect class="f-ink" x="48.5" y="6" width="3" height="16"/><circle class="f-yellow" cx="50" cy="6" r="4"/><rect class="f-pink" x="10" y="40" width="80" height="7" rx="3"/><path class="f-sky" d="M22 60 a6 6 0 0 1 12 0 V72 H22Z"/><path class="f-sky" d="M66 60 a6 6 0 0 1 12 0 V72 H66Z"/><path class="f-brown" d="M42 90 V66 a8 8 0 0 1 16 0 V90Z"/><circle class="f-yellow" cx="18" cy="44" r="2.4"/><circle class="f-yellow" cx="34" cy="44" r="2.4"/><circle class="f-yellow" cx="50" cy="44" r="2.4"/><circle class="f-yellow" cx="66" cy="44" r="2.4"/><circle class="f-yellow" cx="82" cy="44" r="2.4"/>',
+ ferris:'<path class="s-ink" stroke-width="4" d="M50 46 L30 94 M50 46 L70 94 M24 94 H76"/><circle class="s-pink" stroke-width="5" cx="50" cy="46" r="32"/><path class="s-pink" stroke-width="2.5" d="M50 14 V78 M18 46 H82 M27 23 L73 69 M73 23 L27 69"/><circle class="f-yellow" cx="50" cy="14" r="7"/><circle class="f-sky" cx="82" cy="46" r="7"/><circle class="f-mint" cx="50" cy="78" r="7"/><circle class="f-orange" cx="18" cy="46" r="7"/><circle class="f-pink" cx="73" cy="23" r="6"/><circle class="f-blue" cx="27" cy="69" r="6"/><circle class="f-red" cx="73" cy="69" r="6"/><circle class="f-yellow" cx="27" cy="23" r="6"/><circle class="f-white" cx="50" cy="46" r="7"/>',
+ fan:'<path class="f-red" d="M50 82 L8 40 A60 60 0 0 1 92 40Z"/><path class="s-white" stroke-width="2" d="M50 82 L8 40 M50 82 L22 26 M50 82 L40 20 M50 82 L60 20 M50 82 L78 26 M50 82 L92 40"/><circle class="f-pink" cx="36" cy="38" r="6"/><circle class="f-yellow" cx="36" cy="38" r="2.5"/><circle class="f-pink" cx="62" cy="34" r="5"/><circle class="f-yellow" cx="62" cy="34" r="2"/><rect class="f-brown" x="46" y="78" width="8" height="18" rx="3"/><circle class="f-yellow" cx="50" cy="96" r="3"/>',
+ cup:'<path class="s-ink" stroke-width="3" d="M40 22 q-6 -8 0 -14 M54 22 q-6 -8 0 -14"/><path class="f-sky" d="M18 34 H74 L68 82 Q66 90 58 90 H34 Q26 90 24 82Z"/><path class="s-ink" stroke-width="5" d="M74 44 Q90 44 88 58 Q86 70 70 68"/><ellipse class="f-brown" cx="46" cy="34" rx="28" ry="7"/><path class="f-cream" d="M46 40 C40 33 34 36 38 31 C41 28 45 30 46 32 C47 30 51 28 54 31 C58 36 52 33 46 40Z"/>'+face(46,62,.85),
+ heart:'<path class="f-pink" d="M50 88 C8 60 12 22 36 22 C45 22 50 30 50 34 C50 30 55 22 64 22 C88 22 92 60 50 88Z"/><circle class="f-white" cx="34" cy="36" r="5" opacity=".8"/>'+face(50,52,.9),
+ star:'<path class="f-yellow" d="M50 8 L61 36 L92 38 L68 58 L76 90 L50 72 L24 90 L32 58 L8 38 L39 36Z"/>'+face(50,52,.8),
+ snow:'<g class="s-blue" stroke-width="6"><path d="M50 10 V90 M15 30 L85 70 M85 30 L15 70"/></g><g class="s-blue" stroke-width="4"><path d="M40 16 L50 26 L60 16 M40 84 L50 74 L60 84 M18 44 L30 38 L24 26 M82 56 L70 62 L76 74 M18 56 L30 62 L24 74 M82 44 L70 38 L76 26"/></g><circle class="f-white" cx="50" cy="50" r="12"/>'+face(50,50,.6),
+ fish:'<path class="f-orange" d="M14 50 Q40 18 70 50 Q40 82 14 50Z"/><path class="f-orange" d="M68 50 L92 32 L88 50 L92 68Z"/><path class="s-white" stroke-width="3" d="M36 34 Q44 50 36 66"/><circle class="f-ink" cx="26" cy="46" r="3"/><circle class="f-pink" cx="28" cy="56" r="3" opacity=".8"/>',
+ bowl:'<path class="s-ink" stroke-width="3" d="M38 26 q-6 -8 0 -14 M52 26 q-6 -8 0 -14 M66 26 q-6 -8 0 -14"/><path class="s-ink" stroke-width="4" d="M62 8 L84 40 M70 6 L90 36"/><path class="f-cream" d="M14 44 H86 Q86 64 70 72 L66 84 H34 L30 72 Q14 64 14 44Z"/><path class="f-pink" d="M14 44 H86 Q86 52 82 58 H18 Q14 52 14 44Z"/><ellipse class="f-yellow" cx="50" cy="44" rx="36" ry="7"/>'+face(50,66,.8),
+ firework:'<g stroke-width="5" stroke-linecap="round"><path class="s-pink" d="M50 50 L50 10 M50 50 L50 90"/><path class="s-blue" d="M50 50 L10 50 M50 50 L90 50"/><path style="stroke:var(--k-yellow)" d="M50 50 L22 22 M50 50 L78 78"/><path style="stroke:var(--k-mint)" d="M50 50 L78 22 M50 50 L22 78"/></g><circle class="f-yellow" cx="50" cy="10" r="5"/><circle class="f-pink" cx="90" cy="50" r="5"/><circle class="f-mint" cx="22" cy="78" r="5"/><circle class="f-sky" cx="78" cy="22" r="5"/><circle class="f-white" cx="50" cy="50" r="8"/>',
+ gull:'<path class="f-white" d="M10 52 Q30 30 50 50 Q70 30 90 52 Q70 44 50 60 Q30 44 10 52Z"/><path class="s-ink" stroke-width="3" d="M10 52 Q30 30 50 50 Q70 30 90 52"/><path class="f-orange" d="M50 56 L58 60 L50 62Z"/>',
+ deer:'<path class="s-ink" stroke-width="4" d="M36 30 L28 10 M30 18 L20 14 M64 30 L72 10 M70 18 L80 14"/><ellipse class="f-brown" cx="50" cy="48" rx="24" ry="22"/><ellipse class="f-brown" cx="22" cy="36" rx="10" ry="6"/><ellipse class="f-brown" cx="78" cy="36" rx="10" ry="6"/><ellipse class="f-cream" cx="50" cy="60" rx="14" ry="10"/><circle class="f-ink" cx="50" cy="56" r="4"/><circle class="f-ink" cx="40" cy="44" r="3"/><circle class="f-ink" cx="60" cy="44" r="3"/><circle class="f-pink" cx="34" cy="52" r="3.4" opacity=".8"/><circle class="f-pink" cx="66" cy="52" r="3.4" opacity=".8"/><circle class="f-cream" cx="36" cy="32" r="2.6"/><circle class="f-cream" cx="62" cy="30" r="2.2"/>',
+ bag:'<path class="s-ink" stroke-width="4" d="M36 34 V24 a14 14 0 0 1 28 0 V34"/><path class="f-mint" d="M18 32 H82 L76 90 H24Z"/><rect class="f-pink" x="18" y="32" width="64" height="10"/>'+face(50,64,.9),
+ pin:'<path class="f-red" d="M50 92 C30 64 20 52 20 38 a30 30 0 0 1 60 0 C80 52 70 64 50 92Z"/><circle class="f-white" cx="50" cy="38" r="12"/><circle class="f-pink" cx="50" cy="38" r="5"/>',
+ pizza:'<path class="f-yellow" d="M14 22 Q50 8 86 22 L50 92Z"/><path class="f-orange" d="M14 22 Q50 8 86 22 L82 30 Q50 18 18 30Z"/><circle class="f-red" cx="40" cy="38" r="6"/><circle class="f-red" cx="60" cy="42" r="5"/><circle class="f-red" cx="50" cy="60" r="5"/>'
+};
+function stk(name,size,rot,cls){return '<span class="stk '+(cls||"")+'" style="--s:'+size+'px;--r:'+(rot||0)+'deg" aria-hidden="true"><svg viewBox="0 0 100 100">'+SVG[name]+'</svg></span>';}
+function icon(name){return '<svg viewBox="0 0 100 100" aria-hidden="true">'+SVG[name]+'</svg>';}
+document.querySelectorAll("[data-stk]").forEach(function(el){el.innerHTML=stk(el.dataset.stk,0,el.dataset.r).replace('--s:0px;','');var inner=el.firstChild;el.replaceWith(inner);if(el.className)inner.classList.add.apply(inner.classList,el.className.split(" ").filter(Boolean));if(el.getAttribute("style"))inner.setAttribute("style",inner.getAttribute("style")+";"+el.getAttribute("style"));});
+document.getElementById("pile").innerHTML=
+ '<span style="position:absolute;left:4%;top:2%">'+stk("plane",118,-12,"bob")+'</span>'+
+ '<span style="position:absolute;right:2%;top:30%">'+stk("suitcase",96,8,"bob2")+'</span>'+
+ '<span style="position:absolute;left:0;bottom:4%">'+stk("camera",86,-8)+'</span>'+
+ '<span style="position:absolute;left:44%;bottom:0">'+stk("tram",92,6,"bob")+'</span>'+
+ '<span style="position:absolute;left:44%;top:10%">'+stk("heart",48,14,"bob2")+'</span>'+
+ '<span style="position:absolute;right:6%;top:0">'+stk("snow",44,0)+'</span>';
+
+/* ---------- data ---------- */
+var DAYS=[
+ {id:"d28",d:"28 ธ.ค.",t:"ถึงแล้ว",ic:"plane",title:"ถึงต้าเหลียน เดินเล่นเบา ๆ",sub:"วันแรกไม่รีบ เที่ยวใกล้ที่พัก ตึกเก่าเปิดไฟสวยตอนค่ำ",cost:"~250 หยวน",tr:"สนามบินเข้าเมืองนั่งแท็กซี่หรือ DiDi ราว 30 นาที ~50 หยวน ในย่านจงซานเดินได้",
+  scene:{bg:"linear-gradient(180deg,#5a5fc0 0%,#9a8fe0 60%,#ffc6a8 100%)",label:"Hello Dalian!",st:[["plane",84,-14,"8%","10%"],["building",120,0,"38%","22%"],["star",40,10,"78%","12%"],["star",30,-10,"88%","48%"],["suitcase",70,10,"74%","46%"]]},
+  stops:[
+   {id:"hotel",st:"suitcase",w:"ช่วงที่ถึง",h:"เช็กอินย่านจงซาน",p:"เลือกโรงแรมเครือราคากลาง เช่น 全季 (Ji Hotel) หรือ 汉庭 ราวคืนละ 250–350 หยวน ใกล้รถไฟใต้ดินและแท็กซี่ถูก",zh:"全季酒店 中山区",q:"全季酒店 大连中山广场",src:[1],c:"300/คืน"},
+   {id:"zhongshan",st:"building",w:"ค่ำ",h:"จัตุรัสจงซาน ตอนเปิดไฟ",p:"ตึกยุคอาณานิคมล้อมวงเวียน ถ่ายรูปคู่ตอนไฟเปิดสวยที่สุด",zh:"中山广场",q:"中山广场 大连",src:[2],c:"ฟรี",ph:1},
+   {id:"dongguan",st:"camera",w:"ค่ำ",h:"ถนนตงกวน",p:"ย่านตึกเก่าที่ปรับปรุงใหม่ มีร้านเล็กและมุมถ่ายรูปเยอะ",zh:"东关街",q:"东关街 大连",src:[2],c:"ฟรี",ph:1},
+   {id:"feiniu",st:"bowl",w:"มื้อเย็น",h:"ร้านยากิโทริ 飛牛町",p:"อิซากายะญี่ปุ่นบนถนนตงกวน ไก่ย่างเสียบไม้ไม่เผ็ด",zh:"飛牛町·日料·烧鸟酒场(东关街店)",q:"飛牛町 东关街",src:[2],c:"~150 หยวน"}
+  ]},
+ {id:"d29",d:"29 ธ.ค.",t:"คาเฟ่ ชอปปิง",ic:"cup",title:"วันคาเฟ่และชอปปิง",sub:"ตื่นสายได้ เดินคาเฟ่ย่านหนานซาน ต่อด้วยย่านถนนซีอาน แล้วปิดวันที่ห้าง",cost:"~400 หยวน",tr:"หนานซานอยู่ใกล้ที่พัก เดินได้ ไปถนนซีอานและห้างใช้แท็กซี่ ~20 หยวนต่อเที่ยว",
+  scene:{bg:"linear-gradient(180deg,#ffd6e5 0%,#ffeccd 100%)",label:"Café & shopping day",st:[["cup",104,-8,"6%","16%"],["bag",86,8,"40%","28%"],["camera",80,-8,"64%","8%"],["heart",46,14,"86%","54%"],["star",44,6,"86%","6%"]]},
+  stops:[
+   {id:"nanshan",st:"cup",w:"สาย",h:"ย่านคาเฟ่หนานซาน",p:"บรรยากาศคล้ายเกาหลี มีคาเฟ่ Hello Kitty และร้านเสื้อผ้าน่ารัก ทางเป็นเนิน ใส่รองเท้าสบาย",zh:"南山风情街",q:"南山风情街 大连",src:[1],c:"~80 หยวน",ph:1},
+   {id:"xian",st:"camera",w:"บ่าย",h:"ย่านถนนซีอาน",p:"ถนนคาเฟ่และร้านอาหารเกาหลีทั้งเส้น คนท้องถิ่นในคลิปแรกพามา สั่งอาหารเกาหลีให้บอก 不要辣",zh:"西安路",q:"西安路 大连",src:[1],c:"~120 หยวน",ph:1},
+   {id:"mall",st:"bag",w:"เย็น",h:"ห้าง Olympia 66 หรือ Pavilion",p:"เดินชอปปิงในที่อุ่น มีศูนย์อาหารและร้านอาหารไม่เผ็ดให้เลือกเยอะ",zh:"恒隆广场 · 柏威年",q:"大连恒隆广场",src:[2],c:"มื้อเย็น ~150"}
+  ]},
+ {id:"d30",d:"30 ธ.ค.",t:"รถราง ท่าเรือ",ic:"tram",title:"รถรางเก่าและท่าเรือประมง",sub:"นั่งรถรางร้อยปี ไปท่าเรือหลากสี แล้วรอแสงเย็นที่อ่าวหิน",cost:"~350 หยวน",tr:"รถราง 201 วิ่งผ่านใจกลางเมือง จากนั้นแท็กซี่ไปเหล่าหู่ทาน ~30 หยวน และไปอ่าวหลิงเจี่ยวอีกช่วงสั้น ๆ",
+  scene:{bg:"linear-gradient(180deg,#9fdcff 0%,#d7f1ff 62%,#7fb8e8 62%,#5f9fdc 100%)",label:"Tram 201 · since 1909",st:[["tram",116,-4,"8%","18%"],["gull",54,-8,"46%","8%"],["gull",40,10,"58%","26%"],["fish",64,12,"74%","58%"],["pin",52,8,"86%","14%"]]},
+  stops:[
+   {id:"tram",st:"tram",w:"สาย",h:"นั่งรถรางสาย 201",p:"วิ่งมาตั้งแต่ปี 1909 ค่าโดยสาร 2 หยวน จ่ายด้วย Alipay เลือกขึ้นคันที่เป็นรถรางเก่า ถ่ายรูปในรถสวยมาก",zh:"201路有轨电车",src:[1],k:"tram",c:"2/คน",ph:1},
+   {id:"wharf",st:"fish",w:"กลางวัน",h:"ท่าเรือประมงเหล่าหู่ทาน",p:"ตึกหลากสีริมทะเล เดินถ่ายรูปฟรี กินมื้อกลางวันที่ร้าน 品海楼 เลือกเมนูนึ่งหรือผัดไม่เผ็ด",zh:"老虎滩渔人码头 · 品海楼",q:"老虎滩渔人码头",src:[2],c:"~200 หยวน",ph:1},
+   {id:"lingjiao",st:"gull",w:"ก่อน 16:00",h:"อ่าวหลิงเจี่ยว",p:"ชมทะเลก่อนฟ้ามืด แล้วนั่งแท็กซี่กลับเข้าเมือง",zh:"菱角湾",q:"菱角湾 大连",src:[2],k:"sunset",c:"ฟรี",ph:1}
+  ],alt:["ถ้าอยากชิลกว่านี้","ตัดอ่าวหลิงเจี่ยวออก แล้วกลับไปนั่งคาเฟ่ใกล้ที่พักแทน"]},
+ {id:"d31",d:"31 ธ.ค.",t:"เคานต์ดาวน์",ic:"firework",title:"ซิงไห่ ตงกั่ง และเคานต์ดาวน์",sub:"วันที่ควรได้แดดที่สุดของทริป เริ่มสายเพราะคืนนี้อยู่ดึก",cost:"~550 หยวน",tr:"แท็กซี่หรือรถไฟใต้ดินไปซิงไห่ จากนั้นแท็กซี่ไปตงกั่ง คืนเคานต์ดาวน์เรียกรถยาก ควรเผื่อเวลารอ",
+  scene:{bg:"linear-gradient(180deg,#2e2b6b 0%,#6d4fa8 55%,#ff9ab8 100%)",label:"Happy New Year 2027!",st:[["firework",90,0,"6%","6%"],["firework",64,20,"72%","4%"],["ferris",118,0,"36%","16%"],["star",40,-12,"88%","52%"],["heart",44,10,"20%","58%"]]},
+  stops:[
+   {id:"xinghai",st:"gull",w:"บ่ายต้น",h:"จัตุรัสซิงไห่ และคาเฟ่ Flamingo House",p:"ลานกว้างริมทะเล หน้าหนาวมักมีนกนางนวลมาให้ให้อาหาร นั่งคาเฟ่วิวทะเลรอแสงเย็น",zh:"星海广场 · Flamingo House",q:"星海广场",src:[1,2],c:"~80 หยวน",ph:1},
+   {id:"ride",st:"ferris",w:"~15:30",h:"เครื่องเล่นหมุนในสวนสนุกซิงไห่",p:"ไปตอนพระอาทิตย์ตก ฟ้าเป็นสีชมพู ทั้งสองคลิปบอกว่าโรแมนติกมาก",zh:"星海公园游乐园",q:"星海公园游乐园",src:[1,2],k:"sunset",c:"50/คน",ph:1},
+   {id:"venice",st:"pizza",w:"เย็น",h:"เมืองเวนิสต้าเหลียน และพิซซ่า DAPAULO",p:"ตึกสไตล์ยุโรปเลียบคลอง มุมถ่ายรูปยอดฮิต มื้อเย็นกินพิซซ่าเตาฟืน",zh:"大连海昌东方水城 · DAPAULO大宝罗",q:"大连东方水城",src:[1,2],c:"~200 หยวน",ph:1},
+   {id:"countdown",st:"firework",w:"ค่ำ–00:00",h:"เคานต์ดาวน์ที่ย่านตงกั่ง",p:"ลานน้ำพุดนตรีและท่าเรือยอชต์ Blue Harbor เดินจากเมืองเวนิสได้ เช็กประกาศงานของปีนี้ก่อน",zh:"东港音乐喷泉广场 · 蓝色港湾",q:"东港音乐喷泉广场",src:[2],c:"ฟรี"}
+  ],alt:["ถ้ามีแรงเหลือตอนเช้า","แวะให้อาหารกวางที่สวนไป๋หยุนลู่หมิง (白云鹿鸣) ซองละ 8 หยวน ใกล้จัตุรัสซิงไห่"]},
+ {id:"d01",d:"1 ม.ค.",t:"กลับบ้าน",ic:"heart",title:"วันกลับ",sub:"ปีใหม่วันแรก เผื่อเวลาไปสนามบิน 2–3 ชั่วโมงเพราะคนอาจเยอะ",cost:"~200 หยวน",tr:"แท็กซี่ไปตลาดปลาแล้วต่อไปสนามบิน เผื่อเวลารถติดวันหยุด",
+  scene:{bg:"linear-gradient(180deg,#bfe9ff 0%,#ffe6f0 100%)",label:"See you again, Dalian",st:[["plane",100,-10,"60%","10%"],["fish",70,-8,"8%","22%"],["heart",56,10,"34%","40%"],["suitcase",72,6,"84%","50%"]]},
+  stops:[
+   {id:"fishmarket",st:"fish",w:"ก่อนบิน",h:"ตลาดปลา 澳深鱼市",p:"มื้อสุดท้ายแบบอาหารทะเลนึ่งหรือย่าง และซื้อของฝากราคาตลาด",zh:"澳深鱼市(竹青街店)",q:"澳深鱼市 竹青街",src:[2],c:"~150 หยวน"}
+  ]}
+];
+var BUDGET=[
+ {n:"ที่พัก",d:"โรงแรมเครือราคากลาง 4 คืน × ~300 หยวน",cny:1200,col:"var(--k-blue)"},
+ {n:"อาหาร",d:"5 วัน × ~200 หยวน สำหรับ 2 คน",cny:1000,col:"var(--k-yellow)"},
+ {n:"กิจกรรมและคาเฟ่",d:"เครื่องเล่นซิงไห่ 100 รถราง คาเฟ่ และค่าเข้าเล็ก ๆ น้อย ๆ",cny:300,col:"var(--k-pink)"},
+ {n:"เดินทางในเมือง",d:"แท็กซี่และ DiDi รวมไปกลับสนามบิน",cny:400,col:"var(--k-mint)"},
+ {n:"ชอปปิงและเงินเผื่อ ~15%",d:"ซิม/VPN ของฝาก และเงินสำรองกรณีฉุกเฉิน",cny:600,col:"var(--k-orange)"}
+];
+var FOOD=[
+ {n:"ปลาเหลืองทอด",z:"小黄鱼",w:"คลิปแรกบอกว่าอร่อยมาก ไม่เผ็ด",s:"fish"},
+ {n:"สตูหม้อเหล็กตงเป่ย",z:"铁锅炖",w:"รสเค็มหวาน ร้อนและอิ่ม เหมาะกับอากาศติดลบ",s:"bowl"},
+ {n:"อาหารทะเลนึ่ง",z:"清蒸海鲜",w:"หอยเชลล์นึ่งกระเทียม หอยนางรม กุ้ง",s:"fish"},
+ {n:"เหมินจื่อ",z:"焖子",w:"วุ้นแป้งทอดราดซอสงา จานละราว 5 หยวน",s:"bowl"},
+ {n:"ยากิโทริ",z:"烧鸟",w:"ร้าน 飛牛町 บนถนนตงกวน",s:"star"},
+ {n:"เกี๊ยวน้ำ",z:"水饺",w:"เกี๊ยวไส้หมูหรือกุ้ง ถูกและอิ่ม",s:"bowl"},
+ {n:"พิซซ่าเตาฟืน",z:"DAPAULO",w:"ที่เมืองเวนิสต้าเหลียน",s:"pizza"}
+];
+var PACK=["พาสปอร์ตเหลืออายุเกิน 6 เดือน","ผูกบัตรกับ Alipay หรือ WeChat Pay","VPN หรือซิมโรมมิ่ง","แจ็กเก็ตกันลม และฮีทเทค","หมวกไหมพรม ถุงมือ ผ้าพันคอ","แผ่นแปะร้อน","รองเท้าพื้นกันลื่นที่เดินขึ้นเนินสบาย","ถุงเท้าหนาและเสื้อสเวตเตอร์","ยาประจำตัวและยาสามัญ","สำเนาพาสปอร์ต (เก็บแยกกับตัวจริง)","เสื้อสีแดงหรือขาวไว้ถ่ายรูปทะเล","ทิชชูพกพา","ปลั๊กแปลงขา Type I (สามขาแบน) ไฟ 220V เท่าไทย","ถุงมือแบบทัชสกรีนได้","ลิปบาล์มและครีมทาผิว อากาศแห้งมาก","เงินสดหยวนเล็กน้อย ~500 หยวน","เอกสารประกันและการจองแบบออฟไลน์","จองโรงแรมย่านจงซาน","เช็กงานเคานต์ดาวน์ที่ตงกั่ง","พาวเวอร์แบงก์"];
+var PHOTOS={
+ zhongshan:{u:"images/zhongshan.jpg",c:"จัตุรัสจงซาน",a:"xiquinhosilva",l:"CC BY 2.0",p:"https://commons.wikimedia.org/wiki/File:Zhongshan_Square,_Aug2018.jpg"},
+ tram:{u:"images/tram.jpg",c:"รถรางสาย 201",a:"CEphoto, Uwe Aranas",l:"CC BY-SA 3.0",p:"https://commons.wikimedia.org/wiki/File:Dalian_Liaoning_China_Tramway-line-201-01.jpg"},
+ lingjiao:{u:"images/lingjiao.jpg",c:"ถนนเลียบชายฝั่งปินไห่ระหว่างทาง (ไม่ใช่อ่าวหลิงเจี่ยวโดยตรง)",a:"燃玉",l:"CC BY-SA 3.0",p:"https://commons.wikimedia.org/wiki/File:%E6%BB%A8%E6%B5%B7%E4%B8%AD%E8%B7%AF%E7%BA%A65000%E7%B1%B3(retouched).jpg"},
+ mall:{u:"images/mall.jpg",c:"ห้าง Olympia 66 (恒隆广场)",a:"Wabrinshkoze",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:%E5%A4%A7%E8%BF%9E%E6%81%92%E9%9A%86%E5%B9%BF%E5%9C%BA.jpg"},
+ xinghai:{u:"images/xinghai.jpg",c:"จัตุรัสซิงไห่",a:"CEphoto, Uwe Aranas",l:"CC BY-SA 3.0",p:"https://commons.wikimedia.org/wiki/File:Dalian_China_Xinghai-Square-01.jpg"},
+ ride:{u:"images/ride.jpg",c:"ชายหาดสวนซิงไห่ตอนหน้าหนาว",a:"超级核潜艇",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Xinghai_Park_of_Dalian_01.jpg"},
+ countdown:{u:"images/countdown.jpg",c:"ย่านตงกั่งมองจากมุมสูง",a:"HSJ233",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Donggang_Dalian.jpg"}
+};
+function photo(id){var p=PHOTOS[id];if(!p)return "";
+ return '<figure class="photo"><img src="'+p.u+'" alt="'+esc(p.c)+'" loading="lazy"><figcaption><b>'+esc(p.c)+'</b> · ภาพ: '+esc(p.a)+' · <a href="'+p.p+'" target="_blank" rel="noopener">'+esc(p.l)+'</a> · Wikimedia Commons</figcaption></figure>';}
+var SRC={0:["แผนเดิม",""],1:["คลิป 1","c1"],2:["คลิป 2","c2"]};
+var HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.5 8.1 3.6 4.5 7.1 4.5c2 0 3.6 1.1 4.9 2.8 1.3-1.7 2.9-2.8 4.9-2.8 3.5 0 5.6 3.6 4.4 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg>';
+var NAMES={};DAYS.forEach(function(d){d.stops.forEach(function(s){NAMES[s.id]=s.h;});});
+
+function store(k,v){try{if(v===undefined)return localStorage.getItem(k);localStorage.setItem(k,v);}catch(e){return null;}}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c];});}
+
+/* countdown */
+var target=new Date("2026-12-27T00:00:00+07:00").getTime();
+function tick(){var ms=Math.max(0,target-Date.now());var s=Math.floor(ms/1000);
+ document.getElementById("cd-d").textContent=Math.floor(s/86400);
+ document.getElementById("cd-h").textContent=String(Math.floor(s%86400/3600)).padStart(2,"0");
+ document.getElementById("cd-m").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");
+ document.getElementById("cd-s").textContent=String(s%60).padStart(2,"0");}
+tick();setInterval(tick,1000);
+
+/* snow + sparkles */
+(function(){var c=document.getElementById("snow"),x=c.getContext("2d"),fl=[],W,H,dpr=Math.min(2,window.devicePixelRatio||1);
+ var still=window.matchMedia&&matchMedia("(prefers-reduced-motion: reduce)").matches;
+ function size(){W=c.clientWidth;H=c.clientHeight;c.width=W*dpr;c.height=H*dpr;x.setTransform(dpr,0,0,dpr,0,0);}
+ size();window.addEventListener("resize",size);
+ for(var i=0;i<70;i++)fl.push({x:Math.random()*W,y:Math.random()*H,r:Math.random()*2.6+.8,v:Math.random()*.5+.25,o:Math.random()*Math.PI*2});
+ function draw(){x.clearRect(0,0,W,H);x.fillStyle="rgba(255,255,255,.9)";
+  fl.forEach(function(f){x.beginPath();x.arc(f.x,f.y,f.r,0,7);x.fill();
+   if(!still){f.y+=f.v;f.o+=.01;f.x+=Math.sin(f.o)*.4;if(f.y>H+4){f.y=-4;f.x=Math.random()*W;}}});
+  if(!still)requestAnimationFrame(draw);}
+ draw();})();
+
+/* budget */
+function fmt(n){return Math.round(n).toLocaleString("th-TH");}
+function renderBudget(){var r=parseFloat(document.getElementById("rate").value);if(!(r>0))r=5;
+ var tot=BUDGET.reduce(function(a,b){return a+b.cny;},0);
+ document.getElementById("b-thb").textContent="~"+fmt(tot*r)+" ฿";
+ document.getElementById("b-cny").textContent="รวม ~"+fmt(tot)+" หยวน สำหรับ 2 คน · ตกคนละ ~"+fmt(tot*r/2)+" ฿";
+ document.getElementById("b-stack").innerHTML=BUDGET.map(function(b){return '<i style="width:'+(b.cny/tot*100)+'%;background:'+b.col+'"></i>';}).join("");
+ document.getElementById("b-rows").innerHTML=BUDGET.map(function(b){return '<div class="brow"><span class="sw" style="background:'+b.col+'"></span><div>'+esc(b.n)+'<small>'+esc(b.d)+'</small></div><div class="amt">'+fmt(b.cny)+' ¥<small>~'+fmt(b.cny*r)+' ฿</small></div></div>';}).join("");}
+var rateIn=document.getElementById("rate");var sr=store("dl-rate");if(sr)rateIn.value=sr;
+rateIn.addEventListener("input",function(){store("dl-rate",rateIn.value);renderBudget();});
+renderBudget();
+
+/* hearts */
+var hearts={};var me="local";var db=null;
+function counts(id){var s=hearts[id];return s?Object.keys(s).length:0;}
+function mine(id){return !!(hearts[id]&&hearts[id][me]);}
+function heartBtn(id){var n=counts(id),on=mine(id),both=n>=2;
+ return '<button class="heart'+(on?" on":"")+(both?" both":"")+'" data-heart="'+id+'" aria-pressed="'+on+'" aria-label="อยากไป '+esc(NAMES[id])+'">'+HEART+'<span>'+(n||"")+'</span></button>';}
+function refreshHearts(){document.querySelectorAll("[data-heart]").forEach(function(b){var t=document.createElement("div");t.innerHTML=heartBtn(b.dataset.heart);var nb=t.firstChild;b.className=nb.className;b.setAttribute("aria-pressed",nb.getAttribute("aria-pressed"));b.innerHTML=nb.innerHTML;});renderPicks();}
+function renderPicks(){var el=document.getElementById("picks");var ids=Object.keys(hearts).filter(function(k){return counts(k)>0&&NAMES[k];});
+ if(!ids.length){el.innerHTML='<div class="empty">ยังไม่มีใครกดหัวใจ เลือกวันด้านบนแล้วกดหัวใจที่การ์ดสถานที่ที่อยากไป</div>';return;}
+ ids.sort(function(a,b){return counts(b)-counts(a);});
+ el.innerHTML=ids.map(function(k){return '<span class="pick'+(counts(k)>=2?" both":"")+'">'+(counts(k)>=2?"ทั้งคู่ · ":"")+esc(NAMES[k])+'</span>';}).join("");}
+function safeId(s){return String(s).replace(/[^A-Za-z0-9_-]/g,"_").slice(0,80);}
+function toggle(id,btn){var on=mine(id);
+ if(!hearts[id])hearts[id]={};if(on)delete hearts[id][me];else hearts[id][me]=1;
+ btn.classList.remove("pop");void btn.offsetWidth;btn.classList.add("pop");refreshHearts();
+ if(db){var ref=db.collection("hearts").doc(id+"__"+safeId(me));(on?ref.delete():ref.set({place:id,by:me,at:Date.now()})).catch(function(e){setSync("บันทึกหัวใจไม่สำเร็จ ("+(e&&e.code||"error")+") ลองกดใหม่อีกครั้ง");});}
+ else{store("dl-hearts",JSON.stringify(hearts));}}
+function setSync(t){document.getElementById("sync").textContent=t;}
+
+/* days */
+var cur=0;
+function renderTickets(){document.getElementById("tickets").innerHTML=DAYS.map(function(d,i){
+ return '<button class="ticket" role="tab" id="tab-'+d.id+'" aria-selected="'+(i===cur)+'" data-i="'+i+'"><span class="ic">'+icon(d.ic)+'</span><span><span class="d">'+d.d+'</span><span class="t">'+d.t+'</span></span></button>';}).join("");}
+function renderDay(){var d=DAYS[cur];var v=document.getElementById("dayview");
+ var sc='<div class="scene" aria-hidden="true"><div class="sky" style="background:'+d.scene.bg+'"></div>'+d.scene.st.map(function(s,i){return '<span style="position:absolute;left:'+s[3]+';top:'+s[4]+'">'+stk(s[0],s[1],s[2],i%2?"bob2":"bob")+'</span>';}).join("")+'<span class="label">'+esc(d.scene.label)+'</span></div>';
+ var h=sc+'<div class="dayhead"><div><h2>'+esc(d.title)+'</h2><div class="sub">'+esc(d.sub)+'</div><span class="daycost">ใช้จ่ายวันนี้ '+esc(d.cost)+' (2 คน)</span></div><div class="nav2"><button id="prev" aria-label="วันก่อนหน้า"'+(cur===0?" disabled":"")+'>&#8592;</button><button id="next" aria-label="วันถัดไป"'+(cur===DAYS.length-1?" disabled":"")+'>&#8594;</button></div></div>';
+ h+='<div class="sunbar" aria-hidden="true"><span class="l">07:15</span><span class="s">16:35 พระอาทิตย์ตก</span><span class="r">มืด</span></div><div class="sunnote">เวลาโดยประมาณช่วงปลายธันวาคม</div>'+(d.tr?'<div class="sunnote"><b>การเดินทางวันนี้:</b> '+esc(d.tr)+'</div>':"");
+ h+='<ol class="timeline">'+d.stops.map(function(s,i){
+  var tags=(s.c?'<span class="tag cost">'+esc(s.c)+'</span>':"")+(s.ph?'<span class="tag photo">มุมถ่ายรูป</span>':"")+s.src.map(function(n){return '<span class="tag '+SRC[n][1]+'">'+SRC[n][0]+'</span>';}).join("")+(s.k==="sunset"?'<span class="tag sun">ไปให้ทันแสง</span>':"");
+  var zh='<div class="zh"><span>'+esc(s.zh)+'</span><button class="copy" data-copy="'+esc(s.zh.split(" · ")[0])+'">คัดลอกชื่อจีน</button>'+(s.q?'<a href="https://uri.amap.com/search?keyword='+encodeURIComponent(s.q)+'" target="_blank" rel="noopener">เปิดใน Amap</a>':"")+'</div>';
+  return '<li class="stop'+(s.k?" "+s.k:"")+'" style="animation-delay:'+(i*80)+'ms"><div class="when">'+esc(s.w)+'</div><div class="card"><span class="cstk">'+stk(s.st,48,i%2?8:-8)+'</span>'+heartBtn(s.id)+'<h3>'+esc(s.h)+'</h3>'+photo(s.id)+'<p>'+esc(s.p)+'</p>'+zh+'<div class="tags">'+tags+'</div></div></li>';}).join("")+'</ol>';
+ if(d.alt)h+='<div class="alt"><b>'+esc(d.alt[0])+'</b> '+esc(d.alt[1])+'</div>';
+ v.innerHTML=h;v.setAttribute("aria-labelledby","tab-"+d.id);
+ store("dl-day",String(cur));}
+function select(i){cur=Math.max(0,Math.min(DAYS.length-1,i));renderTickets();renderDay();
+ var t=document.getElementById("tab-"+DAYS[cur].id);if(t&&t.scrollIntoView)t.scrollIntoView({block:"nearest",inline:"center"});}
+
+document.addEventListener("click",function(e){
+ var t=e.target.closest("[data-i]");if(t){select(+t.dataset.i);return;}
+ var hb=e.target.closest("[data-heart]");if(hb){toggle(hb.dataset.heart,hb);return;}
+ if(e.target.closest("#prev")){select(cur-1);return;}
+ if(e.target.closest("#next")){select(cur+1);return;}
+ var cp=e.target.closest("[data-copy]");if(cp){var txt=cp.dataset.copy,label=cp.textContent;
+  var done=function(){cp.textContent="คัดลอกแล้ว";setTimeout(function(){cp.textContent=label;},1500);};
+  try{navigator.clipboard.writeText(txt).then(done,function(){selectText(cp.previousElementSibling);});}catch(err){selectText(cp.previousElementSibling);}}
+});
+function selectText(el){try{var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);}catch(e){}}
+document.getElementById("tickets").addEventListener("keydown",function(e){if(e.key==="ArrowRight")select(cur+1);if(e.key==="ArrowLeft")select(cur-1);});
+function jump(id){document.getElementById(id).scrollIntoView({behavior:"smooth"});}
+document.getElementById("go").addEventListener("click",function(){jump("plan");});
+document.getElementById("go-budget").addEventListener("click",function(){jump("budget-sec");});
+document.getElementById("go-food").addEventListener("click",function(){jump("food-sec");});
+
+/* food */
+document.getElementById("foodlist").innerHTML=FOOD.map(function(f,i){return '<div class="food">'+stk(f.s,40,i%2?8:-8)+'<div><b>'+esc(f.n)+'</b><span>'+esc(f.z)+'</span><div>'+esc(f.w)+'</div></div></div>';}).join("");
+var spinning=false;
+document.getElementById("spin").addEventListener("click",function(){if(spinning)return;spinning=true;
+ var roul=document.getElementById("roul");roul.classList.add("spinning");
+ var slot=document.getElementById("slot");slot.classList.add("spin");var n=0,last=-1,steps=14;
+ (function step(){var i;do{i=Math.floor(Math.random()*FOOD.length);}while(i===last);last=i;var f=FOOD[i];
+  slot.innerHTML='<div class="name">'+esc(f.n)+'</div><div class="zhn">'+esc(f.z)+'</div><div class="why">'+esc(f.w)+'</div>';
+  if(++n<steps)setTimeout(step,50+n*14);else{slot.classList.remove("spin");roul.classList.remove("spinning");spinning=false;}})();});
+
+/* checklist + prep */
+var ck=document.getElementById("check");
+ck.innerHTML=PACK.map(function(p,i){return '<li><label><input type="checkbox" id="pk'+i+'"><span>'+esc(p)+'</span></label></li>';}).join("");
+function bar(){var all=ck.querySelectorAll("input"),n=0;all.forEach(function(c){if(c.checked)n++;});document.getElementById("bar").style.width=(n/all.length*100)+"%";}
+ck.querySelectorAll("input").forEach(function(c){if(store("dl-"+c.id)==="1")c.checked=true;c.addEventListener("change",function(){store("dl-"+c.id,c.checked?"1":"0");bar();});});
+bar();
+document.querySelectorAll("#prep-sec input").forEach(function(c){if(store("dl-"+c.id)==="1")c.checked=true;c.addEventListener("change",function(){store("dl-"+c.id,c.checked?"1":"0");});});
+
+/* boot */
+var saved=parseInt(store("dl-day"),10);if(!isNaN(saved)&&saved>=0&&saved<DAYS.length)cur=saved;
+try{var lh=JSON.parse(store("dl-hearts")||"{}");if(lh&&typeof lh==="object")hearts=lh;}catch(e){}
+renderTickets();renderDay();renderPicks();
+
+function localMode(msg){db=null;me="local";try{hearts=JSON.parse(store("dl-hearts")||"{}")||{};}catch(e){hearts={};}refreshHearts();setSync(msg);}
+if(!window.claude||!window.claude.use){localMode("หัวใจจำไว้ในเครื่องนี้");return;}
+Promise.all([window.claude.use("db"),window.claude.use("user")]).then(function(r){
+ var d=r[0],u=r[1];if(!d||!u){localMode("หัวใจเก็บไว้ในเครื่องนี้เท่านั้น ถ้าเข้าสู่ระบบ claude.ai หัวใจจะซิงค์กับอีกคน");return;}
+ return u.id().then(function(id){me=id||"anon";db=d;hearts={};
+  var timer=setTimeout(function(){setSync("ยังโหลดหัวใจไม่ได้ ลองเปิดหน้านี้ใหม่อีกครั้ง");},10000);
+  db.collection("hearts").onSnapshot(function(snap){clearTimeout(timer);var h={};
+   snap.docs.forEach(function(doc){var v=doc.data();if(v&&v.place&&v.by){(h[v.place]=h[v.place]||{})[v.by]=1;}});
+   hearts=h;refreshHearts();setSync("หัวใจซิงค์กับทุกคนที่เปิดหน้านี้แบบเรียลไทม์");},
+   function(e){clearTimeout(timer);localMode("ซิงค์หัวใจไม่ได้ ("+(e&&e.code||"error")+") ตอนนี้เก็บไว้ในเครื่องนี้แทน");});
+ });
+}).catch(function(){localMode("หัวใจเก็บไว้ในเครื่องนี้เท่านั้น");});
+})();
+</script>
+
+</body>
+</html>
