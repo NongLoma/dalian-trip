@@ -6,6 +6,10 @@
 <meta name="theme-color" content="#8fd3ff">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="ต้าเหลียน">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>ต้าเหลียนหน้าหนาว</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
@@ -232,6 +236,22 @@ footer{margin-top:64px;padding-top:18px;border-top:2px dashed var(--line);font-s
 footer ul{padding-left:18px;margin:6px 0 0}
 footer > div{flex:1 1 260px;min-width:0}
 
+/* taxi + phrase big card */
+.taxi{border:0;background:var(--k-yellow);color:var(--k-ink);border-radius:999px;font-size:12px;font-weight:700;padding:2px 10px}
+.phrases{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:18px 0 6px}
+.phr{display:grid;gap:2px;text-align:left;border:2px solid var(--line);background:var(--surface);border-radius:18px;padding:10px 14px;box-shadow:0 3px 0 var(--line);color:var(--ink)}
+.phr b{font-size:20px;font-weight:600;line-height:1.3}
+.phr span{font-size:13px;color:var(--muted)}
+.phr:active{transform:translateY(2px)}
+#bigcard{position:fixed;inset:0;z-index:60;background:#fffdf8;color:#2b2233;display:grid;align-content:center;justify-items:center;gap:14px;text-align:center;padding:calc(24px + env(safe-area-inset-top,0px)) max(20px,env(safe-area-inset-right,0px)) calc(24px + env(safe-area-inset-bottom,0px)) max(20px,env(safe-area-inset-left,0px))}
+#bigcard[hidden]{display:none!important}
+#bigcard .bc-hint{font-family:var(--f-display);font-weight:600;font-size:15px;color:#8a7d92;background:#fff0c4;padding:3px 14px;border-radius:999px}
+#bigcard .bc-pre{font-size:clamp(28px,8vw,48px);font-weight:600}
+#bigcard .bc-big{font-size:clamp(44px,13vw,110px);font-weight:700;line-height:1.2;word-break:break-word;max-width:100%}
+#bigcard .bc-th{font-family:var(--f-display);font-size:18px;color:#6b5f73;max-width:32ch}
+#bigcard .bc-close{position:absolute;top:calc(14px + env(safe-area-inset-top,0px));right:max(14px,env(safe-area-inset-right,0px));border:0;background:#f0605a;color:#fff;font-family:var(--f-display);font-weight:700;border-radius:999px;padding:8px 18px;font-size:15px}
+#bigcard .bc-tap{font-size:13px;color:#a397aa}
+
 /* side section menu */
 section.block,.dayview,#plan{scroll-margin-top:84px}
 .sidenav{position:fixed;right:max(14px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:4px;background:var(--surface);padding:8px;border-radius:24px;border:2px solid var(--line);box-shadow:0 6px 18px rgba(59,47,69,.16)}
@@ -398,10 +418,57 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
     <div class="phrase"><b>不要辣</b><span>อ่านว่า "ปู้ เย่า ล่า" แปลว่าไม่เอาเผ็ด บอกตอนสั่งทุกครั้ง โดยเฉพาะร้านเกาหลีและหม้อไฟ (ให้เลือกน้ำซุปใส 清汤)</span><button class="copy" data-copy="不要辣">คัดลอก</button></div>
   </section>
 
+  <section class="block" id="expense-sec">
+    <span class="corner" data-stk="bag" data-r="8" aria-hidden="true"></span>
+    <span class="tape">ใช้ระหว่างทริป</span>
+    <h2>บันทึกค่าใช้จ่าย</h2>
+    <p class="sub">Jay กับ Aom เพิ่มจากมือถือของตัวเองได้ ยอดซิงค์กันอัตโนมัติ และคำนวณให้ว่าใครต้องโอนให้ใครตอนจบทริป (หารครึ่ง)</p>
+    <div class="panel">
+      <div class="xsum" id="x-sum"></div>
+      <div class="stack" id="x-bar" aria-hidden="true"></div>
+      <div class="xsettle" id="x-settle"></div>
+    </div>
+    <form class="panel xform" id="x-form" autocomplete="off">
+      <div class="xrow">
+        <label for="x-amt">จำนวน (หยวน)</label>
+        <input id="x-amt" name="amt" type="number" inputmode="decimal" step="0.5" min="0.5" max="99999" required placeholder="เช่น 58">
+      </div>
+      <div class="xrow">
+        <label for="x-note">จ่ายค่าอะไร</label>
+        <input id="x-note" name="note" type="text" maxlength="80" placeholder="เช่น แท็กซี่ไปซิงไห่">
+      </div>
+      <div class="xrow">
+        <label for="x-cat">หมวด</label>
+        <select id="x-cat" name="cat">
+          <option value="food">อาหาร</option>
+          <option value="transport">เดินทาง</option>
+          <option value="fun">กิจกรรมและคาเฟ่</option>
+          <option value="shop">ชอปปิงและของฝาก</option>
+          <option value="stay">ที่พัก</option>
+        </select>
+      </div>
+      <div class="xrow">
+        <span class="xlbl">ใครจ่าย</span>
+        <div class="xwho" role="radiogroup" aria-label="ใครจ่าย">
+          <label><input type="radio" name="paid" id="x-paid-a" value="a" checked><span>Jay</span></label>
+          <label><input type="radio" name="paid" id="x-paid-b" value="b"><span>Aom</span></label>
+        </div>
+      </div>
+      <div class="xrow">
+        <label for="x-date">วันที่</label>
+        <select id="x-date" name="date"></select>
+      </div>
+      <div class="xactions"><button class="btn pink" type="submit" id="x-add">เพิ่มรายการ</button><span class="xmsg" id="x-msg" aria-live="polite"></span></div>
+    </form>
+    <ul class="xlist" id="x-list"></ul>
+  </section>
+
   <section class="block" id="tips-sec">
     <span class="corner" data-stk="snow" data-r="10" aria-hidden="true"></span>
     <span class="tape">มารยาทและข้อควรรู้</span>
     <h2>ทำและไม่ควรทำในจีน</h2>
+    <p class="sub" style="margin-bottom:0">ประโยคใช้บ่อย แตะแล้วจะขึ้นตัวหนังสือจีนเต็มจอ ยื่นให้คนจีนอ่านได้เลย</p>
+    <div class="phrases" id="phrases"></div>
     <div class="grid4" style="margin-top:22px">
       <div class="note do"><h3>ควรทำ</h3><ul>
         <li>พกพาสปอร์ตตลอด โรงแรมและสถานที่ท่องเที่ยวหลายที่ต้องใช้ตอนซื้อตั๋ว</li>
@@ -630,7 +697,7 @@ function renderDay(){var d=DAYS[cur];var v=document.getElementById("dayview");
  h+='<div class="sunbar" aria-hidden="true"><span class="l">07:15</span><span class="s">16:35 พระอาทิตย์ตก</span><span class="r">มืด</span></div><div class="sunnote">เวลาโดยประมาณช่วงปลายธันวาคม</div>'+(d.tr?'<div class="sunnote"><b>การเดินทางวันนี้:</b> '+esc(d.tr)+'</div>':"");
  h+='<ol class="timeline">'+d.stops.map(function(s,i){
   var tags=(s.c?'<span class="tag cost">'+esc(s.c)+'</span>':"")+(s.ph?'<span class="tag photo">มุมถ่ายรูป</span>':"")+s.src.map(function(n){return '<span class="tag '+SRC[n][1]+'">'+SRC[n][0]+'</span>';}).join("")+(s.k==="sunset"?'<span class="tag sun">ไปให้ทันแสง</span>':"");
-  var zh='<div class="zh"><span>'+esc(s.zh)+'</span><button class="copy" data-copy="'+esc(s.zh.split(" · ")[0])+'">คัดลอกชื่อจีน</button>'+(s.q?'<a href="https://uri.amap.com/search?keyword='+encodeURIComponent(s.q)+'" target="_blank" rel="noopener">เปิดใน Amap</a>':"")+'</div>';
+  var zh='<div class="zh"><span>'+esc(s.zh)+'</span>'+(s.id in TAXI?'<button class="taxi" data-taxi="'+s.id+'">การ์ดแท็กซี่</button>':'')+'<button class="copy" data-copy="'+esc(s.zh.split(" · ")[0])+'">คัดลอกชื่อจีน</button>'+(s.q?'<a href="https://uri.amap.com/search?keyword='+encodeURIComponent(s.q)+'" target="_blank" rel="noopener">เปิดใน Amap</a>':"")+'</div>';
   return '<li class="stop'+(s.k?" "+s.k:"")+'" style="animation-delay:'+(i*80)+'ms"><div class="when">'+esc(s.w)+'</div><div class="card"><span class="cstk">'+stk(s.st,48,i%2?8:-8)+'</span>'+heartBtn(s.id)+'<h3>'+esc(s.h)+'</h3>'+photo(s.id)+'<p>'+esc(s.p)+'</p>'+zh+'<div class="tags">'+tags+'</div></div></li>';}).join("")+'</ol>';
  if(d.alt)h+='<div class="alt"><b>'+esc(d.alt[0])+'</b> '+esc(d.alt[1])+'</div>';
  v.innerHTML=h;v.setAttribute("aria-labelledby","tab-"+d.id);
@@ -664,8 +731,28 @@ document.getElementById("spin").addEventListener("click",function(){if(spinning)
   slot.innerHTML='<div class="name">'+esc(f.n)+'</div><div class="zhn">'+esc(f.z)+'</div><div class="why">'+esc(f.w)+'</div>';
   if(++n<steps)setTimeout(step,50+n*14);else{slot.classList.remove("spin");roul.classList.remove("spinning");spinning=false;}})();});
 
+/* taxi card + phrase cards */
+var TAXI={hotel:"",zhongshan:"大连 中山广场",dongguan:"大连 东关街",feiniu:"飛牛町 日料烧鸟酒场（东关街店）",nanshan:"大连 南山风情街",xian:"大连 西安路",mall:"大连 恒隆广场",wharf:"老虎滩 渔人码头",lingjiao:"大连 菱角湾",xinghai:"大连 星海广场",ride:"星海公园 游乐园",venice:"大连 东港 东方水城",countdown:"东港 音乐喷泉广场",fishmarket:"澳深鱼市（竹青街店）"};
+var PHRASES=[["不要辣","ไม่เอาเผ็ด"],["买单","เช็กบิล"],["洗手间在哪里？","ห้องน้ำอยู่ไหน"],["多少钱？","ราคาเท่าไหร่"],["可以用支付宝吗？","จ่าย Alipay ได้ไหม"],["请带我去这里","ช่วยพาไปที่นี่"],["我不会说中文","พูดภาษาจีนไม่ได้"],["请帮我们拍照","ช่วยถ่ายรูปให้หน่อย"],["谢谢","ขอบคุณ"]];
+document.getElementById("phrases").innerHTML=PHRASES.map(function(p,i){return '<button class="phr" data-phr="'+i+'"><b>'+esc(p[0])+'</b><span>'+esc(p[1])+'</span></button>';}).join("");
+var big=document.createElement("div");big.id="bigcard";big.hidden=true;big.setAttribute("role","dialog");big.setAttribute("aria-modal","true");big.setAttribute("aria-label","การ์ดภาษาจีนเต็มจอ");document.body.appendChild(big);
+var wake=null,lastFocus=null;
+function showBig(hint,pre,text,th){lastFocus=document.activeElement;
+ big.innerHTML='<button class="bc-close">ปิด</button><span class="bc-hint">'+esc(hint)+'</span>'+(pre?'<div class="bc-pre" lang="zh">'+esc(pre)+'</div>':'')+'<div class="bc-big" lang="zh">'+esc(text)+'</div><div class="bc-th">'+esc(th)+'</div><div class="bc-tap">แตะที่ไหนก็ได้เพื่อปิด</div>';
+ big.hidden=false;document.documentElement.style.overflow="hidden";big.querySelector(".bc-close").focus();
+ try{if(navigator.wakeLock)navigator.wakeLock.request("screen").then(function(w){wake=w;},function(){});}catch(e){}}
+function hideBig(){big.hidden=true;document.documentElement.style.overflow="";try{if(wake)wake.release();}catch(e){}wake=null;if(lastFocus&&lastFocus.focus)lastFocus.focus();}
+big.addEventListener("click",hideBig);
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!big.hidden)hideBig();});
+document.addEventListener("click",function(e){
+ var t=e.target.closest("[data-taxi]");if(t){var id=t.dataset.taxi,dest=TAXI[id];
+  if(dest)showBig("ยื่นให้คนขับดู","请带我去",dest,NAMES[id]);
+  else showBig("ยังไม่ได้ใส่ชื่อโรงแรม","请带我去酒店","（酒店名称）","จองโรงแรมแล้วบอก Claude ให้ใส่ชื่อจีนของโรงแรมตรงนี้");return;}
+ var p=e.target.closest("[data-phr]");if(p){var x=PHRASES[+p.dataset.phr];showBig("ยื่นให้คนจีนอ่าน","",x[0],x[1]);}
+});
+
 /* side section menu + back to top */
-var NAV=[["top","plane","กลับขึ้นบนสุด"],["plan","pin","แผนรายวัน"],["budget-sec","suitcase","งบ"],["prep-sec","star","ก่อนบิน"],["picks-sec","heart","หัวใจของเรา"],["food-sec","bowl","กินอะไรดี"],["tips-sec","snow","ข้อควรรู้"],["pack-sec","camera","เช็กลิสต์"]];
+var NAV=[["top","plane","กลับขึ้นบนสุด"],["plan","pin","แผนรายวัน"],["budget-sec","suitcase","งบ"],["prep-sec","star","ก่อนบิน"],["picks-sec","heart","หัวใจของเรา"],["food-sec","bowl","กินอะไรดี"],["expense-sec","bag","ค่าใช้จ่าย"],["tips-sec","snow","ข้อควรรู้"],["pack-sec","camera","เช็กลิสต์"]];
 function navLinks(withLabel){return NAV.map(function(n,i){return (i===1?'<hr>':'')+'<a href="#'+n[0]+'" data-go="'+n[0]+'" aria-label="'+n[2]+'">'+icon(n[1])+(withLabel?'<span>'+n[2]+'</span>':'<span class="lb">'+n[2]+'</span>')+'</a>';}).join("");}
 var side=document.createElement("nav");side.className="sidenav";side.setAttribute("aria-label","ไปยังส่วนต่าง ๆ");side.innerHTML=navLinks(false);document.body.appendChild(side);
 var fab=document.createElement("button");fab.className="fab hide";fab.setAttribute("aria-label","เมนูไปยังส่วนต่าง ๆ");fab.setAttribute("aria-expanded","false");fab.innerHTML=icon("pin");document.body.appendChild(fab);
@@ -681,7 +768,7 @@ window.addEventListener("scroll",onScroll,{passive:true});onScroll();
 function setOn(id){document.querySelectorAll("[data-go]").forEach(function(a){a.classList.toggle("on",a.dataset.go===id);});}
 if("IntersectionObserver" in window){
  var spy=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting)setOn(en.target.dataset.spy);});},{rootMargin:"-35% 0px -60% 0px"});
- [["top",heroEl],["plan",document.getElementById("dayview")],["budget-sec"],["prep-sec"],["picks-sec"],["food-sec"],["tips-sec"],["pack-sec"]].forEach(function(p){var el=p[1]||document.getElementById(p[0]);if(el){el.dataset.spy=p[0];spy.observe(el);}});
+ [["top",heroEl],["plan",document.getElementById("dayview")],["budget-sec"],["prep-sec"],["picks-sec"],["food-sec"],["expense-sec"],["tips-sec"],["pack-sec"]].forEach(function(p){var el=p[1]||document.getElementById(p[0]);if(el){el.dataset.spy=p[0];spy.observe(el);}});
 }
 setOn("top");
 
@@ -767,8 +854,77 @@ if(!sb){
  document.addEventListener("visibilitychange",function(){if(!document.hidden)load();});
 }
 
+/* ---------- shared expenses via Supabase ---------- */
+(function(){
+var xcss=document.createElement("style");
+xcss.textContent='.xsum{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:12px}.xsum b{font-family:var(--f-display);font-size:clamp(28px,7vw,40px);color:var(--accent);font-variant-numeric:tabular-nums}.xsum span{color:var(--muted);font-size:14px}.xsettle{font-size:15px;display:grid;gap:4px}.xsettle .who{display:flex;justify-content:space-between;gap:10px;font-variant-numeric:tabular-nums}.xsettle .res{margin-top:6px;font-family:var(--f-display);font-weight:700;color:var(--ok)}'+
+'.xform{margin-top:14px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 16px}.xrow{display:grid;gap:4px;min-width:0}.xrow label,.xlbl{font-size:13px;font-weight:600;color:var(--muted)}.xrow input[type=number],.xrow input[type=text],.xrow select{font:inherit;font-size:16px;padding:9px 12px;border:2px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);width:100%;min-width:0}'+
+'.xwho{display:flex;gap:8px}.xwho label{flex:1;cursor:pointer}.xwho input{position:absolute;opacity:0;pointer-events:none}.xwho span{display:block;text-align:center;padding:9px;border-radius:12px;border:2px solid var(--line);font-family:var(--f-display);font-weight:700;color:var(--ink)}.xwho input:checked+span{background:var(--k-pink);border-color:var(--k-pink);color:var(--k-white)}.xwho input:focus-visible+span{outline:3px solid var(--accent);outline-offset:2px}'+
+'.xactions{grid-column:1/-1;display:flex;flex-wrap:wrap;align-items:center;gap:12px}.xmsg{font-size:14px;color:var(--muted)}'+
+'.xlist{list-style:none;padding:0;margin:16px 0 0;display:grid;gap:8px}.xday{font-family:var(--f-display);font-weight:700;font-size:14px;color:var(--muted);margin-top:8px}.xitem{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:10px;align-items:center;background:var(--surface);border:2px solid var(--line);border-radius:16px;padding:10px 12px}.xitem .n{min-width:0;overflow-wrap:anywhere}.xitem .n small{display:block;color:var(--muted);font-size:12px}.xitem .a{font-family:var(--f-mono);font-variant-numeric:tabular-nums;white-space:nowrap}.xdel{border:0;background:var(--bg);color:var(--muted);border-radius:999px;width:32px;height:32px;font-size:16px}.xempty{color:var(--muted);border:2px dashed var(--line);border-radius:16px;padding:14px;background:var(--surface)}';
+document.head.appendChild(xcss);
+
+var CAT={food:["อาหาร","var(--k-yellow)"],transport:["เดินทาง","var(--k-mint)"],fun:["กิจกรรมและคาเฟ่","var(--k-pink)"],shop:["ชอปปิงและของฝาก","var(--k-orange)"],stay:["ที่พัก","var(--k-blue)"]};
+var NAMES2={a:"Jay",b:"Aom"};
+var BUDGET_CNY=BUDGET.reduce(function(s,b){return s+b.cny;},0);
+var DATES=[["2026-12-27","27 ธ.ค. (ก่อนบิน)"],["2026-12-28","28 ธ.ค."],["2026-12-29","29 ธ.ค."],["2026-12-30","30 ธ.ค."],["2026-12-31","31 ธ.ค."],["2027-01-01","1 ม.ค."]];
+var rows=[];
+var ds=document.getElementById("x-date");
+ds.innerHTML=DATES.map(function(d){return '<option value="'+d[0]+'">'+d[1]+'</option>';}).join("");
+var today=new Date();var iso=today.getFullYear()+"-"+String(today.getMonth()+1).padStart(2,"0")+"-"+String(today.getDate()).padStart(2,"0");
+ds.value=DATES.some(function(d){return d[0]===iso;})?iso:"2026-12-28";
+var myWho=store("dl-who");if(myWho==="b")document.getElementById("x-paid-b").checked=true;
+
+function money(n){return (Math.round(n*100)/100).toLocaleString("th-TH",{maximumFractionDigits:2});}
+function rate(){var r=parseFloat(document.getElementById("rate").value);return r>0?r:5;}
+function render(){
+ var tot=0,by={a:0,b:0},cat={};
+ rows.forEach(function(r){var v=Number(r.amount)||0;tot+=v;by[r.paid_by]=(by[r.paid_by]||0)+v;cat[r.category]=(cat[r.category]||0)+v;});
+ var left=BUDGET_CNY-tot;
+ document.getElementById("x-sum").innerHTML='<b>'+money(tot)+' ¥</b><span>จากงบ '+money(BUDGET_CNY)+' ¥ · '+(left>=0?'เหลือ '+money(left)+' ¥':'เกินงบ '+money(-left)+' ¥')+' · ~'+money(tot*rate())+' ฿</span>';
+ var keys=Object.keys(CAT);
+ document.getElementById("x-bar").innerHTML=tot>0?keys.map(function(k){return cat[k]?'<i title="'+CAT[k][0]+'" style="width:'+(cat[k]/Math.max(tot,BUDGET_CNY)*100)+'%;background:'+CAT[k][1]+'"></i>':'';}).join(""):'';
+ var half=tot/2,diff=by.a-half,res;
+ if(tot===0)res="ยังไม่มีรายการ";
+ else if(Math.abs(diff)<0.5)res="จ่ายเท่ากันแล้ว ไม่ต้องโอน";
+ else if(diff>0)res="Aom โอนให้ Jay "+money(diff)+" ¥ (~"+money(diff*rate())+" ฿)";
+ else res="Jay โอนให้ Aom "+money(-diff)+" ¥ (~"+money(-diff*rate())+" ฿)";
+ document.getElementById("x-settle").innerHTML='<div class="who"><span>Jay จ่ายไป</span><span>'+money(by.a)+' ¥</span></div><div class="who"><span>Aom จ่ายไป</span><span>'+money(by.b)+' ¥</span></div><div class="res">'+esc(res)+'</div>';
+ var list=document.getElementById("x-list");
+ if(!rows.length){list.innerHTML='<li class="xempty">ยังไม่มีรายการ เพิ่มค่าใช้จ่ายแรกได้จากฟอร์มด้านบน</li>';return;}
+ var html="",lastDay="";
+ rows.forEach(function(r){var d=(DATES.filter(function(x){return x[0]===r.spent_on;})[0]||[r.spent_on,r.spent_on])[1];
+  if(d!==lastDay){html+='<li class="xday">'+esc(d)+'</li>';lastDay=d;}
+  html+='<li class="xitem"><div class="n">'+esc(r.note||CAT[r.category][0])+'<small>'+esc(CAT[r.category]?CAT[r.category][0]:r.category)+' · '+esc(NAMES2[r.paid_by]||r.paid_by)+' จ่าย</small></div><span class="a">'+money(Number(r.amount))+' ¥</span><button class="xdel" data-xdel="'+esc(r.id)+'" aria-label="ลบรายการ '+esc(r.note||"")+'">×</button></li>';});
+ list.innerHTML=html;
+}
+function msg(t){document.getElementById("x-msg").textContent=t;}
+function loadX(){if(!sb)return;sb.from("expenses").select("id,amount,note,category,paid_by,spent_on,created_at").order("spent_on",{ascending:true}).order("created_at",{ascending:true}).then(function(r){
+  if(r.error){msg("โหลดรายการไม่ได้ ("+(r.error.code||"error")+")");return;}rows=r.data||[];render();},function(){msg("ต่ออินเทอร์เน็ตไม่ได้");});}
+document.getElementById("rate").addEventListener("input",render);
+document.getElementById("x-form").addEventListener("submit",function(e){e.preventDefault();
+ var f=e.target,amt=parseFloat(f.amt.value),note=f.note.value.trim().slice(0,80),cat=f.cat.value,paid=f.paid.value,date=f.date.value;
+ if(!(amt>0)){msg("ใส่จำนวนเงินก่อน");f.amt.focus();return;}
+ if(!sb){msg("ต่อระบบซิงค์ไม่ได้ ยังบันทึกไม่ได้");return;}
+ var btn=document.getElementById("x-add");btn.disabled=true;msg("กำลังบันทึก...");
+ sb.from("expenses").insert({amount:amt,note:note,category:cat,paid_by:paid,spent_on:date}).then(function(r){btn.disabled=false;
+  if(r.error){msg("บันทึกไม่สำเร็จ ("+(r.error.code||"error")+") ลองใหม่");return;}
+  msg("บันทึกแล้ว "+money(amt)+" ¥");f.amt.value="";f.note.value="";store("dl-who",paid);loadX();},
+  function(){btn.disabled=false;msg("ต่ออินเทอร์เน็ตไม่ได้ ยังไม่ได้บันทึก ข้อมูลในฟอร์มยังอยู่");});});
+var armed=null;
+document.getElementById("x-list").addEventListener("click",function(e){var b=e.target.closest("[data-xdel]");if(!b||!sb)return;
+ if(armed!==b){if(armed){armed.textContent="×";}armed=b;b.textContent="ลบ?";b.style.width="auto";b.style.padding="0 10px";setTimeout(function(){if(armed===b){b.textContent="×";b.style.width="";b.style.padding="";armed=null;}},3000);return;}
+ armed=null;b.disabled=true;sb.from("expenses").delete().eq("id",b.dataset.xdel).then(function(r){if(r.error)msg("ลบไม่สำเร็จ ("+(r.error.code||"error")+")");loadX();},function(){msg("ต่ออินเทอร์เน็ตไม่ได้ ยังไม่ได้ลบ");b.disabled=false;});});
+render();
+if(sb){loadX();try{sb.channel("expenses-live").on("postgres_changes",{event:"*",schema:"public",table:"expenses"},function(){loadX();}).subscribe();}catch(e){}
+ document.addEventListener("visibilitychange",function(){if(!document.hidden)loadX();});}
+else msg("ต่อระบบซิงค์ไม่ได้ ตอนนี้ยังบันทึกค่าใช้จ่ายไม่ได้");
+})();
+
 })();
 </script>
+
+<script>if("serviceWorker" in navigator&&location.protocol==="https:"){addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});}</script>
 
 </body>
 </html>
