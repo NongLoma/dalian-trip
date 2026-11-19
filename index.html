@@ -232,6 +232,28 @@ footer{margin-top:64px;padding-top:18px;border-top:2px dashed var(--line);font-s
 footer ul{padding-left:18px;margin:6px 0 0}
 footer > div{flex:1 1 260px;min-width:0}
 
+/* side section menu */
+section.block,.dayview,#plan{scroll-margin-top:84px}
+.sidenav{position:fixed;right:max(14px,env(safe-area-inset-right,0px));top:50%;transform:translateY(-50%);z-index:20;display:flex;flex-direction:column;gap:4px;background:var(--surface);padding:8px;border-radius:24px;border:2px solid var(--line);box-shadow:0 6px 18px rgba(59,47,69,.16)}
+.sidenav a{position:relative;display:grid;place-items:center;width:42px;height:42px;border-radius:14px;text-decoration:none;color:var(--ink);transition:background .15s,transform .15s}
+.sidenav a svg{width:28px;height:28px}
+.sidenav a:hover{transform:scale(1.08)}
+.sidenav a.on{background:var(--k-pink-soft)}
+.sidenav a.on::after{content:"";position:absolute;left:-6px;top:50%;width:5px;height:18px;margin-top:-9px;border-radius:3px;background:var(--accent)}
+.sidenav .lb{position:absolute;right:52px;white-space:nowrap;background:var(--k-ink);color:var(--k-white);font-family:var(--f-display);font-size:13px;font-weight:600;padding:3px 10px;border-radius:9px;opacity:0;pointer-events:none;transition:opacity .15s}
+.sidenav a:hover .lb,.sidenav a:focus-visible .lb{opacity:1}
+.sidenav hr{border:0;border-top:2px dashed var(--line);margin:2px 4px}
+.fab{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(18px + env(safe-area-inset-bottom,0px));z-index:21;width:56px;height:56px;border-radius:50%;border:3px solid var(--k-white);background:var(--k-pink);color:var(--k-white);box-shadow:0 6px 16px rgba(59,47,69,.3);display:none;place-items:center;font-size:22px;font-weight:700;transition:transform .2s,opacity .2s}
+.fab svg{width:26px;height:26px}
+.fab.hide{opacity:0;transform:scale(.6);pointer-events:none}
+.navsheet{position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(84px + env(safe-area-inset-bottom,0px));z-index:21;background:var(--surface);border:2px solid var(--line);border-radius:22px;padding:8px;box-shadow:0 10px 26px rgba(59,47,69,.25);display:grid;gap:2px;min-width:220px;transform-origin:bottom right;animation:sheetIn .18s ease}
+@keyframes sheetIn{from{opacity:0;transform:scale(.9)}}
+.navsheet a{display:flex;align-items:center;gap:10px;padding:8px 10px;border-radius:14px;text-decoration:none;color:var(--ink);font-family:var(--f-display);font-weight:600;font-size:15px}
+.navsheet a svg{width:28px;height:28px;flex:none}
+.navsheet a.on{background:var(--k-pink-soft)}
+.navsheet hr{border:0;border-top:2px dashed var(--line);margin:4px 6px}
+@media (max-width:1079px){.sidenav{display:none}.fab{display:grid}}
+@media (min-width:1080px){.navsheet{display:none!important}}
 .sunbar span{white-space:nowrap}
 .tags{align-items:center;line-height:1.6}
 .rate input{font-size:16px}
@@ -641,6 +663,27 @@ document.getElementById("spin").addEventListener("click",function(){if(spinning)
  (function step(){var i;do{i=Math.floor(Math.random()*FOOD.length);}while(i===last);last=i;var f=FOOD[i];
   slot.innerHTML='<div class="name">'+esc(f.n)+'</div><div class="zhn">'+esc(f.z)+'</div><div class="why">'+esc(f.w)+'</div>';
   if(++n<steps)setTimeout(step,50+n*14);else{slot.classList.remove("spin");roul.classList.remove("spinning");spinning=false;}})();});
+
+/* side section menu + back to top */
+var NAV=[["top","plane","กลับขึ้นบนสุด"],["plan","pin","แผนรายวัน"],["budget-sec","suitcase","งบ"],["prep-sec","star","ก่อนบิน"],["picks-sec","heart","หัวใจของเรา"],["food-sec","bowl","กินอะไรดี"],["tips-sec","snow","ข้อควรรู้"],["pack-sec","camera","เช็กลิสต์"]];
+function navLinks(withLabel){return NAV.map(function(n,i){return (i===1?'<hr>':'')+'<a href="#'+n[0]+'" data-go="'+n[0]+'" aria-label="'+n[2]+'">'+icon(n[1])+(withLabel?'<span>'+n[2]+'</span>':'<span class="lb">'+n[2]+'</span>')+'</a>';}).join("");}
+var side=document.createElement("nav");side.className="sidenav";side.setAttribute("aria-label","ไปยังส่วนต่าง ๆ");side.innerHTML=navLinks(false);document.body.appendChild(side);
+var fab=document.createElement("button");fab.className="fab hide";fab.setAttribute("aria-label","เมนูไปยังส่วนต่าง ๆ");fab.setAttribute("aria-expanded","false");fab.innerHTML=icon("pin");document.body.appendChild(fab);
+var sheetNav=document.createElement("nav");sheetNav.className="navsheet";sheetNav.hidden=true;sheetNav.setAttribute("aria-label","ไปยังส่วนต่าง ๆ");sheetNav.innerHTML=navLinks(true);document.body.appendChild(sheetNav);
+function closeNav(){sheetNav.hidden=true;fab.setAttribute("aria-expanded","false");fab.innerHTML=icon("pin");}
+fab.addEventListener("click",function(e){e.stopPropagation();if(sheetNav.hidden){sheetNav.hidden=false;fab.setAttribute("aria-expanded","true");fab.textContent="✕";}else closeNav();});
+document.addEventListener("click",function(e){if(!sheetNav.hidden&&!e.target.closest(".navsheet")&&e.target!==fab)closeNav();var a=e.target.closest("[data-go]");if(!a)return;e.preventDefault();closeNav();
+ if(a.dataset.go==="top")window.scrollTo({top:0,behavior:"smooth"});else{var t=document.getElementById(a.dataset.go);if(t)t.scrollIntoView({behavior:"smooth",block:"start"});}});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!sheetNav.hidden){closeNav();fab.focus();}});
+var heroEl=document.querySelector(".hero");
+function onScroll(){var past=heroEl.getBoundingClientRect().bottom<80;fab.classList.toggle("hide",!past&&sheetNav.hidden);}
+window.addEventListener("scroll",onScroll,{passive:true});onScroll();
+function setOn(id){document.querySelectorAll("[data-go]").forEach(function(a){a.classList.toggle("on",a.dataset.go===id);});}
+if("IntersectionObserver" in window){
+ var spy=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting)setOn(en.target.dataset.spy);});},{rootMargin:"-35% 0px -60% 0px"});
+ [["top",heroEl],["plan",document.getElementById("dayview")],["budget-sec"],["prep-sec"],["picks-sec"],["food-sec"],["tips-sec"],["pack-sec"]].forEach(function(p){var el=p[1]||document.getElementById(p[0]);if(el){el.dataset.spy=p[0];spy.observe(el);}});
+}
+setOn("top");
 
 /* checklist + prep */
 var ck=document.getElementById("check");
