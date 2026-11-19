@@ -274,7 +274,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
         <span class="kicker">BKK ✈ DLC · 27.12.2026 → 01.01.2027</span>
         <h1>ต้าเหลียน<span class="zh">大连</span></h1>
         <div class="sub">ทะเลหน้าหนาว ตึกยุโรป และปีใหม่ของเราสองคน</div>
-        <p class="lede">ทริปชิล วันละ 3–4 ที่ เน้นมุมถ่ายรูป คาเฟ่ และชอปปิง แบบคุมงบ กดหัวใจที่ที่อยากไปได้เลย อีกคนจะเห็นด้วย</p>
+        <p class="lede">ทริปชิล วันละ 3–4 ที่ เน้นมุมถ่ายรูป คาเฟ่ และชอปปิง แบบคุมงบ กดหัวใจที่ที่อยากไปได้เลย Jay กับ Aom เห็นหัวใจของกันและกัน</p>
         <div class="prefs" aria-label="สไตล์ทริป"><span>งบประหยัด</span><span>ชิล ๆ</span><span>ถ่ายรูปสวย</span><span>คาเฟ่ ชอปปิง</span><span>ไม่เผ็ด</span><span>ไม่กินหอยเม่น</span></div>
         <div class="count" aria-live="polite">
           <div><b id="cd-d">--</b><span>วัน</span></div>
@@ -353,7 +353,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
     <span class="corner" data-stk="heart" data-r="12" aria-hidden="true"></span>
     <span class="tape">ที่ที่เราอยากไป</span>
     <h2>หัวใจของเราสองคน</h2>
-    <p class="sub">กดหัวใจที่การ์ดสถานที่ ที่นี่จะรวมทุกที่ที่เราสองคนกด ถ้ากดตรงกันป้ายจะเป็นสีแดง หัวใจซิงค์กันผ่านอินเทอร์เน็ต</p>
+    <p class="sub">กดหัวใจที่การ์ดสถานที่ ที่นี่จะรวมทุกที่ที่เราสองคนกด ถ้า Jay กับ Aom กดตรงกัน ป้ายจะเป็นสีแดง หัวใจซิงค์กันผ่านอินเทอร์เน็ต</p>
     <div class="picks" id="picks"></div>
     <div class="sync" id="sync">กำลังเชื่อมต่อ...</div>
   </section>
@@ -656,7 +656,12 @@ renderTickets();renderDay();renderPicks();
 function localMode(msg){db=null;me="local";try{hearts=JSON.parse(store("dl-hearts")||"{}")||{};}catch(e){hearts={};}refreshHearts();setSync(msg);}
 /* ---------- shared hearts via Supabase (GitHub Pages build) ---------- */
 var SB_URL="https://kkacogmxnimcwinkmany.supabase.co", SB_KEY="sb_publishable_VMIQbo31AE8Ncqco4AR5MA_3Jj3j3w4";
-var WHO_NAMES={a:"เรา",b:"แฟน"};
+var WHO_NAMES={a:"Jay",b:"Aom"};
+renderPicks=function(){var el=document.getElementById("picks");var ids=Object.keys(hearts).filter(function(k){return counts(k)>0&&NAMES[k];});
+ if(!ids.length){el.innerHTML='<div class="empty">ยังไม่มีใครกดหัวใจ เลือกวันด้านบนแล้วกดหัวใจที่การ์ดสถานที่ที่อยากไป</div>';return;}
+ ids.sort(function(a,b){return counts(b)-counts(a);});
+ el.innerHTML=ids.map(function(k){var both=counts(k)>=2;var by=both?"Jay + Aom":Object.keys(hearts[k]).map(function(w){return WHO_NAMES[w]||w;}).join("");
+  return '<span class="pick'+(both?" both":"")+'">'+esc(by)+' · '+esc(NAMES[k])+'</span>';}).join("");};
 var who=store("dl-who"); if(who!=="a"&&who!=="b")who=null;
 me=who||"none";
 var sb=null;
@@ -675,7 +680,7 @@ function load(){
 /* who-am-i sheet */
 var sheet=document.createElement("div");
 sheet.id="whoSheet";sheet.hidden=true;
-sheet.innerHTML='<div class="ws-card" role="dialog" aria-modal="true" aria-labelledby="ws-t"><b id="ws-t">คุณคือใคร?</b><span>เลือกครั้งเดียว เครื่องนี้จะจำไว้ หัวใจจะแยกสีให้รู้ว่าใครกด</span><div class="ws-row"><button class="btn pink" data-who="a">เรา</button><button class="btn yellow" data-who="b">แฟน</button></div><button class="ws-x" data-who="x">ไว้ทีหลัง</button></div>';
+sheet.innerHTML='<div class="ws-card" role="dialog" aria-modal="true" aria-labelledby="ws-t"><b id="ws-t">คุณคือใคร?</b><span>เลือกครั้งเดียว เครื่องนี้จะจำไว้ หัวใจจะแยกสีให้รู้ว่าใครกด</span><div class="ws-row"><button class="btn pink" data-who="a">Jay</button><button class="btn yellow" data-who="b">Aom</button></div><button class="ws-x" data-who="x">ไว้ทีหลัง</button></div>';
 document.body.appendChild(sheet);
 var css=document.createElement("style");
 css.textContent='#whoSheet{position:fixed;inset:0;z-index:50;display:grid;place-items:end center;background:rgba(59,47,69,.35);padding:16px max(16px,env(safe-area-inset-left,0px)) calc(16px + env(safe-area-inset-bottom,0px))}#whoSheet[hidden]{display:none!important}.ws-card{background:var(--surface);color:var(--ink);border-radius:24px;padding:20px;width:min(420px,100%);display:grid;gap:10px;box-shadow:0 10px 30px rgba(59,47,69,.3)}.ws-card b{font-family:var(--f-display);font-size:22px}.ws-card span{color:var(--muted);font-size:14px}.ws-row{display:flex;gap:10px}.ws-row .btn{flex:1;font-size:17px;padding:12px}.ws-x{border:0;background:none;color:var(--muted);font-size:14px;padding:6px}.whoPick{display:inline-flex;gap:6px;margin-left:6px}.whoPick button{border:0;border-radius:999px;padding:1px 10px;font-size:13px;background:var(--k-sky-soft);color:var(--ink)}';
