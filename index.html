@@ -274,7 +274,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
         <span class="kicker">BKK ✈ DLC · 27.12.2026 → 01.01.2027</span>
         <h1>ต้าเหลียน<span class="zh">大连</span></h1>
         <div class="sub">ทะเลหน้าหนาว ตึกยุโรป และปีใหม่ของเราสองคน</div>
-        <p class="lede">ทริปชิล วันละ 3–4 ที่ เน้นมุมถ่ายรูป คาเฟ่ และชอปปิง แบบคุมงบ กดหัวใจที่ที่อยากไปเก็บไว้ได้เลย</p>
+        <p class="lede">ทริปชิล วันละ 3–4 ที่ เน้นมุมถ่ายรูป คาเฟ่ และชอปปิง แบบคุมงบ กดหัวใจที่ที่อยากไปได้เลย อีกคนจะเห็นด้วย</p>
         <div class="prefs" aria-label="สไตล์ทริป"><span>งบประหยัด</span><span>ชิล ๆ</span><span>ถ่ายรูปสวย</span><span>คาเฟ่ ชอปปิง</span><span>ไม่เผ็ด</span><span>ไม่กินหอยเม่น</span></div>
         <div class="count" aria-live="polite">
           <div><b id="cd-d">--</b><span>วัน</span></div>
@@ -353,7 +353,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
     <span class="corner" data-stk="heart" data-r="12" aria-hidden="true"></span>
     <span class="tape">ที่ที่เราอยากไป</span>
     <h2>หัวใจของเราสองคน</h2>
-    <p class="sub">กดหัวใจที่การ์ดสถานที่ ที่นี่จะรวมทุกที่ที่กดไว้ หัวใจจำไว้ในเครื่องที่กดเท่านั้น</p>
+    <p class="sub">กดหัวใจที่การ์ดสถานที่ ที่นี่จะรวมทุกที่ที่เราสองคนกด ถ้ากดตรงกันป้ายจะเป็นสีแดง หัวใจซิงค์กันผ่านอินเทอร์เน็ต</p>
     <div class="picks" id="picks"></div>
     <div class="sync" id="sync">กำลังเชื่อมต่อ...</div>
   </section>
@@ -433,6 +433,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
   </footer>
 </main>
 
+<script src="vendor/supabase.js"></script>
 <script>
 (function(){
 /* ---------- cartoon stickers (viewBox 0 0 100 100) ---------- */
@@ -653,17 +654,69 @@ try{var lh=JSON.parse(store("dl-hearts")||"{}");if(lh&&typeof lh==="object")hear
 renderTickets();renderDay();renderPicks();
 
 function localMode(msg){db=null;me="local";try{hearts=JSON.parse(store("dl-hearts")||"{}")||{};}catch(e){hearts={};}refreshHearts();setSync(msg);}
-if(!window.claude||!window.claude.use){localMode("หัวใจจำไว้ในเครื่องนี้");return;}
-Promise.all([window.claude.use("db"),window.claude.use("user")]).then(function(r){
- var d=r[0],u=r[1];if(!d||!u){localMode("หัวใจเก็บไว้ในเครื่องนี้เท่านั้น ถ้าเข้าสู่ระบบ claude.ai หัวใจจะซิงค์กับอีกคน");return;}
- return u.id().then(function(id){me=id||"anon";db=d;hearts={};
-  var timer=setTimeout(function(){setSync("ยังโหลดหัวใจไม่ได้ ลองเปิดหน้านี้ใหม่อีกครั้ง");},10000);
-  db.collection("hearts").onSnapshot(function(snap){clearTimeout(timer);var h={};
-   snap.docs.forEach(function(doc){var v=doc.data();if(v&&v.place&&v.by){(h[v.place]=h[v.place]||{})[v.by]=1;}});
-   hearts=h;refreshHearts();setSync("หัวใจซิงค์กับทุกคนที่เปิดหน้านี้แบบเรียลไทม์");},
-   function(e){clearTimeout(timer);localMode("ซิงค์หัวใจไม่ได้ ("+(e&&e.code||"error")+") ตอนนี้เก็บไว้ในเครื่องนี้แทน");});
- });
-}).catch(function(){localMode("หัวใจเก็บไว้ในเครื่องนี้เท่านั้น");});
+/* ---------- shared hearts via Supabase (GitHub Pages build) ---------- */
+var SB_URL="https://kkacogmxnimcwinkmany.supabase.co", SB_KEY="sb_publishable_VMIQbo31AE8Ncqco4AR5MA_3Jj3j3w4";
+var WHO_NAMES={a:"เรา",b:"แฟน"};
+var who=store("dl-who"); if(who!=="a"&&who!=="b")who=null;
+me=who||"none";
+var sb=null;
+try{ if(window.supabase&&window.supabase.createClient) sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false}}); }catch(e){ sb=null; }
+
+function whoLine(){return who?("คุณคือ "+WHO_NAMES[who]+" · "):"";}
+function load(){
+ if(!sb)return;
+ sb.from("hearts").select("place,who").then(function(r){
+  if(r.error){setSync(whoLine()+"โหลดหัวใจไม่ได้ ("+(r.error.code||"error")+") ลองเปิดหน้านี้ใหม่");return;}
+  var h={};(r.data||[]).forEach(function(x){(h[x.place]=h[x.place]||{})[x.who]=1;});
+  hearts=h;refreshHearts();setSync(whoLine()+"หัวใจซิงค์กับอีกคนแบบเรียลไทม์");
+ },function(){setSync(whoLine()+"ต่ออินเทอร์เน็ตไม่ได้ ลองใหม่อีกครั้ง");});
+}
+
+/* who-am-i sheet */
+var sheet=document.createElement("div");
+sheet.id="whoSheet";sheet.hidden=true;
+sheet.innerHTML='<div class="ws-card" role="dialog" aria-modal="true" aria-labelledby="ws-t"><b id="ws-t">คุณคือใคร?</b><span>เลือกครั้งเดียว เครื่องนี้จะจำไว้ หัวใจจะแยกสีให้รู้ว่าใครกด</span><div class="ws-row"><button class="btn pink" data-who="a">เรา</button><button class="btn yellow" data-who="b">แฟน</button></div><button class="ws-x" data-who="x">ไว้ทีหลัง</button></div>';
+document.body.appendChild(sheet);
+var css=document.createElement("style");
+css.textContent='#whoSheet{position:fixed;inset:0;z-index:50;display:grid;place-items:end center;background:rgba(59,47,69,.35);padding:16px max(16px,env(safe-area-inset-left,0px)) calc(16px + env(safe-area-inset-bottom,0px))}#whoSheet[hidden]{display:none!important}.ws-card{background:var(--surface);color:var(--ink);border-radius:24px;padding:20px;width:min(420px,100%);display:grid;gap:10px;box-shadow:0 10px 30px rgba(59,47,69,.3)}.ws-card b{font-family:var(--f-display);font-size:22px}.ws-card span{color:var(--muted);font-size:14px}.ws-row{display:flex;gap:10px}.ws-row .btn{flex:1;font-size:17px;padding:12px}.ws-x{border:0;background:none;color:var(--muted);font-size:14px;padding:6px}.whoPick{display:inline-flex;gap:6px;margin-left:6px}.whoPick button{border:0;border-radius:999px;padding:1px 10px;font-size:13px;background:var(--k-sky-soft);color:var(--ink)}';
+document.head.appendChild(css);
+var pending=null;
+function askWho(then){pending=then;sheet.hidden=false;var b=sheet.querySelector('[data-who="a"]');if(b)b.focus();}
+sheet.addEventListener("click",function(e){var b=e.target.closest("[data-who]");if(!b&&e.target!==sheet)return;
+ var v=b?b.dataset.who:"x";sheet.hidden=true;
+ if(v==="a"||v==="b"){who=v;me=v;store("dl-who",v);refreshHearts();load();var p=pending;pending=null;if(p)p();}
+ else pending=null;});
+document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!sheet.hidden){sheet.hidden=true;pending=null;}});
+
+/* change-who link next to sync line */
+var syncEl=document.getElementById("sync");
+var chg=document.createElement("button");chg.className="copy";chg.textContent="เปลี่ยนว่าเป็นใคร";chg.style.marginLeft="8px";
+chg.addEventListener("click",function(){askWho(null);});
+syncEl.insertAdjacentElement("afterend",chg);
+
+toggle=function(id,btn){
+ if(!who){askWho(function(){var nb=document.querySelector('[data-heart="'+id+'"]');toggle(id,nb||btn);});return;}
+ var on=mine(id);
+ if(!hearts[id])hearts[id]={};if(on)delete hearts[id][who];else hearts[id][who]=1;
+ if(btn){btn.classList.remove("pop");void btn.offsetWidth;btn.classList.add("pop");}
+ refreshHearts();
+ if(!sb){store("dl-hearts",JSON.stringify(hearts));return;}
+ var q=on?sb.from("hearts").delete().eq("place",id).eq("who",who)
+         :sb.from("hearts").upsert({place:id,who:who},{onConflict:"place,who",ignoreDuplicates:true});
+ q.then(function(r){if(r.error){setSync(whoLine()+"บันทึกหัวใจไม่สำเร็จ ("+(r.error.code||"error")+") ลองกดใหม่");load();}},
+        function(){setSync(whoLine()+"ต่ออินเทอร์เน็ตไม่ได้ หัวใจยังไม่ถูกบันทึก");load();});
+};
+
+if(!sb){
+ try{hearts=JSON.parse(store("dl-hearts")||"{}")||{};}catch(e){hearts={};}
+ refreshHearts();setSync("โหลดระบบซิงค์ไม่ได้ ตอนนี้หัวใจจำไว้ในเครื่องนี้");
+}else{
+ hearts={};refreshHearts();setSync(whoLine()+"กำลังโหลดหัวใจ...");
+ load();
+ try{sb.channel("hearts-live").on("postgres_changes",{event:"*",schema:"public",table:"hearts"},function(){load();}).subscribe();}catch(e){}
+ document.addEventListener("visibilitychange",function(){if(!document.hidden)load();});
+}
+
 })();
 </script>
 
