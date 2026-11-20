@@ -237,6 +237,25 @@ footer ul{padding-left:18px;margin:6px 0 0}
 footer > div{flex:1 1 260px;min-width:0}
 
 /* name tags */
+.ptip{margin-top:10px;border-radius:14px;background:var(--k-pink-soft);padding:2px 12px}
+.ptip summary{cursor:pointer;font-family:var(--f-display);font-weight:700;font-size:14px;padding:6px 0;display:flex;align-items:center;gap:6px;list-style:none;color:var(--ink)}
+.ptip summary::-webkit-details-marker{display:none}
+.ptip summary::after{content:"+";margin-left:auto;font-size:18px;line-height:1;transition:transform .2s}
+.ptip[open] summary::after{transform:rotate(45deg)}
+.ptip summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+.ptip dl{margin:0 0 10px;display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:14px}
+.ptip dt{font-weight:700;color:var(--muted);white-space:nowrap}
+.ptip dd{margin:0;min-width:0}
+.cdmsg{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:20px;background:var(--k-white);color:var(--k-ink);border-radius:20px 20px 20px 6px;padding:10px 16px;box-shadow:0 4px 0 rgba(59,47,69,.18);transform:rotate(-1.5deg);max-width:100%}
+.cdmsg b{font-family:var(--f-display);font-size:clamp(20px,5vw,26px);color:var(--k-pink);line-height:1.2}
+.cdmsg span{font-size:14px}
+.cdmsg a{font-weight:700;color:var(--k-blue)}
+.cdroad{position:relative;height:30px;margin:14px 0 0;max-width:420px}
+.cdroad::before{content:"";position:absolute;left:0;right:22px;top:50%;border-top:3px dashed rgba(255,255,255,.85)}
+.cdroad .end{position:absolute;right:0;top:50%;transform:translateY(-50%);font-family:var(--f-display);font-weight:700;font-size:12px;background:var(--k-yellow);color:var(--k-ink);border-radius:999px;padding:0 8px}
+.cdroad .pl{position:absolute;top:50%;transform:translate(-50%,-50%);transition:left .6s}
+.cdroad .pl .stk{animation:bob 2.4s ease-in-out infinite}
+@media (prefers-reduced-motion:reduce){.cdroad .pl .stk{animation:none}}
 .nm{display:inline-block;font-family:var(--f-display);font-weight:700;font-size:.95em;line-height:1.45;padding:0 .55em;border-radius:999px;transform:rotate(-3deg);box-shadow:0 2px 0 rgba(59,47,69,.18);vertical-align:baseline}
 .nm.a{background:var(--k-pink);color:var(--k-white)}
 .nm.b{background:var(--k-yellow);color:var(--k-ink);transform:rotate(3deg)}
@@ -348,7 +367,9 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
         <div class="couple" aria-label="Jay และ Aom"><span class="nm a">Jay</span><svg viewBox="0 0 100 100" aria-hidden="true"><path class="f-pink" d="M50 88 C8 60 12 22 36 22 C45 22 50 30 50 34 C50 30 55 22 64 22 C88 22 92 60 50 88Z" stroke="#fff" stroke-width="6"/></svg><span class="nm b">Aom</span></div>
         <p class="lede">ทริปชิล วันละ 3–4 ที่ เน้นมุมถ่ายรูป คาเฟ่ และชอปปิง แบบคุมงบ กดหัวใจที่ที่อยากไปได้เลย <span class="nm a">Jay</span> กับ <span class="nm b">Aom</span> เห็นหัวใจของกันและกัน</p>
         <div class="prefs" aria-label="สไตล์ทริป"><span>งบประหยัด</span><span>ชิล ๆ</span><span>ถ่ายรูปสวย</span><span>คาเฟ่ ชอปปิง</span><span>ไม่เผ็ด</span><span>ไม่กินหอยเม่น</span></div>
-        <div class="count" aria-live="polite">
+        <div class="cdmsg" id="cd-msg" aria-live="polite"><b>อีกไม่กี่วันได้ไปต้าเหลียน!</b></div>
+        <div class="cdroad" id="cd-road" aria-hidden="true"><span class="pl" id="cd-pl"></span><span class="end">DLC</span></div>
+        <div class="count" id="cd-box">
           <div><b id="cd-d">--</b><span>วัน</span></div>
           <div><b id="cd-h">--</b><span>ชั่วโมง</span></div>
           <div><b id="cd-m">--</b><span>นาที</span></div>
@@ -453,6 +474,28 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
     <div class="phrase"><b>不要辣</b><span>อ่านว่า "ปู้ เย่า ล่า" แปลว่าไม่เอาเผ็ด บอกตอนสั่งทุกครั้ง โดยเฉพาะร้านเกาหลีและหม้อไฟ (ให้เลือกน้ำซุปใส 清汤)</span><button class="copy" data-copy="不要辣">คัดลอก</button></div>
   </section>
 
+  <section class="block" id="album-sec">
+    <span class="corner" data-stk="camera" data-r="8" aria-hidden="true"></span>
+    <span class="tape">อัลบั้มทริป</span>
+    <h2>ไดอารี่รูปของเรา</h2>
+    <p class="sub">ถ่ายแล้วอัปโหลดเก็บไว้แยกตามวัน Jay กับ Aom เห็นรูปกันทันที กลับบ้านแล้วเปิดดูเป็นไดอารี่ทริปได้เลย</p>
+    <form class="panel aform" id="a-form" autocomplete="off">
+      <div class="xrow">
+        <label for="a-day">วันไหน</label>
+        <select id="a-day" name="day"></select>
+      </div>
+      <div class="xrow">
+        <label for="a-cap">คำบรรยาย (ถ้ามี)</label>
+        <input id="a-cap" name="cap" type="text" maxlength="120" placeholder="เช่น นกนางนวลเยอะมาก">
+      </div>
+      <div class="xactions">
+        <label class="btn pink afile"><input id="a-file" type="file" accept="image/*" multiple>เลือกรูปแล้วอัปโหลด</label>
+        <span class="xmsg" id="a-msg" aria-live="polite"></span>
+      </div>
+    </form>
+    <div class="achips" id="a-chips" role="tablist" aria-label="กรองตามวัน"></div>
+    <div id="a-book"></div>
+  </section>
   <section class="block" id="expense-sec">
     <span class="corner" data-stk="bag" data-r="8" aria-hidden="true"></span>
     <span class="tape">ใช้ระหว่างทริป</span>
@@ -684,6 +727,26 @@ var PHOTOS={
 };
 function photo(id){var p=PHOTOS[id];if(!p)return "";
  return '<figure class="photo"><img src="'+p.u+'" alt="'+esc(p.c)+'" loading="lazy"><figcaption><b>'+esc(p.c)+'</b> · ภาพ: '+esc(p.a)+' · <a href="'+p.p+'" target="_blank" rel="noopener">'+esc(p.l)+'</a> · Wikimedia Commons</figcaption></figure>';}
+var PT={
+ hotel:["หน้าต่างห้องหรือหน้าล็อบบี้","ตอนเพิ่งถึง ยังสดชื่น","วางกระเป๋าเดินทางคู่กันแล้วถ่ายรองเท้าสองคู่จากด้านบน เป็นรูปเปิดทริป"],
+ zhongshan:["ขอบวงเวียน ให้ตึกโดมที่เปิดไฟอยู่ด้านหลัง","หลังพระอาทิตย์ตกราว 15–30 นาที ฟ้ายังเป็นสีน้ำเงินเข้ม","จับมือเดินข้ามลาน ให้อีกคนถ่ายจากด้านหลัง"],
+ dongguan:["ซอยตึกอิฐที่มีไฟประดับและประตูโค้ง","ค่ำ หลังร้านเปิดไฟ","ยืนคนละฝั่งประตูโค้งแล้วหันมามองกัน"],
+ feiniu:["บนโต๊ะ ใต้ไฟส้มของร้าน","ตอนอาหารเพิ่งมาถึง","ยกไม้ยากิโทริชนกันแทนแก้วแล้วถ่ายแค่มือสองข้าง"],
+ nanshan:["หน้าประตูคาเฟ่สีพาสเทล หรือโต๊ะริมหน้าต่าง","สาย 10:30–12:00 แสงนุ่ม","ชนแก้วกาแฟคู่กัน ถ่ายมือกับแก้วให้ชัด หน้าคนเบลอ"],
+ xian:["กลางถนนที่เห็นป้ายร้านเรียงยาว","บ่าย","เดินเคียงกันตามธรรมชาติ อีกคนถ่ายจากไกลด้วยโหมด 2x หรือ 3x"],
+ mall:["ของตกแต่งปีใหม่ในห้าง ช่วงนี้มักมีต้นไม้ใหญ่กลางห้าง","เย็น","ถ่ายเซลฟี่คู่ผ่านกระจกบานใหญ่หรือผนังลิฟต์"],
+ tram:["ริมหน้าต่างไม้ในรถราง หรือริมถนนตอนรถรางวิ่งผ่าน","สาย แดดส่องเข้าหน้าต่าง","คนหนึ่งนั่งมองออกนอกหน้าต่าง อีกคนถ่ายจากที่นั่งฝั่งตรงข้าม"],
+ wharf:["ตึกหลากสีริมน้ำ","กลางวัน แดดแรงสีจะสด","ยืนคนละสีตึก ใส่ผ้าพันคอสีตัดกับผนัง หรือนั่งริมท่าหันหลังให้กล้อง"],
+ lingjiao:["โขดหินริมทะเล ให้ขอบฟ้าอยู่ด้านหลัง","ก่อน 16:00 แสงเฉียง","ยืนหันหน้าหากันให้เป็นเงาตัดฟ้า ระวังหินลื่น"],
+ xinghai:["กลางลานตรงที่นกนางนวลบินวน","ราว 15:45–16:15 ก่อนแดดหมด","ยื่นอาหารนกขึ้นฟ้า ให้อีกคนกดถ่ายรัวหรือเปิด Live Photo จะได้จังหวะนกโฉบพอดี"],
+ boardwalk:["ราวไม้ที่เห็นสะพานแขวนด้านหลัง","14:30–16:00","ยืนพิงราว หันหน้าหากัน วางสะพานไว้หนึ่งในสามของภาพ"],
+ ride:["บนเครื่องเล่น ให้ฟ้าชมพูอยู่ด้านหลัง","ตอนพระอาทิตย์ตก ราว 16:20–16:35","เซลฟี่คู่ ปิดแฟลช แตะหน้าจอที่หน้าคนให้แสงพอดี"],
+ venice:["บนสะพานข้ามคลอง ให้ตึกเรียงอยู่สองฝั่ง","ช่วงไฟเปิด ราว 17:00","ยืนกลางสะพาน อีกคนถ่ายจากริมคลองด้วยเลนส์ 0.5x ให้เห็นตึกทั้งแถว"],
+ countdown:["หน้าน้ำพุดนตรี","23:55–00:05","ถ่ายวิดีโอสั้นตอนนับถอยหลัง แล้วกอดกันตอนเที่ยงคืน ถือป้าย 2027 ที่ทำเองติดไปด้วย"],
+ fishmarket:["บนโต๊ะอาหาร","ก่อนเริ่มกิน","ถ่ายถาดอาหารทะเลจากด้านบน แล้วให้มือสองคนคีบชิ้นเดียวกัน"]
+};
+function ptip(id){var t=PT[id];if(!t)return "";
+ return '<details class="ptip"><summary>'+stk("camera",22,-8)+'มุมถ่ายรูปคู่</summary><dl><dt>ยืนตรงไหน</dt><dd>'+esc(t[0])+'</dd><dt>ช่วงไหน</dt><dd>'+esc(t[1])+'</dd><dt>ท่าโพส</dt><dd>'+esc(t[2])+'</dd></dl></details>';}
 var SRC={0:["แผนเดิม",""],1:["คลิป 1","c1"],2:["คลิป 2","c2"],3:["คลิป 3","c3"]};
 var HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.5 8.1 3.6 4.5 7.1 4.5c2 0 3.6 1.1 4.9 2.8 1.3-1.7 2.9-2.8 4.9-2.8 3.5 0 5.6 3.6 4.4 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg>';
 var NAMES={};DAYS.forEach(function(d){d.stops.forEach(function(s){NAMES[s.id]=s.h;});});
@@ -699,6 +762,23 @@ function tick(){var ms=Math.max(0,target-Date.now());var s=Math.floor(ms/1000);
  document.getElementById("cd-m").textContent=String(Math.floor(s%3600/60)).padStart(2,"0");
  document.getElementById("cd-s").textContent=String(s%60).padStart(2,"0");}
 tick();setInterval(tick,1000);
+/* countdown bubble: before the trip, during it, and after we are home */
+function cdMsg(){var el=document.getElementById("cd-msg"),box=document.getElementById("cd-box"),road=document.getElementById("cd-road");if(!el)return;
+ var n=dlNow(),TRIP=["2026-12-28","2026-12-29","2026-12-30","2026-12-31","2027-01-01"],ti=TRIP.indexOf(n.date),alb=document.getElementById("album-sec");
+ var days=Math.floor((target-Date.now())/864e5),html;if(Date.now()>=target)days=-1;
+ if(/[?&]now=/.test(location.search)){var sim=Date.parse(n.date+"T"+String(Math.floor(n.mins/60)).padStart(2,"0")+":"+String(n.mins%60).padStart(2,"0")+":00+08:00");days=sim>=target?-1:Math.floor((target-sim)/864e5);}
+ if(ti>=0){box.hidden=true;road.hidden=true;
+  html='<b>วันที่ '+(ti+1)+' จาก 5 ที่ต้าเหลียน</b><span>'+(ti===4?"สวัสดีปีใหม่ 2027 เดินทางกลับปลอดภัยนะ":ti===3?"คืนนี้เคานต์ดาวน์ด้วยกัน":"เที่ยวให้สนุก ถ่ายรูปเยอะ ๆ")+'</span>'+(alb?'<a href="#album-sec">เพิ่มรูปลงอัลบั้ม</a>':'');}
+ else if(n.date>"2027-01-01"){box.hidden=true;road.hidden=true;html='<b>กลับมาแล้ว ทริปนี้น่ารักมาก</b>'+(alb?'<a href="#album-sec">เปิดอัลบั้มดูกัน</a>':'<span>ไว้ไปเที่ยวด้วยกันอีกนะ</span>');}
+ else{box.hidden=days<0;road.hidden=false;
+  var line=days<0?"วันนี้บินแล้ว! เจอกันที่สนามบิน":days===0?"พรุ่งนี้บินแล้ว! นอนเร็ว ๆ นะ":days<=7?"แพ็กกระเป๋าได้แล้ว อย่าลืมเสื้อกันหนาว":days<=21?"เช็กลิสต์ก่อนบินทำครบหรือยัง":"จองตั๋วกับที่พักให้เรียบร้อย";
+  html='<b>'+(days<0?"วันนี้บินไปต้าเหลียน!":days===0?"อีกไม่ถึงวันได้ไปต้าเหลียน!":"อีก "+days+" วันได้ไปต้าเหลียน!")+'</b><span>'+line+'</span>';
+  var start=Date.parse("2026-11-19T00:00:00+07:00"),pct=Math.max(0,Math.min(1,(Date.now()-start)/(target-start)));
+  if(/[?&]now=/.test(location.search))pct=Math.max(0,Math.min(1,1-days/38));
+  var pl=document.getElementById("cd-pl");if(!pl.firstChild)pl.innerHTML=stk("plane",34,8);
+  pl.style.left="calc((100% - 56px) * "+pct.toFixed(3)+" + 17px)";}
+ el.innerHTML=html;}
+cdMsg();setInterval(cdMsg,60000);
 
 /* snow + sparkles */
 (function(){var c=document.getElementById("snow"),x=c.getContext("2d"),fl=[],W,H,dpr=Math.min(2,window.devicePixelRatio||1);
@@ -754,7 +834,7 @@ function renderDay(){var d=DAYS[cur];var v=document.getElementById("dayview");
  h+='<ol class="timeline">'+d.stops.map(function(s,i){
   var tags=(s.c?'<span class="tag cost">'+esc(s.c)+'</span>':"")+(s.ph?'<span class="tag photo">มุมถ่ายรูป</span>':"")+s.src.map(function(n){return '<span class="tag '+SRC[n][1]+'">'+SRC[n][0]+'</span>';}).join("")+(s.k==="sunset"?'<span class="tag sun">ไปให้ทันแสง</span>':"");
   var zh='<div class="zh"><span>'+esc(s.zh)+'</span>'+(s.id in TAXI?'<button class="taxi" data-taxi="'+s.id+'">การ์ดแท็กซี่</button>':'')+'<button class="copy" data-copy="'+esc(s.zh.split(" · ")[0])+'">คัดลอกชื่อจีน</button>'+(s.q?'<a href="https://uri.amap.com/search?keyword='+encodeURIComponent(s.q)+'" target="_blank" rel="noopener">เปิดใน Amap</a>':"")+'</div>';
-  return '<li class="stop'+(s.k?" "+s.k:"")+'" data-stop="'+s.id+'" style="animation-delay:'+(i*80)+'ms"><div class="when">'+esc(s.w)+'</div><div class="card"><span class="cstk">'+stk(s.st,48,i%2?8:-8)+'</span>'+heartBtn(s.id)+'<h3>'+esc(s.h)+'</h3>'+photo(s.id)+'<p>'+esc(s.p)+'</p>'+zh+'<div class="tags">'+tags+'</div></div></li>';}).join("")+'</ol>';
+  return '<li class="stop'+(s.k?" "+s.k:"")+'" data-stop="'+s.id+'" style="animation-delay:'+(i*80)+'ms"><div class="when">'+esc(s.w)+'</div><div class="card"><span class="cstk">'+stk(s.st,48,i%2?8:-8)+'</span>'+heartBtn(s.id)+'<h3>'+esc(s.h)+'</h3>'+photo(s.id)+'<p>'+esc(s.p)+'</p>'+zh+'<div class="tags">'+tags+'</div>'+ptip(s.id)+'</div></li>';}).join("")+'</ol>';
  if(d.alt)h+='<div class="alt"><b>'+esc(d.alt[0])+'</b> '+esc(d.alt[1])+'</div>';
  v.innerHTML=h;v.setAttribute("aria-labelledby","tab-"+d.id);
  store("dl-day",String(cur));if(typeof markNow==="function")markNow();}
@@ -865,7 +945,7 @@ document.addEventListener("click",function(e){
 });
 
 /* side section menu + back to top */
-var NAV=[["top","plane","กลับขึ้นบนสุด"],["plan","pin","แผนรายวัน"],["budget-sec","suitcase","งบ"],["prep-sec","star","ก่อนบิน"],["picks-sec","heart","หัวใจของเรา"],["food-sec","bowl","กินอะไรดี"],["expense-sec","bag","ค่าใช้จ่าย"],["ideas-sec","star","ไอเดียเพิ่ม"],["tips-sec","snow","ข้อควรรู้"],["pack-sec","camera","เช็กลิสต์"]];
+var NAV=[["top","plane","กลับขึ้นบนสุด"],["plan","pin","แผนรายวัน"],["budget-sec","suitcase","งบ"],["prep-sec","star","ก่อนบิน"],["picks-sec","heart","หัวใจของเรา"],["food-sec","bowl","กินอะไรดี"],["album-sec","camera","อัลบั้ม"],["expense-sec","bag","ค่าใช้จ่าย"],["ideas-sec","star","ไอเดียเพิ่ม"],["tips-sec","snow","ข้อควรรู้"],["pack-sec","camera","เช็กลิสต์"]];
 function navLinks(withLabel){return NAV.map(function(n,i){return (i===1?'<hr>':'')+'<a href="#'+n[0]+'" data-go="'+n[0]+'" aria-label="'+n[2]+'">'+icon(n[1])+(withLabel?'<span>'+n[2]+'</span>':'<span class="lb">'+n[2]+'</span>')+'</a>';}).join("");}
 var side=document.createElement("nav");side.className="sidenav";side.setAttribute("aria-label","ไปยังส่วนต่าง ๆ");side.innerHTML=navLinks(false);document.body.appendChild(side);
 var fab=document.createElement("button");fab.className="fab hide";fab.setAttribute("aria-label","เมนูไปยังส่วนต่าง ๆ");fab.setAttribute("aria-expanded","false");fab.innerHTML=icon("pin");document.body.appendChild(fab);
@@ -881,7 +961,7 @@ window.addEventListener("scroll",onScroll,{passive:true});onScroll();
 function setOn(id){document.querySelectorAll("[data-go]").forEach(function(a){a.classList.toggle("on",a.dataset.go===id);});}
 if("IntersectionObserver" in window){
  var spy=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting)setOn(en.target.dataset.spy);});},{rootMargin:"-35% 0px -60% 0px"});
- [["top",heroEl],["plan",document.getElementById("dayview")],["budget-sec"],["prep-sec"],["picks-sec"],["food-sec"],["expense-sec"],["ideas-sec"],["tips-sec"],["pack-sec"]].forEach(function(p){var el=p[1]||document.getElementById(p[0]);if(el){el.dataset.spy=p[0];spy.observe(el);}});
+ [["top",heroEl],["plan",document.getElementById("dayview")],["budget-sec"],["prep-sec"],["picks-sec"],["food-sec"],["album-sec"],["expense-sec"],["ideas-sec"],["tips-sec"],["pack-sec"]].forEach(function(p){var el=p[1]||document.getElementById(p[0]);if(el){el.dataset.spy=p[0];spy.observe(el);}});
 }
 setOn("top");
 
@@ -1127,6 +1207,125 @@ if(sb){loadC();loadI();
  try{sb.channel("ideas-live").on("postgres_changes",{event:"*",schema:"public",table:"ideas"},loadI).subscribe();}catch(e){}
  document.addEventListener("visibilitychange",function(){if(!document.hidden){loadC();loadI();}});}
 else{note.textContent="ต่อระบบซิงค์ไม่ได้ ตอนนี้ติ๊กแล้วจำไว้ในเครื่องนี้";imsg("ต่อระบบซิงค์ไม่ได้");}
+})();
+
+/* ---------- trip album via Supabase Storage ---------- */
+(function(){
+var acss=document.createElement("style");
+acss.textContent='.aform{margin-top:6px;display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px 16px}.afile{position:relative;overflow:hidden;cursor:pointer}.afile input{position:absolute;inset:0;opacity:0;cursor:pointer;font-size:0}.afile:focus-within{outline:3px solid var(--accent);outline-offset:3px}'+
+'.achips{display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 6px}.achips button{border:2px solid var(--line);background:var(--surface);color:var(--ink);border-radius:999px;padding:5px 14px;font:inherit;font-size:14px;font-weight:600}.achips button[aria-selected=true]{background:var(--k-pink);border-color:var(--k-pink);color:var(--k-white)}.achips small{opacity:.75;margin-left:4px;font-weight:400}'+
+'.aday{margin-top:22px}.aday h3{font-family:var(--f-display);font-size:20px;margin:0 0 4px;display:flex;align-items:center;gap:8px}.aday h3 span{font-size:14px;color:var(--muted);font-family:inherit;font-weight:400}'+
+'.agrid{list-style:none;padding:8px 0 0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px 14px}'+
+'.apol{background:#fff;padding:8px 8px 10px;border-radius:6px;box-shadow:0 4px 0 var(--line),0 6px 16px rgba(59,47,69,.12);transform:rotate(var(--r,0deg));transition:transform .2s;position:relative}.apol:hover{transform:rotate(0) scale(1.03)}'+
+'.apol button{all:unset;cursor:pointer;display:block;width:100%}.apol button:focus-visible{outline:3px solid var(--accent);outline-offset:4px;border-radius:4px}'+
+'.apol img{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:cover;border-radius:3px;background:var(--k-sky-soft)}.apol .cap{display:block;margin-top:7px;font-size:13px;color:#3b2f45;line-height:1.35;min-height:1.35em;overflow-wrap:anywhere}.apol .nm{position:absolute;top:-8px;right:-6px;font-size:11px;transform:rotate(6deg)}'+
+'.apol::before{content:"";position:absolute;top:-9px;left:50%;width:54px;height:18px;margin-left:-27px;background:rgba(255,210,94,.75);transform:rotate(-3deg);border-radius:2px}.apol:nth-child(3n+2)::before{background:rgba(143,211,255,.75)}.apol:nth-child(3n)::before{background:rgba(255,143,177,.7)}'+
+'.aempty{color:var(--muted);border:2px dashed var(--line);border-radius:16px;padding:16px;background:var(--surface);margin-top:12px}'+
+'#alb{position:fixed;inset:0;z-index:60;background:rgba(30,24,36,.97);display:grid;grid-template-rows:auto 1fr auto;padding:calc(10px + env(safe-area-inset-top,0px)) 12px calc(14px + env(safe-area-inset-bottom,0px));color:#fff}#alb[hidden]{display:none!important}'+
+'#alb .top{display:flex;justify-content:space-between;align-items:center;gap:8px}#alb .top span{font-size:14px;opacity:.85}#alb button{border:0;border-radius:999px;background:rgba(255,255,255,.16);color:#fff;font:inherit;font-size:15px;padding:8px 14px;min-width:44px;min-height:44px}'+
+'#alb .stage{display:grid;place-items:center;min-height:0;position:relative;touch-action:pan-y}#alb img{max-width:100%;max-height:100%;object-fit:contain;border-radius:8px;box-shadow:0 10px 30px rgba(0,0,0,.4)}#alb .prev,#alb .next{position:absolute;top:50%;transform:translateY(-50%)}#alb .prev{left:0}#alb .next{right:0}'+
+'#alb .bot{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:8px 12px;padding-top:10px}#alb .bcap{font-size:15px;overflow-wrap:anywhere;min-width:0;flex:1}#alb .del.armed{background:var(--k-red)}';
+document.head.appendChild(acss);
+
+var NMA={a:"Jay",b:"Aom"};
+var ADAYS=[["d27","27 ธ.ค.","วันบิน"],["d28","28 ธ.ค.","ถึงต้าเหลียน"],["d29","29 ธ.ค.","คาเฟ่และชอปปิง"],["d30","30 ธ.ค.","รถรางและท่าเรือ"],["d31","31 ธ.ค.","เคานต์ดาวน์"],["d01","1 ม.ค.","วันกลับ"]];
+var ADATE={d27:"2026-12-27",d28:"2026-12-28",d29:"2026-12-29",d30:"2026-12-30",d31:"2026-12-31",d01:"2027-01-01"};
+var photos=[],filter="all",view=[],idx=0;
+var daySel=document.getElementById("a-day"),fileIn=document.getElementById("a-file"),msgEl=document.getElementById("a-msg");
+daySel.innerHTML=ADAYS.map(function(d){return '<option value="'+d[0]+'">'+d[1]+' · '+d[2]+'</option>';}).join("");
+(function(){var n=dlNow();for(var k in ADATE)if(ADATE[k]===n.date){daySel.value=k;return;}daySel.value=n.date>"2027-01-01"?"d01":"d28";})();
+function amsg(t){msgEl.textContent=t;}
+function url(p){return sb?sb.storage.from("album").getPublicUrl(p).data.publicUrl:"";}
+function rot(id){var h=0;for(var i=0;i<id.length;i++)h=(h*31+id.charCodeAt(i))|0;return ((Math.abs(h)%7)-3)*0.8;}
+
+function render(){
+ var counts={};photos.forEach(function(p){counts[p.day]=(counts[p.day]||0)+1;});
+ document.getElementById("a-chips").innerHTML='<button type="button" role="tab" data-af="all" aria-selected="'+(filter==="all")+'">ทั้งหมด<small>'+photos.length+'</small></button>'+
+  ADAYS.filter(function(d){return counts[d[0]];}).map(function(d){return '<button type="button" role="tab" data-af="'+d[0]+'" aria-selected="'+(filter===d[0])+'">'+d[1]+'<small>'+counts[d[0]]+'</small></button>';}).join("");
+ var book=document.getElementById("a-book");
+ if(!photos.length){book.innerHTML='<div class="aempty">ยังไม่มีรูปในอัลบั้ม ระหว่างเที่ยวถ่ายแล้วกด "เลือกรูปแล้วอัปโหลด" ได้เลย เลือกทีละหลายรูปได้</div>';view=[];return;}
+ view=[];var html="";
+ ADAYS.forEach(function(d){if(filter!=="all"&&filter!==d[0])return;var list=photos.filter(function(p){return p.day===d[0];});if(!list.length)return;
+  html+='<div class="aday"><h3>'+d[1]+' <span>'+d[2]+' · '+list.length+' รูป</span></h3><ul class="agrid">';
+  list.forEach(function(p){var i=view.length;view.push(p);
+   html+='<li class="apol" style="--r:'+rot(p.id)+'deg">'+(p.who?'<span class="nm '+p.who+'">'+NMA[p.who]+'</span>':'')+'<button type="button" data-ai="'+i+'" aria-label="เปิดรูป '+esc(p.caption||d[1])+'"><img loading="lazy" decoding="async" src="'+esc(url(p.path))+'" alt="'+esc(p.caption||"รูปทริปวันที่ "+d[1])+'"'+(p.w?' width="'+p.w+'" height="'+p.h+'"':'')+'><span class="cap">'+esc(p.caption||"")+'</span></button></li>';});
+  html+='</ul></div>';});
+ book.innerHTML=html;
+}
+document.getElementById("a-chips").addEventListener("click",function(e){var b=e.target.closest("[data-af]");if(!b)return;filter=b.dataset.af;render();});
+
+function loadA(){if(!sb)return;sb.from("photos").select("id,day,path,who,caption,w,h,created_at").order("created_at",{ascending:true}).then(function(r){
+ if(r.error){amsg("โหลดอัลบั้มไม่ได้ ("+(r.error.code||"error")+")");return;}photos=r.data||[];if(filter!=="all"&&!photos.some(function(p){return p.day===filter;}))filter="all";render();if(!lb.hidden)show();},function(){amsg("ต่ออินเทอร์เน็ตไม่ได้ ยังโหลดอัลบั้มไม่ได้");});}
+
+/* shrink each photo to max 1600px JPEG before upload, so the free 1 GB lasts the whole trip */
+function shrink(file){return new Promise(function(ok,bad){var img=new Image(),u=URL.createObjectURL(file);
+ img.onload=function(){var s=Math.min(1,1600/Math.max(img.naturalWidth,img.naturalHeight)),w=Math.round(img.naturalWidth*s),h=Math.round(img.naturalHeight*s);
+  var c=document.createElement("canvas");c.width=w;c.height=h;var g=c.getContext("2d");g.fillStyle="#fff";g.fillRect(0,0,w,h);g.drawImage(img,0,0,w,h);URL.revokeObjectURL(u);
+  c.toBlob(function(b){b?ok({blob:b,w:w,h:h}):bad(new Error("encode"));},"image/jpeg",0.82);};
+ img.onerror=function(){URL.revokeObjectURL(u);bad(new Error("decode"));};img.src=u;});}
+
+var busy=false;
+function upload(files){
+ if(!sb){amsg("ต่อระบบซิงค์ไม่ได้ ยังอัปโหลดไม่ได้");return;}
+ if(!who||!CODE){askWho(function(){upload(files);});return;}
+ if(busy)return;busy=true;
+ var day=daySel.value,cap=document.getElementById("a-cap").value.trim().slice(0,120),done=0,fail=0,total=files.length,w=W();
+ var lbl=document.querySelector(".afile");lbl.style.opacity=".6";
+ (function next(i){
+  if(i>=total){busy=false;lbl.style.opacity="";fileIn.value="";
+   amsg(fail?("อัปโหลดได้ "+done+" จาก "+total+" รูป ลองรูปที่เหลืออีกครั้ง"):("อัปโหลดแล้ว "+done+" รูป"));if(done)document.getElementById("a-cap").value="";loadA();return;}
+  amsg("กำลังอัปโหลดรูป "+(i+1)+" จาก "+total+"...");
+  var path=day+"/"+Date.now().toString(36)+"-"+Math.random().toString(36).slice(2,8)+".jpg";
+  shrink(files[i]).then(function(r){
+   return w.storage.from("album").upload(path,r.blob,{contentType:"image/jpeg",cacheControl:"31536000",upsert:false}).then(function(up){
+    if(up.error){throw up.error;}
+    return w.from("photos").insert({day:day,path:path,who:who,caption:cap||null,w:r.w,h:r.h}).then(function(ins){
+     if(ins.error){w.storage.from("album").remove([path]);throw ins.error;}done++;});});
+  }).catch(function(err){fail++;
+   var m=(err&&(err.message||err.error))||"";
+   if(badCode(err)||/row-level security|Unauthorized|AccessDenied/i.test(m)){busy=false;lbl.style.opacity="";amsg("รหัสทริปไม่ถูกต้อง ยังไม่ได้อัปโหลด");askWho(function(){upload(files);},"รหัสทริปไม่ถูกต้อง ลองใส่ใหม่");i=total;return "stop";}
+   if(/decode/.test(m))amsg("เปิดไฟล์รูปนี้ไม่ได้ ข้ามไปรูปถัดไป");
+  }).then(function(s){if(s!=="stop")next(i+1);});
+ })(0);
+}
+fileIn.addEventListener("change",function(){var f=[].slice.call(fileIn.files||[]).filter(function(x){return /^image\//.test(x.type)||/\.(heic|heif|jpe?g|png|webp)$/i.test(x.name);});if(f.length)upload(f);});
+document.getElementById("a-form").addEventListener("submit",function(e){e.preventDefault();});
+
+/* lightbox */
+var lb=document.createElement("div");lb.id="alb";lb.hidden=true;lb.setAttribute("role","dialog");lb.setAttribute("aria-modal","true");lb.setAttribute("aria-label","ดูรูปในอัลบั้ม");
+lb.innerHTML='<div class="top"><span id="alb-n"></span><button type="button" data-lb="x" aria-label="ปิด">ปิด ×</button></div><div class="stage"><img id="alb-img" alt=""><button type="button" class="prev" data-lb="p" aria-label="รูปก่อนหน้า">‹</button><button type="button" class="next" data-lb="n" aria-label="รูปถัดไป">›</button></div><div class="bot"><span class="bcap" id="alb-cap"></span><button type="button" class="del" data-lb="d">ลบรูปนี้</button></div>';
+document.body.appendChild(lb);
+var lastFocus=null,armedD=false;
+function show(){if(!view.length){close();return;}idx=(idx+view.length)%view.length;var p=view[idx],d=ADAYS.filter(function(x){return x[0]===p.day;})[0];
+ var im=document.getElementById("alb-img");im.src=url(p.path);im.alt=p.caption||"รูปทริป";
+ document.getElementById("alb-n").textContent=(d?d[1]:"")+" · "+(idx+1)+"/"+view.length+(p.who?" · "+NMA[p.who]+" ถ่าย":"");
+ document.getElementById("alb-cap").textContent=p.caption||"";
+ var del=lb.querySelector(".del");del.textContent="ลบรูปนี้";del.classList.remove("armed");armedD=false;
+ lb.querySelector(".prev").hidden=lb.querySelector(".next").hidden=view.length<2;}
+function open(i){lastFocus=document.activeElement;idx=i;show();lb.hidden=false;document.body.style.overflow="hidden";lb.querySelector('[data-lb="x"]').focus();}
+function close(){lb.hidden=true;document.body.style.overflow="";if(lastFocus&&lastFocus.focus)lastFocus.focus();}
+document.getElementById("a-book").addEventListener("click",function(e){var b=e.target.closest("[data-ai]");if(b)open(+b.dataset.ai);});
+lb.addEventListener("click",function(e){var b=e.target.closest("[data-lb]");if(!b){if(e.target===lb)close();return;}var a=b.dataset.lb;
+ if(a==="x")close();else if(a==="p"){idx--;show();}else if(a==="n"){idx++;show();}
+ else if(a==="d"){
+  if(!armedD){armedD=true;b.textContent="แตะอีกครั้งเพื่อลบ";b.classList.add("armed");return;}
+  if(!who||!CODE){askWho(null);return;}
+  var p=view[idx];b.disabled=true;b.textContent="กำลังลบ...";
+  W().from("photos").delete().eq("id",p.id).select("id").then(function(r){b.disabled=false;
+   if(badCode(r.error)||(!r.error&&(!r.data||!r.data.length))){close();askWho(null,"รหัสทริปไม่ถูกต้อง ลองใส่ใหม่");return;}
+   if(r.error){b.textContent="ลบไม่สำเร็จ ลองใหม่";return;}
+   W().storage.from("album").remove([p.path]);photos=photos.filter(function(x){return x.id!==p.id;});render();show();},
+   function(){b.disabled=false;b.textContent="ต่ออินเทอร์เน็ตไม่ได้";});}});
+document.addEventListener("keydown",function(e){if(lb.hidden)return;if(e.key==="Escape")close();else if(e.key==="ArrowLeft"){idx--;show();}else if(e.key==="ArrowRight"){idx++;show();}
+ else if(e.key==="Tab"){var f=[].slice.call(lb.querySelectorAll("button")).filter(function(x){return !x.hidden;});var i=f.indexOf(document.activeElement);if(e.shiftKey&&i<=0){e.preventDefault();f[f.length-1].focus();}else if(!e.shiftKey&&i===f.length-1){e.preventDefault();f[0].focus();}}});
+var sx=null;var stage=lb.querySelector(".stage");
+stage.addEventListener("touchstart",function(e){sx=e.touches[0].clientX;},{passive:true});
+stage.addEventListener("touchend",function(e){if(sx===null)return;var dx=e.changedTouches[0].clientX-sx;sx=null;if(Math.abs(dx)>50){idx+=dx<0?1:-1;show();}});
+
+render();
+if(sb){loadA();try{sb.channel("photos-live").on("postgres_changes",{event:"*",schema:"public",table:"photos"},function(){loadA();}).subscribe();}catch(e){}
+ document.addEventListener("visibilitychange",function(){if(!document.hidden)loadA();});}
+else amsg("ต่อระบบซิงค์ไม่ได้ ตอนนี้ยังดูหรือเพิ่มรูปไม่ได้");
 })();
 
 })();
