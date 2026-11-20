@@ -235,6 +235,28 @@ footer{margin-top:64px;padding-top:18px;border-top:2px dashed var(--line);font-s
 footer ul{padding-left:18px;margin:6px 0 0}
 footer > div{flex:1 1 260px;min-width:0}
 
+/* exchange rate + converter */
+#rate-note{font-size:13px}
+.fx{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px;margin-top:12px;padding:12px;border-radius:16px;background:var(--k-mint-soft)}
+.fxf{display:grid;gap:2px;flex:1 1 120px;min-width:0;font-size:13px;font-weight:600;color:var(--muted)}
+.fxf input{font:inherit;font-size:20px;font-family:var(--f-mono);padding:8px 12px;border:2px solid var(--line);border-radius:12px;background:var(--surface);color:var(--ink);width:100%;min-width:0}
+.fxeq{font-size:20px;color:var(--ok);padding-bottom:10px}
+
+/* today mode */
+.todaybar{margin-top:18px;border-radius:20px;padding:14px 16px;background:linear-gradient(135deg,var(--k-pink-soft),var(--k-yellow-soft));border:2px solid var(--k-pink);display:grid;gap:6px}
+.todaybar .tb-k{font-family:var(--f-display);font-weight:700;font-size:13px;color:var(--accent);letter-spacing:.04em}
+.todaybar .tb-row{display:flex;flex-wrap:wrap;gap:4px 10px;align-items:baseline;font-size:15px}
+.todaybar .tb-row b{font-family:var(--f-display);font-size:17px}
+.todaybar .tb-sun{font-size:14px;font-weight:600}
+.todaybar .tb-sun.go{color:var(--k-red)}
+.todaybar .tb-act{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px}
+.todaybar .tb-act button{border:0;border-radius:999px;padding:4px 12px;font-size:13px;font-weight:700;background:var(--surface);color:var(--ink);box-shadow:0 2px 0 var(--line)}
+.stop .nowtag{position:absolute;top:-10px;left:14px;font-family:var(--f-display);font-weight:700;font-size:12px;padding:1px 10px;border-radius:999px;z-index:1}
+.stop.now .card{border-color:var(--accent);box-shadow:0 0 0 3px var(--k-pink-soft),0 4px 0 var(--line)}
+.stop.now .nowtag{background:var(--accent);color:var(--k-white)}
+.stop.next .nowtag{background:var(--k-yellow);color:var(--k-ink)}
+.stop.past .card{opacity:.6}
+
 /* taxi + phrase big card */
 .taxi{border:0;background:var(--k-yellow);color:var(--k-ink);border-radius:999px;font-size:12px;font-weight:700;padding:2px 10px}
 .phrases{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px;margin:18px 0 6px}
@@ -356,7 +378,12 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
       <div class="btotal"><b id="b-thb">--</b><span id="b-cny">--</span></div>
       <div class="stack" id="b-stack" aria-hidden="true"></div>
       <div class="brows" id="b-rows"></div>
-      <div class="rate"><label for="rate">1 หยวน =</label><input id="rate" type="number" step="0.1" min="1" max="10" value="5"><span>บาท (ค่าประมาณ ควรเช็กเรตจริงก่อนแลก)</span></div>
+      <div class="rate"><label for="rate">1 หยวน =</label><input id="rate" type="number" step="0.01" min="1" max="10" value="5"><span>บาท</span><span id="rate-note">ค่าประมาณ</span><button type="button" class="copy" id="rate-live" hidden>ใช้เรตล่าสุด</button></div>
+      <div class="fx" aria-label="แปลงเงินหยวนเป็นบาท">
+        <label class="fxf"><span>หยวน ¥</span><input id="fx-cny" type="number" inputmode="decimal" min="0" step="any" placeholder="เช่น 58"></label>
+        <span class="fxeq" aria-hidden="true">⇄</span>
+        <label class="fxf"><span>บาท ฿</span><input id="fx-thb" type="number" inputmode="decimal" min="0" step="any" placeholder="เช่น 300"></label>
+      </div>
       <div class="saves"><b>ที่ตัดออกเพื่อคุมงบ</b><ul>
         <li>สวนสัตว์ทะเลเหล่าหู่ทาน และกระเช้าข้ามทะเล ค่าตั๋วค่อนข้างสูง</li>
         <li>เปลี่ยนจากโรงแรม Atour เป็นเครือราคากลาง เช่น 全季 (Ji Hotel) หรือ 汉庭 ในย่านจงซาน</li>
@@ -716,10 +743,10 @@ function renderDay(){var d=DAYS[cur];var v=document.getElementById("dayview");
  h+='<ol class="timeline">'+d.stops.map(function(s,i){
   var tags=(s.c?'<span class="tag cost">'+esc(s.c)+'</span>':"")+(s.ph?'<span class="tag photo">มุมถ่ายรูป</span>':"")+s.src.map(function(n){return '<span class="tag '+SRC[n][1]+'">'+SRC[n][0]+'</span>';}).join("")+(s.k==="sunset"?'<span class="tag sun">ไปให้ทันแสง</span>':"");
   var zh='<div class="zh"><span>'+esc(s.zh)+'</span>'+(s.id in TAXI?'<button class="taxi" data-taxi="'+s.id+'">การ์ดแท็กซี่</button>':'')+'<button class="copy" data-copy="'+esc(s.zh.split(" · ")[0])+'">คัดลอกชื่อจีน</button>'+(s.q?'<a href="https://uri.amap.com/search?keyword='+encodeURIComponent(s.q)+'" target="_blank" rel="noopener">เปิดใน Amap</a>':"")+'</div>';
-  return '<li class="stop'+(s.k?" "+s.k:"")+'" style="animation-delay:'+(i*80)+'ms"><div class="when">'+esc(s.w)+'</div><div class="card"><span class="cstk">'+stk(s.st,48,i%2?8:-8)+'</span>'+heartBtn(s.id)+'<h3>'+esc(s.h)+'</h3>'+photo(s.id)+'<p>'+esc(s.p)+'</p>'+zh+'<div class="tags">'+tags+'</div></div></li>';}).join("")+'</ol>';
+  return '<li class="stop'+(s.k?" "+s.k:"")+'" data-stop="'+s.id+'" style="animation-delay:'+(i*80)+'ms"><div class="when">'+esc(s.w)+'</div><div class="card"><span class="cstk">'+stk(s.st,48,i%2?8:-8)+'</span>'+heartBtn(s.id)+'<h3>'+esc(s.h)+'</h3>'+photo(s.id)+'<p>'+esc(s.p)+'</p>'+zh+'<div class="tags">'+tags+'</div></div></li>';}).join("")+'</ol>';
  if(d.alt)h+='<div class="alt"><b>'+esc(d.alt[0])+'</b> '+esc(d.alt[1])+'</div>';
  v.innerHTML=h;v.setAttribute("aria-labelledby","tab-"+d.id);
- store("dl-day",String(cur));}
+ store("dl-day",String(cur));if(typeof markNow==="function")markNow();}
 function select(i){cur=Math.max(0,Math.min(DAYS.length-1,i));renderTickets();renderDay();
  var t=document.getElementById("tab-"+DAYS[cur].id);if(t&&t.scrollIntoView)t.scrollIntoView({block:"nearest",inline:"center"});}
 
@@ -748,6 +775,63 @@ document.getElementById("spin").addEventListener("click",function(){if(spinning)
  (function step(){var i;do{i=Math.floor(Math.random()*FOOD.length);}while(i===last);last=i;var f=FOOD[i];
   slot.innerHTML='<div class="name">'+esc(f.n)+'</div><div class="zhn">'+esc(f.z)+'</div><div class="why">'+esc(f.w)+'</div>';
   if(++n<steps)setTimeout(step,50+n*14);else{slot.classList.remove("spin");roul.classList.remove("spinning");spinning=false;}})();});
+
+/* today mode: works in Dalian time (UTC+8); ?now=2026-12-31T15:10 simulates a moment for testing */
+var DDATE={d28:"2026-12-28",d29:"2026-12-29",d30:"2026-12-30",d31:"2026-12-31",d01:"2027-01-01"};
+var START={hotel:"11:00",zhongshan:"17:00",dongguan:"18:00",feiniu:"19:00",nanshan:"10:30",xian:"14:00",mall:"17:00",tram:"10:30",wharf:"12:30",lingjiao:"15:00",xinghai:"13:00",ride:"15:30",venice:"17:30",countdown:"21:00",fishmarket:"10:00"};
+var SUNSET=16*60+35;
+function hm(s){var p=s.split(":");return +p[0]*60+ +p[1];}
+function dlNow(){var q=/[?&]now=(\d{4}-\d\d-\d\d)T(\d\d):(\d\d)/.exec(location.search);
+ if(q)return {date:q[1],mins:+q[2]*60+ +q[3]};
+ var d=new Date(Date.now()+8*3600e3);return {date:d.toISOString().slice(0,10),mins:d.getUTCHours()*60+d.getUTCMinutes()};}
+function tripDayIndex(){var n=dlNow();for(var i=0;i<DAYS.length;i++)if(DDATE[DAYS[i].id]===n.date)return i;return -1;}
+function dur(m){var h=Math.floor(m/60),mm=m%60;return (h?h+" ชม. ":"")+mm+" นาที";}
+function markNow(){var v=document.getElementById("dayview");if(!v)return;var old=document.getElementById("todaybar");if(old)old.remove();
+ var ti=tripDayIndex();if(ti<0)return;
+ var n=dlNow(),day=DAYS[ti],bar=document.createElement("div");bar.className="todaybar";bar.id="todaybar";bar.setAttribute("aria-live","polite");
+ var nowS=null,nextS=null;day.stops.forEach(function(s){var t=START[s.id]?hm(START[s.id]):null;if(t===null)return;if(t<=n.mins)nowS=s;else if(!nextS)nextS=s;});
+ var sun=SUNSET-n.mins,sunTxt=sun>0?(sun<=95?"ถึงเวลาไปจุดชมพระอาทิตย์ตกแล้ว อีก "+dur(sun)+" (16:35)":"พระอาทิตย์ตกอีก "+dur(sun)+" (16:35)"):"ฟ้ามืดแล้ว เที่ยวแบบไฟกลางคืนต่อได้";
+ var html='<span class="tb-k">วันนี้ · '+esc(day.d)+'</span>';
+ if(cur!==ti){html+='<div class="tb-row">ตอนนี้กำลังดูวันอื่นอยู่</div><div class="tb-act"><button data-today="go">กลับไปดูแผนวันนี้</button></div>';}
+ else{html+='<div class="tb-row"><span>ตอนนี้</span><b>'+esc(nowS?nowS.h:"ยังไม่ถึงที่แรก")+'</b></div>'+
+  (nextS?'<div class="tb-row"><span>ถัดไป</span><b>'+esc(nextS.h)+'</b><span>ราว '+START[nextS.id]+' น. (อีก '+dur(hm(START[nextS.id])-n.mins)+')</span></div>':'<div class="tb-row"><span>ถัดไป</span><b>จบแผนวันนี้แล้ว พักผ่อนได้</b></div>')+
+  '<div class="tb-sun'+(sun>0&&sun<=95?" go":"")+'">'+sunTxt+'</div>'+
+  '<div class="tb-act">'+(nowS?'<button data-today="'+nowS.id+'">ไปที่การ์ด "ตอนนี้"</button>':'')+(nextS&&nextS.id in TAXI&&TAXI[nextS.id]?'<button data-taxi="'+nextS.id+'">การ์ดแท็กซี่ไปที่ถัดไป</button>':'')+'</div>';}
+ bar.innerHTML=html;
+ var head=v.querySelector(".dayhead");if(head)head.insertAdjacentElement("afterend",bar);else v.prepend(bar);
+ v.querySelectorAll(".stop").forEach(function(li){li.classList.remove("now","next","past");var t=li.querySelector(".nowtag");if(t)t.remove();});
+ if(cur===ti){day.stops.forEach(function(s){var li=v.querySelector('[data-stop="'+s.id+'"]');if(!li)return;var cls=s===nowS?"now":s===nextS?"next":(START[s.id]&&hm(START[s.id])<=n.mins?"past":"");
+  if(cls){li.classList.add(cls);if(cls!=="past"){var tag=document.createElement("span");tag.className="nowtag";tag.textContent=cls==="now"?"ตอนนี้":"ถัดไป";li.querySelector(".card").prepend(tag);}}});}
+}
+document.addEventListener("click",function(e){var b=e.target.closest("[data-today]");if(!b)return;
+ if(b.dataset.today==="go"){select(tripDayIndex());document.getElementById("dayview").scrollIntoView({behavior:"smooth"});return;}
+ var li=document.querySelector('[data-stop="'+b.dataset.today+'"]');if(li)li.scrollIntoView({behavior:"smooth",block:"center"});});
+setInterval(markNow,60000);
+document.addEventListener("visibilitychange",function(){if(!document.hidden)markNow();});
+
+/* live exchange rate (falls back to the saved or typed rate when offline or blocked) */
+(function(){
+ var inp=document.getElementById("rate"),note=document.getElementById("rate-note"),btn=document.getElementById("rate-live");
+ var cny=document.getElementById("fx-cny"),thb=document.getElementById("fx-thb");
+ function r(){var x=parseFloat(inp.value);return x>0?x:5;}
+ function fmt2(n){return (Math.round(n*100)/100).toLocaleString("th-TH",{maximumFractionDigits:2});}
+ function conv(from){if(from==="cny"){thb.value=cny.value===""?"":(Math.round(parseFloat(cny.value)*r()*100)/100);}else{cny.value=thb.value===""?"":(Math.round(parseFloat(thb.value)/r()*100)/100);}}
+ cny.addEventListener("input",function(){conv("cny");});thb.addEventListener("input",function(){conv("thb");});
+ function apply(rate,date,src){inp.value=(Math.round(rate*100)/100).toFixed(2);store("dl-rate",inp.value);renderBudget();inp.dispatchEvent(new Event("input"));conv("cny");
+  note.textContent="เรตจริง ณ "+date+" · "+src;btn.hidden=true;}
+ inp.addEventListener("input",function(e){if(!e.isTrusted)return;store("dl-rate-manual","1");note.textContent="ใช้เรตที่พิมพ์เอง";btn.hidden=false;conv("cny");});
+ btn.addEventListener("click",function(){store("dl-rate-manual","0");fetchRate(true);});
+ function cached(){try{return JSON.parse(store("dl-rate-live")||"null");}catch(e){return null;}}
+ function fetchRate(force){
+  var c=cached();if(c&&store("dl-rate-manual")!=="1")apply(c.rate,c.date,c.src+(navigator.onLine===false?" (ออฟไลน์)":""));
+  if(store("dl-rate-manual")==="1"&&!force){note.textContent="ใช้เรตที่พิมพ์เอง";btn.hidden=false;return;}
+  if(!window.fetch)return;
+  fetch("https://open.er-api.com/v6/latest/CNY").then(function(x){return x.json();}).then(function(j){
+    var rate=j&&j.rates&&j.rates.THB;if(!(rate>0))throw 0;var d=new Date(j.time_last_update_unix*1000);
+    var o={rate:rate,date:d.getDate()+"/"+(d.getMonth()+1)+"/"+d.getFullYear(),src:"ExchangeRate-API"};store("dl-rate-live",JSON.stringify(o));apply(o.rate,o.date,o.src);})
+  .catch(function(){if(!cached())note.textContent="ดึงเรตล่าสุดไม่ได้ ใช้ค่าประมาณไปก่อน";});}
+ fetchRate(false);
+})();
 
 /* taxi card + phrase cards */
 var TAXI={hotel:"",zhongshan:"大连 中山广场",dongguan:"大连 东关街",feiniu:"飛牛町 日料烧鸟酒场（东关街店）",nanshan:"大连 南山风情街",xian:"大连 西安路",mall:"大连 恒隆广场",wharf:"老虎滩 渔人码头",lingjiao:"大连 菱角湾",xinghai:"大连 星海广场",ride:"星海公园 游乐园",venice:"大连 东港 东方水城",countdown:"东港 音乐喷泉广场",fishmarket:"澳深鱼市（竹青街店）"};
@@ -800,6 +884,7 @@ document.querySelectorAll("#prep-sec input").forEach(function(c){if(store("dl-"+
 
 /* boot */
 var saved=parseInt(store("dl-day"),10);if(!isNaN(saved)&&saved>=0&&saved<DAYS.length)cur=saved;
+var todayIdx=tripDayIndex();if(todayIdx>=0)cur=todayIdx;
 try{var lh=JSON.parse(store("dl-hearts")||"{}");if(lh&&typeof lh==="object")hearts=lh;}catch(e){}
 renderTickets();renderDay();renderPicks();
 
