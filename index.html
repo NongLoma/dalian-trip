@@ -235,6 +235,13 @@ footer{margin-top:64px;padding-top:18px;border-top:2px dashed var(--line);font-s
 footer ul{padding-left:18px;margin:6px 0 0}
 footer > div{flex:1 1 260px;min-width:0}
 
+/* name tags */
+.nm{display:inline-block;font-family:var(--f-display);font-weight:700;font-size:.95em;line-height:1.45;padding:0 .55em;border-radius:999px;transform:rotate(-3deg);box-shadow:0 2px 0 rgba(59,47,69,.18);vertical-align:baseline}
+.nm.a{background:var(--k-pink);color:var(--k-white)}
+.nm.b{background:var(--k-yellow);color:var(--k-ink);transform:rotate(3deg)}
+.couple{display:inline-flex;align-items:center;gap:8px;margin-top:12px;font-size:22px}
+.couple svg{width:26px;height:26px}
+
 /* exchange rate + converter */
 #rate-note{font-size:13px}
 .fx{display:flex;flex-wrap:wrap;align-items:flex-end;gap:10px;margin-top:12px;padding:12px;border-radius:16px;background:var(--k-mint-soft)}
@@ -337,7 +344,8 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
         <span class="kicker">BKK ✈ DLC · 27.12.2026 → 01.01.2027</span>
         <h1>ต้าเหลียน<span class="zh">大连</span></h1>
         <div class="sub">ทะเลหน้าหนาว ตึกยุโรป และปีใหม่ของเราสองคน</div>
-        <p class="lede">ทริปชิล วันละ 3–4 ที่ เน้นมุมถ่ายรูป คาเฟ่ และชอปปิง แบบคุมงบ กดหัวใจที่ที่อยากไปได้เลย Jay กับ Aom เห็นหัวใจของกันและกัน</p>
+        <div class="couple" aria-label="Jay และ Aom"><span class="nm a">Jay</span><svg viewBox="0 0 100 100" aria-hidden="true"><path class="f-pink" d="M50 88 C8 60 12 22 36 22 C45 22 50 30 50 34 C50 30 55 22 64 22 C88 22 92 60 50 88Z" stroke="#fff" stroke-width="6"/></svg><span class="nm b">Aom</span></div>
+        <p class="lede">ทริปชิล วันละ 3–4 ที่ เน้นมุมถ่ายรูป คาเฟ่ และชอปปิง แบบคุมงบ กดหัวใจที่ที่อยากไปได้เลย <span class="nm a">Jay</span> กับ <span class="nm b">Aom</span> เห็นหัวใจของกันและกัน</p>
         <div class="prefs" aria-label="สไตล์ทริป"><span>งบประหยัด</span><span>ชิล ๆ</span><span>ถ่ายรูปสวย</span><span>คาเฟ่ ชอปปิง</span><span>ไม่เผ็ด</span><span>ไม่กินหอยเม่น</span></div>
         <div class="count" aria-live="polite">
           <div><b id="cd-d">--</b><span>วัน</span></div>
@@ -895,8 +903,8 @@ var WHO_NAMES={a:"Jay",b:"Aom"};
 renderPicks=function(){var el=document.getElementById("picks");var ids=Object.keys(hearts).filter(function(k){return counts(k)>0&&NAMES[k];});
  if(!ids.length){el.innerHTML='<div class="empty">ยังไม่มีใครกดหัวใจ เลือกวันด้านบนแล้วกดหัวใจที่การ์ดสถานที่ที่อยากไป</div>';return;}
  ids.sort(function(a,b){return counts(b)-counts(a);});
- el.innerHTML=ids.map(function(k){var both=counts(k)>=2;var by=both?"Jay + Aom":Object.keys(hearts[k]).map(function(w){return WHO_NAMES[w]||w;}).join("");
-  return '<span class="pick'+(both?" both":"")+'">'+esc(by)+' · '+esc(NAMES[k])+'</span>';}).join("");};
+ el.innerHTML=ids.map(function(k){var both=counts(k)>=2;var by=Object.keys(hearts[k]).sort().map(function(w){return '<span class="nm '+w+'">'+esc(WHO_NAMES[w]||w)+'</span>';}).join(" ");
+  return '<span class="pick'+(both?" both":"")+'">'+by+' '+esc(NAMES[k])+'</span>';}).join("");};
 var who=store("dl-who"); if(who!=="a"&&who!=="b")who=null;
 var CODE=store("dl-code")||"";
 me=who||"none";
@@ -1009,7 +1017,7 @@ function render(){
  else if(Math.abs(diff)<0.5)res="จ่ายเท่ากันแล้ว ไม่ต้องโอน";
  else if(diff>0)res="Aom โอนให้ Jay "+money(diff)+" ¥ (~"+money(diff*rate())+" ฿)";
  else res="Jay โอนให้ Aom "+money(-diff)+" ¥ (~"+money(-diff*rate())+" ฿)";
- document.getElementById("x-settle").innerHTML='<div class="who"><span>Jay จ่ายไป</span><span>'+money(by.a)+' ¥</span></div><div class="who"><span>Aom จ่ายไป</span><span>'+money(by.b)+' ¥</span></div><div class="res">'+esc(res)+'</div>';
+ document.getElementById("x-settle").innerHTML='<div class="who"><span><span class="nm a">Jay</span> จ่ายไป</span><span>'+money(by.a)+' ¥</span></div><div class="who"><span><span class="nm b">Aom</span> จ่ายไป</span><span>'+money(by.b)+' ¥</span></div><div class="res">'+esc(res)+'</div>';
  var list=document.getElementById("x-list");
  if(!rows.length){list.innerHTML='<li class="xempty">ยังไม่มีรายการ เพิ่มค่าใช้จ่ายแรกได้จากฟอร์มด้านบน</li>';return;}
  var html="",lastDay="";
