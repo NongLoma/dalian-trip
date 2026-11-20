@@ -462,6 +462,25 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
     <ul class="xlist" id="x-list"></ul>
   </section>
 
+  <section class="block" id="ideas-sec">
+    <span class="corner" data-stk="star" data-r="-8" aria-hidden="true"></span>
+    <span class="tape">กระดานไอเดีย</span>
+    <h2>ที่อยากไปเพิ่ม</h2>
+    <p class="sub">เจอคาเฟ่ ร้านอาหาร หรือมุมถ่ายรูปใน 小红书 หรือ TikTok ก็แปะไว้ตรงนี้ ทั้งคู่เห็นกัน แล้วค่อยบอก Claude ให้จัดลงแผนรายวัน</p>
+    <form class="panel iform" id="i-form" autocomplete="off">
+      <div class="xrow">
+        <label for="i-body">ไอเดีย</label>
+        <input id="i-body" name="body" type="text" maxlength="200" required placeholder="เช่น คาเฟ่วิวทะเลแถวซิงไห่">
+      </div>
+      <div class="xrow">
+        <label for="i-link">ลิงก์ (ถ้ามี)</label>
+        <input id="i-link" name="link" type="url" inputmode="url" maxlength="300" placeholder="https://...">
+      </div>
+      <div class="xactions"><button class="btn yellow" type="submit" id="i-add">แปะไอเดีย</button><span class="xmsg" id="i-msg" aria-live="polite"></span></div>
+    </form>
+    <ul class="ilist" id="i-list"></ul>
+  </section>
+
   <section class="block" id="tips-sec">
     <span class="corner" data-stk="snow" data-r="10" aria-hidden="true"></span>
     <span class="tape">มารยาทและข้อควรรู้</span>
@@ -751,7 +770,7 @@ document.addEventListener("click",function(e){
 });
 
 /* side section menu + back to top */
-var NAV=[["top","plane","กลับขึ้นบนสุด"],["plan","pin","แผนรายวัน"],["budget-sec","suitcase","งบ"],["prep-sec","star","ก่อนบิน"],["picks-sec","heart","หัวใจของเรา"],["food-sec","bowl","กินอะไรดี"],["expense-sec","bag","ค่าใช้จ่าย"],["tips-sec","snow","ข้อควรรู้"],["pack-sec","camera","เช็กลิสต์"]];
+var NAV=[["top","plane","กลับขึ้นบนสุด"],["plan","pin","แผนรายวัน"],["budget-sec","suitcase","งบ"],["prep-sec","star","ก่อนบิน"],["picks-sec","heart","หัวใจของเรา"],["food-sec","bowl","กินอะไรดี"],["expense-sec","bag","ค่าใช้จ่าย"],["ideas-sec","star","ไอเดียเพิ่ม"],["tips-sec","snow","ข้อควรรู้"],["pack-sec","camera","เช็กลิสต์"]];
 function navLinks(withLabel){return NAV.map(function(n,i){return (i===1?'<hr>':'')+'<a href="#'+n[0]+'" data-go="'+n[0]+'" aria-label="'+n[2]+'">'+icon(n[1])+(withLabel?'<span>'+n[2]+'</span>':'<span class="lb">'+n[2]+'</span>')+'</a>';}).join("");}
 var side=document.createElement("nav");side.className="sidenav";side.setAttribute("aria-label","ไปยังส่วนต่าง ๆ");side.innerHTML=navLinks(false);document.body.appendChild(side);
 var fab=document.createElement("button");fab.className="fab hide";fab.setAttribute("aria-label","เมนูไปยังส่วนต่าง ๆ");fab.setAttribute("aria-expanded","false");fab.innerHTML=icon("pin");document.body.appendChild(fab);
@@ -767,7 +786,7 @@ window.addEventListener("scroll",onScroll,{passive:true});onScroll();
 function setOn(id){document.querySelectorAll("[data-go]").forEach(function(a){a.classList.toggle("on",a.dataset.go===id);});}
 if("IntersectionObserver" in window){
  var spy=new IntersectionObserver(function(es){es.forEach(function(en){if(en.isIntersecting)setOn(en.target.dataset.spy);});},{rootMargin:"-35% 0px -60% 0px"});
- [["top",heroEl],["plan",document.getElementById("dayview")],["budget-sec"],["prep-sec"],["picks-sec"],["food-sec"],["expense-sec"],["tips-sec"],["pack-sec"]].forEach(function(p){var el=p[1]||document.getElementById(p[0]);if(el){el.dataset.spy=p[0];spy.observe(el);}});
+ [["top",heroEl],["plan",document.getElementById("dayview")],["budget-sec"],["prep-sec"],["picks-sec"],["food-sec"],["expense-sec"],["ideas-sec"],["tips-sec"],["pack-sec"]].forEach(function(p){var el=p[1]||document.getElementById(p[0]);if(el){el.dataset.spy=p[0];spy.observe(el);}});
 }
 setOn("top");
 
@@ -941,6 +960,77 @@ render();
 if(sb){loadX();try{sb.channel("expenses-live").on("postgres_changes",{event:"*",schema:"public",table:"expenses"},function(){loadX();}).subscribe();}catch(e){}
  document.addEventListener("visibilitychange",function(){if(!document.hidden)loadX();});}
 else msg("ต่อระบบซิงค์ไม่ได้ ตอนนี้ยังบันทึกค่าใช้จ่ายไม่ได้");
+})();
+
+/* ---------- shared checklist + ideas board via Supabase ---------- */
+(function(){
+var scss=document.createElement("style");
+scss.textContent='.ckwho{font-style:normal;font-size:11px;font-weight:700;margin-left:6px;padding:0 7px;border-radius:999px;background:var(--k-sky-soft);color:var(--ink);text-decoration:none;display:inline-block}.ckwho.b{background:var(--k-yellow-soft)}.cksync{font-size:13px;color:var(--muted);margin:-8px 0 14px}'+
+'.iform{margin-top:6px;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px 16px}.iform input[type=url]{font:inherit;font-size:16px;padding:9px 12px;border:2px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink);width:100%;min-width:0}'+
+'.ilist{list-style:none;padding:0;margin:16px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}.idea{position:relative;background:var(--k-yellow-soft);border-radius:4px 18px 18px 18px;padding:12px 44px 12px 14px;box-shadow:0 4px 0 var(--line);min-width:0;overflow-wrap:anywhere}.idea:nth-child(even){background:var(--k-sky-soft);transform:rotate(.6deg)}.idea:nth-child(odd){transform:rotate(-.6deg)}.idea p{margin:0;font-size:15px}.idea a{font-size:13px;font-weight:600}.idea small{display:block;color:var(--muted);font-size:12px;margin-top:4px}.idea .xdel{position:absolute;top:8px;right:8px}';
+document.head.appendChild(scss);
+var NM={a:"Jay",b:"Aom"};
+
+/* ----- checklist ----- */
+function hid(s){var h=2166136261;for(var i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)>>>0;}return h.toString(36);}
+var boxes=[].slice.call(document.querySelectorAll("#check input[type=checkbox], #prep-sec input[type=checkbox]"));
+/* stable id from the item text, computed once before any name tag is added */
+boxes.forEach(function(b){b.dataset.ck=b.closest("#prep-sec")?"pr_"+b.id:"pk_"+hid(b.nextElementSibling.textContent.trim());});
+function itemId(inp){return inp.dataset.ck;}
+var ticks={};
+var note=document.createElement("p");note.className="cksync";note.id="ck-sync";
+var packSub=document.querySelector("#pack-sec .sub");if(packSub)packSub.textContent="ติ๊กแล้ว Jay กับ Aom เห็นกัน และมีชื่อบอกว่าใครเป็นคนติ๊ก";
+var prepSub=document.querySelector("#prep-sec .sub");if(prepSub)prepSub.textContent="เหลือเวลาราว 5 สัปดาห์ ติ๊กแล้วอีกคนเห็นด้วย";
+if(packSub)packSub.insertAdjacentElement("afterend",note);
+function paint(){boxes.forEach(function(b){var id=itemId(b),w=ticks[id];b.checked=!!w;var span=b.nextElementSibling;var tag=span.querySelector(".ckwho");
+  if(w){if(!tag){tag=document.createElement("em");span.appendChild(tag);}tag.className="ckwho"+(w==="b"?" b":"");tag.textContent=NM[w]||w;}else if(tag)tag.remove();});
+ if(typeof bar==="function")bar();}
+function loadC(){if(!sb)return;sb.from("checks").select("item,who").then(function(r){if(r.error){note.textContent="โหลดเช็กลิสต์ไม่ได้ ("+(r.error.code||"error")+")";return;}
+  var t={};(r.data||[]).forEach(function(x){t[x.item]=x.who;});ticks=t;paint();note.textContent=CODE?"ซิงค์กับอีกคนแล้ว":"ดูอย่างเดียว ใส่รหัสทริปเพื่อติ๊ก";},function(){note.textContent="ต่ออินเทอร์เน็ตไม่ได้ เช็กลิสต์อาจไม่ใช่ล่าสุด";});}
+boxes.forEach(function(b){b.addEventListener("change",function(){
+ var id=itemId(b),want=b.checked;
+ if(!sb){return;}
+ if(!who||!CODE){b.checked=!want;paint();askWho(function(){b.checked=want;b.dispatchEvent(new Event("change"));});return;}
+ if(want)ticks[id]=who;else delete ticks[id];paint();
+ var w=W();
+ var q=want?w.from("checks").upsert({item:id,who:who},{onConflict:"item",ignoreDuplicates:true}):w.from("checks").delete().eq("item",id).select("item");
+ q.then(function(r){if(badCode(r.error)){askWho(null,"รหัสทริปไม่ถูกต้อง ลองใส่ใหม่");loadC();return;}if(r.error){note.textContent="บันทึกไม่สำเร็จ ("+(r.error.code||"error")+")";}loadC();},
+  function(){note.textContent="ต่ออินเทอร์เน็ตไม่ได้ ยังไม่ได้บันทึก";loadC();});});});
+
+/* ----- ideas ----- */
+var ideas=[];
+function imsg(t){document.getElementById("i-msg").textContent=t;}
+function host(u){try{return new URL(u).hostname.replace(/^www\./,"");}catch(e){return "ลิงก์";}}
+function renderI(){var el=document.getElementById("i-list");
+ if(!ideas.length){el.innerHTML='<li class="xempty">ยังไม่มีไอเดีย แปะอันแรกได้จากฟอร์มด้านบน</li>';return;}
+ el.innerHTML=ideas.map(function(x){var d=new Date(x.created_at);
+  return '<li class="idea"><p>'+esc(x.body)+'</p>'+(x.link&&/^https:\/\//.test(x.link)?'<a href="'+esc(x.link)+'" target="_blank" rel="noopener noreferrer">เปิด '+esc(host(x.link))+'</a>':'')+
+   '<small>'+esc(NM[x.who]||x.who)+' · '+d.getDate()+"/"+(d.getMonth()+1)+'</small><button class="xdel" data-idel="'+esc(x.id)+'" aria-label="ลบไอเดีย">×</button></li>';}).join("");}
+function loadI(){if(!sb)return;sb.from("ideas").select("id,body,link,who,created_at").order("created_at",{ascending:false}).then(function(r){if(r.error){imsg("โหลดไอเดียไม่ได้ ("+(r.error.code||"error")+")");return;}ideas=r.data||[];renderI();},function(){imsg("ต่ออินเทอร์เน็ตไม่ได้");});}
+document.getElementById("i-form").addEventListener("submit",function(e){e.preventDefault();var f=e.target,body=f.body.value.trim().slice(0,200),link=f.link.value.trim();
+ if(!body){imsg("พิมพ์ไอเดียก่อน");return;}
+ if(link&&!/^https:\/\//.test(link)){imsg("ลิงก์ต้องขึ้นต้นด้วย https://");f.link.focus();return;}
+ if(!sb){imsg("ต่อระบบซิงค์ไม่ได้");return;}
+ if(!who||!CODE){askWho(function(){f.requestSubmit();});return;}
+ var btn=document.getElementById("i-add");btn.disabled=true;imsg("กำลังแปะ...");
+ W().from("ideas").insert({body:body,link:link.slice(0,300),who:who}).then(function(r){btn.disabled=false;
+   if(badCode(r.error)){imsg("รหัสทริปไม่ถูกต้อง");askWho(function(){f.requestSubmit();},"รหัสทริปไม่ถูกต้อง ลองใส่ใหม่");return;}
+   if(r.error){imsg("แปะไม่สำเร็จ ("+(r.error.code||"error")+")");return;}
+   imsg("แปะแล้ว");f.body.value="";f.link.value="";loadI();},function(){btn.disabled=false;imsg("ต่ออินเทอร์เน็ตไม่ได้ ข้อความในฟอร์มยังอยู่");});});
+var armedI=null;
+document.getElementById("i-list").addEventListener("click",function(e){var b=e.target.closest("[data-idel]");if(!b||!sb)return;
+ if(armedI!==b){if(armedI)armedI.textContent="×";armedI=b;b.textContent="ลบ?";b.style.width="auto";b.style.padding="0 10px";setTimeout(function(){if(armedI===b){b.textContent="×";b.style.width="";b.style.padding="";armedI=null;}},3000);return;}
+ armedI=null;if(!who||!CODE){askWho(null);return;}
+ b.disabled=true;W().from("ideas").delete().eq("id",b.dataset.idel).select("id").then(function(r){
+   if(badCode(r.error)||(!r.error&&(!r.data||!r.data.length))){askWho(null,"รหัสทริปไม่ถูกต้อง ลองใส่ใหม่");}
+   loadI();},function(){imsg("ต่ออินเทอร์เน็ตไม่ได้ ยังไม่ได้ลบ");b.disabled=false;});});
+
+renderI();
+if(sb){loadC();loadI();
+ try{sb.channel("checks-live").on("postgres_changes",{event:"*",schema:"public",table:"checks"},loadC).subscribe();}catch(e){}
+ try{sb.channel("ideas-live").on("postgres_changes",{event:"*",schema:"public",table:"ideas"},loadI).subscribe();}catch(e){}
+ document.addEventListener("visibilitychange",function(){if(!document.hidden){loadC();loadI();}});}
+else{note.textContent="ต่อระบบซิงค์ไม่ได้ ตอนนี้ติ๊กแล้วจำไว้ในเครื่องนี้";imsg("ต่อระบบซิงค์ไม่ได้");}
 })();
 
 })();

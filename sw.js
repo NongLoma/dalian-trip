@@ -1,5 +1,5 @@
 /* Offline cache for the Dalian trip page. The build stamps VERSION so each deploy refreshes the cache. */
-const VERSION = "20261120165143";
+const VERSION = "20261120170258";
 const CACHE = "dalian-" + VERSION;
 const CORE = [
   "./", "./index.html", "./manifest.webmanifest", "./vendor/supabase.js",
