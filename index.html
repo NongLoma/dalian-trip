@@ -152,6 +152,7 @@ body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset
 .tag{font-size:12px;font-weight:600;padding:1px 10px;border-radius:999px;background:var(--bg);color:var(--muted)}
 .tag.c1{background:var(--k-sky-soft);color:var(--ink)}
 .tag.c2{background:var(--k-pink-soft);color:var(--ink)}
+.tag.c3{background:var(--k-yellow);color:var(--k-ink)}
 .tag.sun{background:var(--k-yellow);color:var(--k-ink)}
 .tag.cost{background:var(--k-mint-soft);color:var(--ok);font-family:var(--f-mono)}
 .tag.photo{background:var(--k-yellow-soft);color:var(--ink)}
@@ -568,6 +569,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
       <ul>
         <li>คลิป 1 · Brinkkty · <a href="https://www.youtube.com/watch?v=_m7IEdghQu4" target="_blank" rel="noopener">เที่ยวจีนคนเดียว..ต้าเหลียน</a></li>
         <li>คลิป 2 · GIGAJAY · <a href="https://www.youtube.com/watch?v=wgNu9nGk4Oo" target="_blank" rel="noopener">ต้าเหลียน เมืองสุดชิลริมทะเล ตึกยุโรป</a></li>
+        <li>คลิป 3 · Pongphat Naegkhunthod (ที่ Aom ส่งมา) · <a href="https://www.youtube.com/watch?v=MY4QrLp3SAs" target="_blank" rel="noopener">วล็อกต้าเหลียนหน้าหนาว ธ.ค. 2025</a></li>
         <li>ภาพถ่ายสถานที่จาก Wikimedia Commons ใช้ตามสัญญาอนุญาต CC ที่ระบุใต้แต่ละภาพ ภาพย่อขนาดเพื่อแสดงผล</li>
         <li>ราคาและเวลาเปิดปิดเป็นค่าประมาณ ควรเช็กอีกครั้งก่อนไป</li>
       </ul>
@@ -640,7 +642,8 @@ var DAYS=[
  {id:"d31",d:"31 ธ.ค.",t:"เคานต์ดาวน์",ic:"firework",title:"ซิงไห่ ตงกั่ง และเคานต์ดาวน์",sub:"วันที่ควรได้แดดที่สุดของทริป เริ่มสายเพราะคืนนี้อยู่ดึก",cost:"~550 หยวน",tr:"แท็กซี่หรือรถไฟใต้ดินไปซิงไห่ จากนั้นแท็กซี่ไปตงกั่ง คืนเคานต์ดาวน์เรียกรถยาก ควรเผื่อเวลารอ",
   scene:{bg:"linear-gradient(180deg,#2e2b6b 0%,#6d4fa8 55%,#ff9ab8 100%)",label:"Happy New Year 2027!",st:[["firework",90,0,"6%","6%"],["firework",64,20,"72%","4%"],["ferris",118,0,"36%","16%"],["star",40,-12,"88%","52%"],["heart",44,10,"20%","58%"]]},
   stops:[
-   {id:"xinghai",st:"gull",w:"บ่ายต้น",h:"จัตุรัสซิงไห่ และคาเฟ่ Flamingo House",p:"ลานกว้างริมทะเล หน้าหนาวมักมีนกนางนวลมาให้ให้อาหาร นั่งคาเฟ่วิวทะเลรอแสงเย็น",zh:"星海广场 · Flamingo House",q:"星海广场",src:[1,2],c:"~80 หยวน",ph:1},
+   {id:"xinghai",st:"gull",w:"บ่ายต้น",h:"จัตุรัสซิงไห่ และคาเฟ่ Flamingo House",p:"ลานกว้างริมทะเล หน้าหนาวมีนกนางนวลฝูงใหญ่ (คลิป 3 ถ่ายไว้ช่วงคริสต์มาส) ซื้ออาหารนกที่ลานแล้วให้อาหารตอนแดดเย็น นั่งคาเฟ่วิวทะเลรอแสงเย็น",zh:"星海广场 · Flamingo House",q:"星海广场",src:[1,2,3],c:"~80 หยวน",ph:1},
+   {id:"boardwalk",st:"camera",w:"~14:30",h:"ทางเดินไม้ริมทะเล วิวสะพานข้ามอ่าวซิงไห่",p:"เดินเล่นเลียบทะเลจากฝั่งสวนซิงไห่ ถ่ายรูปคู่กับสะพานแขวนข้ามอ่าว เดินฟรี เดินแค่ช่วงสั้นๆ แล้วต่อไปสวนสนุกได้เลย ลมทะเลแรงมาก ใส่หมวกกับถุงมือ",zh:"滨海路木栈道（星海公园段）",q:"星海公园 滨海木栈道",src:[3],c:"ฟรี",ph:1},
    {id:"ride",st:"ferris",w:"~15:30",h:"เครื่องเล่นหมุนในสวนสนุกซิงไห่",p:"ไปตอนพระอาทิตย์ตก ฟ้าเป็นสีชมพู ทั้งสองคลิปบอกว่าโรแมนติกมาก",zh:"星海公园游乐园",q:"星海公园游乐园",src:[1,2],k:"sunset",c:"50/คน",ph:1},
    {id:"venice",st:"pizza",w:"เย็น",h:"เมืองเวนิสต้าเหลียน และพิซซ่า DAPAULO",p:"ตึกสไตล์ยุโรปเลียบคลอง มุมถ่ายรูปยอดฮิต มื้อเย็นกินพิซซ่าเตาฟืน",zh:"大连海昌东方水城 · DAPAULO大宝罗",q:"大连东方水城",src:[1,2],c:"~200 หยวน",ph:1},
    {id:"countdown",st:"firework",w:"ค่ำ–00:00",h:"เคานต์ดาวน์ที่ย่านตงกั่ง",p:"ลานน้ำพุดนตรีและท่าเรือยอชต์ Blue Harbor เดินจากเมืองเวนิสได้ เช็กประกาศงานของปีนี้ก่อน",zh:"东港音乐喷泉广场 · 蓝色港湾",q:"东港音乐喷泉广场",src:[2],c:"ฟรี"}
@@ -681,7 +684,7 @@ var PHOTOS={
 };
 function photo(id){var p=PHOTOS[id];if(!p)return "";
  return '<figure class="photo"><img src="'+p.u+'" alt="'+esc(p.c)+'" loading="lazy"><figcaption><b>'+esc(p.c)+'</b> · ภาพ: '+esc(p.a)+' · <a href="'+p.p+'" target="_blank" rel="noopener">'+esc(p.l)+'</a> · Wikimedia Commons</figcaption></figure>';}
-var SRC={0:["แผนเดิม",""],1:["คลิป 1","c1"],2:["คลิป 2","c2"]};
+var SRC={0:["แผนเดิม",""],1:["คลิป 1","c1"],2:["คลิป 2","c2"],3:["คลิป 3","c3"]};
 var HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.5 8.1 3.6 4.5 7.1 4.5c2 0 3.6 1.1 4.9 2.8 1.3-1.7 2.9-2.8 4.9-2.8 3.5 0 5.6 3.6 4.4 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg>';
 var NAMES={};DAYS.forEach(function(d){d.stops.forEach(function(s){NAMES[s.id]=s.h;});});
 
@@ -786,7 +789,7 @@ document.getElementById("spin").addEventListener("click",function(){if(spinning)
 
 /* today mode: works in Dalian time (UTC+8); ?now=2026-12-31T15:10 simulates a moment for testing */
 var DDATE={d28:"2026-12-28",d29:"2026-12-29",d30:"2026-12-30",d31:"2026-12-31",d01:"2027-01-01"};
-var START={hotel:"11:00",zhongshan:"17:00",dongguan:"18:00",feiniu:"19:00",nanshan:"10:30",xian:"14:00",mall:"17:00",tram:"10:30",wharf:"12:30",lingjiao:"15:00",xinghai:"13:00",ride:"15:30",venice:"17:30",countdown:"21:00",fishmarket:"10:00"};
+var START={hotel:"11:00",zhongshan:"17:00",dongguan:"18:00",feiniu:"19:00",nanshan:"10:30",xian:"14:00",mall:"17:00",tram:"10:30",wharf:"12:30",lingjiao:"15:00",xinghai:"13:00",boardwalk:"14:30",ride:"15:30",venice:"17:30",countdown:"21:00",fishmarket:"10:00"};
 var SUNSET=16*60+35;
 function hm(s){var p=s.split(":");return +p[0]*60+ +p[1];}
 function dlNow(){var q=/[?&]now=(\d{4}-\d\d-\d\d)T(\d\d):(\d\d)/.exec(location.search);
@@ -842,7 +845,7 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden)mark
 })();
 
 /* taxi card + phrase cards */
-var TAXI={hotel:"",zhongshan:"大连 中山广场",dongguan:"大连 东关街",feiniu:"飛牛町 日料烧鸟酒场（东关街店）",nanshan:"大连 南山风情街",xian:"大连 西安路",mall:"大连 恒隆广场",wharf:"老虎滩 渔人码头",lingjiao:"大连 菱角湾",xinghai:"大连 星海广场",ride:"星海公园 游乐园",venice:"大连 东港 东方水城",countdown:"东港 音乐喷泉广场",fishmarket:"澳深鱼市（竹青街店）"};
+var TAXI={hotel:"",zhongshan:"大连 中山广场",dongguan:"大连 东关街",feiniu:"飛牛町 日料烧鸟酒场（东关街店）",nanshan:"大连 南山风情街",xian:"大连 西安路",mall:"大连 恒隆广场",wharf:"老虎滩 渔人码头",lingjiao:"大连 菱角湾",xinghai:"大连 星海广场",boardwalk:"大连 星海公园 滨海木栈道",ride:"星海公园 游乐园",venice:"大连 东港 东方水城",countdown:"东港 音乐喷泉广场",fishmarket:"澳深鱼市（竹青街店）"};
 var PHRASES=[["不要辣","ไม่เอาเผ็ด"],["买单","เช็กบิล"],["洗手间在哪里？","ห้องน้ำอยู่ไหน"],["多少钱？","ราคาเท่าไหร่"],["可以用支付宝吗？","จ่าย Alipay ได้ไหม"],["请带我去这里","ช่วยพาไปที่นี่"],["我不会说中文","พูดภาษาจีนไม่ได้"],["请帮我们拍照","ช่วยถ่ายรูปให้หน่อย"],["谢谢","ขอบคุณ"]];
 document.getElementById("phrases").innerHTML=PHRASES.map(function(p,i){return '<button class="phr" data-phr="'+i+'"><b>'+esc(p[0])+'</b><span>'+esc(p[1])+'</span></button>';}).join("");
 var big=document.createElement("div");big.id="bigcard";big.hidden=true;big.setAttribute("role","dialog");big.setAttribute("aria-modal","true");big.setAttribute("aria-label","การ์ดภาษาจีนเต็มจอ");document.body.appendChild(big);
