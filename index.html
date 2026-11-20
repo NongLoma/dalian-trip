@@ -238,6 +238,22 @@ footer ul{padding-left:18px;margin:6px 0 0}
 footer > div{flex:1 1 260px;min-width:0}
 
 /* name tags */
+.shots{margin-top:8px;border-radius:14px;background:var(--k-sky-soft);padding:2px 12px}
+.shots summary{cursor:pointer;font-family:var(--f-display);font-weight:700;font-size:14px;padding:6px 0;display:flex;align-items:center;gap:6px;list-style:none;color:var(--ink)}
+.shots summary::-webkit-details-marker{display:none}
+.shots summary:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+.shots .shc{margin-left:auto;font-family:var(--f-mono);font-size:12px;font-weight:600;background:var(--surface);border-radius:999px;padding:1px 9px;color:var(--muted)}
+.shots .shc.ok{background:var(--k-mint);color:var(--k-ink)}
+.shots ul{list-style:none;margin:0 0 10px;padding:0;display:grid;gap:6px}
+.shots label{display:flex;gap:8px;align-items:flex-start;font-size:14px;cursor:pointer}
+.shots input{width:20px;height:20px;flex:none;margin:1px 0 0;accent-color:var(--k-pink)}
+.shots input:checked+span{color:var(--muted);text-decoration:line-through;text-decoration-color:rgba(0,0,0,.25)}
+.shots .fmt{font-style:normal;font-size:11px;font-weight:700;border-radius:6px;padding:0 6px;margin-right:2px;white-space:nowrap;display:inline-block;text-decoration:none}
+.shots .fmt.h{background:var(--k-blue);color:#fff}.shots .fmt.v{background:var(--k-pink);color:#fff}.shots .fmt.b{background:var(--k-yellow);color:var(--k-ink)}.shots .fmt.t{background:var(--k-mint);color:var(--k-ink)}
+.shots .shw .nm{font-size:11px;margin-left:4px;text-decoration:none;display:inline-block}
+.shotlegend{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:13px;color:var(--muted);margin:10px 0 0}
+.shotlegend .fmt{font-style:normal;font-size:11px;font-weight:700;border-radius:6px;padding:0 6px}.shotlegend .fmt.h{background:var(--k-blue);color:#fff}.shotlegend .fmt.v{background:var(--k-pink);color:#fff}.shotlegend .fmt.t{background:var(--k-mint);color:var(--k-ink)}
+.shotlegend b{font-family:var(--f-display);color:var(--ink)}
 .ptip{margin-top:10px;border-radius:14px;background:var(--k-pink-soft);padding:2px 12px}
 .ptip summary{cursor:pointer;font-family:var(--f-display);font-weight:700;font-size:14px;padding:6px 0;display:flex;align-items:center;gap:6px;list-style:none;color:var(--ink)}
 .ptip summary::-webkit-details-marker{display:none}
@@ -399,6 +415,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
 
 <main class="wrap pad">
   <section class="dayview" id="dayview" role="tabpanel" aria-live="polite"></section>
+  <p class="shotlegend"><b>ช็อตสำหรับ YouTube</b><span id="shot-total"></span><span><em class="fmt h">แนวนอน</em> วล็อก</span><span><em class="fmt v">แนวตั้ง</em> Shorts</span><span><em class="fmt t">พูดหน้ากล้อง</em></span></p>
 
   <section class="block" id="budget-sec">
     <span class="corner" data-stk="suitcase" data-r="8" aria-hidden="true"></span>
@@ -755,6 +772,37 @@ var PT={
 };
 function ptip(id){var t=PT[id];if(!t)return "";
  return '<details class="ptip"><summary>'+stk("camera",22,-8)+'มุมถ่ายรูปคู่</summary><dl><dt>ยืนตรงไหน</dt><dd>'+esc(t[0])+'</dd><dt>ช่วงไหน</dt><dd>'+esc(t[1])+'</dd><dt>ท่าโพส</dt><dd>'+esc(t[2])+'</dd></dl></details>';}
+/* YouTube shot list: H = landscape for the vlog, V = vertical for Shorts, B = both, T = talk to camera */
+var SHOT={
+ hotel:[["H","ป้ายสนามบินกับตอนแตะบัตรขึ้นรถไฟใต้ดิน"],["H","ลากกระเป๋าเข้าโรงแรม ถ่ายกว้างจากด้านนอก"],["T","เปิดประตูห้องแล้วพูดว่า \"ถึงต้าเหลียนแล้ว\""],["V","รูมทัวร์สั้น ๆ 15 วินาที จบที่วิวหน้าต่าง"]],
+ zhongshan:[["B","ไทม์แลปส์ฟ้าเปลี่ยนสีกับตึกเปิดไฟ วางมือถือนิ่ง 1–2 นาที"],["H","แพนช้า ๆ รอบวงเวียน"],["V","เดินจับมือข้ามลาน ถ่ายจากด้านหลัง"],["T","พูดว่าหนาวแค่ไหน ให้เห็นไอจากปาก"]],
+ dongguan:[["H","เดินตามทางในซอยตึกอิฐ ถือกล้องระดับอก"],["V","เดินผ่านประตูโค้งแล้วออกจากเฟรม ใช้เป็นช็อตเปลี่ยนฉาก"],["H","ไฟประดับกับป้ายร้านภาษาจีนแบบใกล้ ๆ"]],
+ feiniu:[["V","ไม้ยากิโทริตอนวางบนโต๊ะ ควันยังลอย"],["H","ชนไม้ยากิโทริแทนแก้ว ถ่ายแค่มือ"],["T","ชิมคำแรกแล้วให้คะแนน 1–10"]],
+ nanshan:[["H","เดินขึ้นเนินถนนคาเฟ่"],["V","หน้าร้านคาเฟ่น่ารัก เปิดประตูเดินเข้าไป"],["H","ยกแก้วกาแฟชนกันใกล้ ๆ"],["T","รีวิวเมนูกับราคาแบบสั้น ๆ"]],
+ xian:[["H","ถนนป้ายร้านเรียงยาว ซูม 2x ให้ภาพแน่น"],["V","หมูย่างบนกระทะ อัดเสียงฉ่าด้วย"],["T","สรุปค่าอาหารมื้อนี้เป็นเงินบาท"]],
+ mall:[["H","ของตกแต่งปีใหม่กลางห้าง"],["V","ช็อปปิงแบบตัดเร็ว ของที่ซื้อทีละชิ้น"],["T","โชว์ของที่ได้กับราคา"]],
+ tram:[["B","รถรางวิ่งเข้ามาหากล้อง ยืนริมฟุตบาท"],["H","ข้างในรถรางไม้ เก้าอี้ หน้าต่าง คนขับ"],["H","สแกนจ่าย 2 หยวนแบบใกล้ ๆ"],["V","วิวนอกหน้าต่างระหว่างรถวิ่ง"]],
+ wharf:[["H","แพนตึกหลากสีริมน้ำ"],["V","เดินผ่านตึกทีละสี ตัดต่อเป็นช็อตเปลี่ยนสี"],["H","เรือประมงกับตาข่ายแบบใกล้ ๆ"],["T","บอกราคามื้อกลางวัน"]],
+ lingjiao:[["H","คลื่นซัดโขดหิน ถ่ายนิ่ง 10 วินาที"],["V","เงาสองคนตัดฟ้า"],["H","อัดเสียงคลื่นอย่างเดียว 30 วินาที ไว้เป็นเสียงประกอบ"]],
+ xinghai:[["B","นกนางนวลโฉบกินอาหารจากมือ ใช้โหมดสโลว์โมชัน (ช็อตเด่นสำหรับ Shorts)"],["H","ภาพกว้างลานกับฝูงนก"],["T","อาหารนกซื้อที่ไหน ราคาเท่าไร"]],
+ boardwalk:[["H","สะพานแขวนข้ามอ่าว วางกล้องนิ่ง"],["V","เดินบนทางไม้ ถ่ายจากด้านหลัง"],["B","ไทม์แลปส์แดดเย็นกับสะพาน"]],
+ ride:[["V","เซลฟี่บนเครื่องเล่นตอนฟ้าเป็นสีชมพู"],["H","เครื่องเล่นหมุนถ่ายจากด้านล่าง"],["T","ความรู้สึกตอนอยู่ข้างบน"]],
+ venice:[["H","ตึกเรียงสองฝั่งคลองช่วงไฟเปิด"],["V","ยกพิซซ่าชิ้นแรก ให้เห็นชีสยืด"],["H","ป้ายร้านกับเตาฟืนแบบใกล้ ๆ"]],
+ countdown:[["H","ฝูงคนกับน้ำพุก่อนเที่ยงคืน"],["V","10 วินาทีสุดท้ายจนถึงเที่ยงคืน ถ่ายต่อเนื่องไม่ต้องหยุด (ช็อตเด่นสำหรับ Shorts)"],["T","พูด \"สวัสดีปีใหม่ 2027\" กับกล้องด้วยกัน"]],
+ fishmarket:[["H","บรรยากาศตลาดปลา ร้านเรียงกัน"],["V","ถาดอาหารทะเลบนโต๊ะ ถ่ายจากด้านบน"],["T","สรุปค่าใช้จ่ายทั้งทริป ใช้เป็นช็อตปิดคลิป"]]
+};
+var SHOTK={H:["แนวนอน","h"],V:["แนวตั้ง","v"],B:["ทั้งสองแบบ","b"],T:["พูดหน้ากล้อง","t"]};
+var shotTicks={};try{shotTicks=JSON.parse(store("dl-shots")||"{}")||{};}catch(e){shotTicks={};}
+function shotNm(w){return w==="a"?'<span class="nm a">Jay</span>':w==="b"?'<span class="nm b">Aom</span>':"";}
+function shots(id){var L=SHOT[id];if(!L)return "";
+ return '<details class="shots" data-shots="'+id+'"><summary>'+stk("star",22,8)+'ช็อตสำหรับ YouTube <span class="shc"></span></summary><ul>'+
+  L.map(function(x,i){var k="sh_"+id+"_"+i;return '<li><label><input type="checkbox" data-shot="'+k+'"><span><em class="fmt '+SHOTK[x[0]][1]+'">'+SHOTK[x[0]][0]+'</em> '+esc(x[1])+' <i class="shw"></i></span></label></li>';}).join("")+'</ul></details>';}
+function paintShots(){var tot=0,dn=0;Object.keys(SHOT).forEach(function(id){SHOT[id].forEach(function(x,i){tot++;if(shotTicks["sh_"+id+"_"+i])dn++;});});
+ document.querySelectorAll("[data-shot]").forEach(function(b){var w=shotTicks[b.dataset.shot];b.checked=!!w;var t=b.parentNode.querySelector(".shw");if(t)t.innerHTML=w?shotNm(w):"";});
+ document.querySelectorAll("[data-shots]").forEach(function(d){var id=d.dataset.shots,L=SHOT[id],n=L.filter(function(x,i){return shotTicks["sh_"+id+"_"+i];}).length;var c=d.querySelector(".shc");c.textContent=n+"/"+L.length;c.classList.toggle("ok",n===L.length);});
+ var g=document.getElementById("shot-total");if(g)g.textContent="ถ่ายแล้ว "+dn+" จาก "+tot+" ช็อต";}
+function shotSave(key,on){if(on)shotTicks[key]=(me==="a"||me==="b")?me:1;else delete shotTicks[key];store("dl-shots",JSON.stringify(shotTicks));paintShots();}
+document.addEventListener("change",function(e){var b=e.target;if(b&&b.dataset&&b.dataset.shot)shotSave(b.dataset.shot,b.checked,b);});
 var SRC={0:["แผนเดิม",""],1:["คลิป 1","c1"],2:["คลิป 2","c2"],3:["คลิป 3","c3"],4:["TikTok","c4"]};
 var HEART='<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 20.5s-7.5-4.6-9.3-9.2C1.5 8.1 3.6 4.5 7.1 4.5c2 0 3.6 1.1 4.9 2.8 1.3-1.7 2.9-2.8 4.9-2.8 3.5 0 5.6 3.6 4.4 6.8-1.8 4.6-9.3 9.2-9.3 9.2z"/></svg>';
 var NAMES={};DAYS.forEach(function(d){d.stops.forEach(function(s){NAMES[s.id]=s.h;});});
@@ -842,10 +890,10 @@ function renderDay(){var d=DAYS[cur];var v=document.getElementById("dayview");
  h+='<ol class="timeline">'+d.stops.map(function(s,i){
   var tags=(s.c?'<span class="tag cost">'+esc(s.c)+'</span>':"")+(s.ph?'<span class="tag photo">มุมถ่ายรูป</span>':"")+s.src.map(function(n){return '<span class="tag '+SRC[n][1]+'">'+SRC[n][0]+'</span>';}).join("")+(s.k==="sunset"?'<span class="tag sun">ไปให้ทันแสง</span>':"");
   var zh='<div class="zh"><span>'+esc(s.zh)+'</span>'+(s.id in TAXI?'<button class="taxi" data-taxi="'+s.id+'">การ์ดแท็กซี่</button>':'')+'<button class="copy" data-copy="'+esc(s.zh.split(" · ")[0])+'">คัดลอกชื่อจีน</button>'+(s.q?'<a href="https://uri.amap.com/search?keyword='+encodeURIComponent(s.q)+'" target="_blank" rel="noopener">เปิดใน Amap</a>':"")+'</div>';
-  return '<li class="stop'+(s.k?" "+s.k:"")+'" data-stop="'+s.id+'" style="animation-delay:'+(i*80)+'ms"><div class="when">'+esc(s.w)+'</div><div class="card"><span class="cstk">'+stk(s.st,48,i%2?8:-8)+'</span>'+heartBtn(s.id)+'<h3>'+esc(s.h)+'</h3>'+photo(s.id)+'<p>'+esc(s.p)+'</p>'+zh+'<div class="tags">'+tags+'</div>'+ptip(s.id)+'</div></li>';}).join("")+'</ol>';
+  return '<li class="stop'+(s.k?" "+s.k:"")+'" data-stop="'+s.id+'" style="animation-delay:'+(i*80)+'ms"><div class="when">'+esc(s.w)+'</div><div class="card"><span class="cstk">'+stk(s.st,48,i%2?8:-8)+'</span>'+heartBtn(s.id)+'<h3>'+esc(s.h)+'</h3>'+photo(s.id)+'<p>'+esc(s.p)+'</p>'+zh+'<div class="tags">'+tags+'</div>'+ptip(s.id)+shots(s.id)+'</div></li>';}).join("")+'</ol>';
  if(d.alt)h+='<div class="alt"><b>'+esc(d.alt[0])+'</b> '+esc(d.alt[1])+'</div>';
  v.innerHTML=h;v.setAttribute("aria-labelledby","tab-"+d.id);
- store("dl-day",String(cur));if(typeof markNow==="function")markNow();}
+ store("dl-day",String(cur));if(typeof markNow==="function")markNow();paintShots();}
 function select(i){cur=Math.max(0,Math.min(DAYS.length-1,i));renderTickets();renderDay();
  var t=document.getElementById("tab-"+DAYS[cur].id);if(t&&t.scrollIntoView)t.scrollIntoView({block:"nearest",inline:"center"});}
 
@@ -1334,6 +1382,25 @@ render();
 if(sb){loadA();try{sb.channel("photos-live").on("postgres_changes",{event:"*",schema:"public",table:"photos"},function(){loadA();}).subscribe();}catch(e){}
  document.addEventListener("visibilitychange",function(){if(!document.hidden)loadA();});}
 else amsg("ต่อระบบซิงค์ไม่ได้ ตอนนี้ยังดูหรือเพิ่มรูปไม่ได้");
+})();
+
+/* ---------- YouTube shot list ticks shared via Supabase (reuses the checks table, ids sh_<stop>_<n>) ---------- */
+(function(){
+function loadS(){if(!sb)return;sb.from("checks").select("item,who").like("item","sh%").then(function(r){if(r.error)return;
+ var t={};(r.data||[]).forEach(function(x){if(x.item.indexOf("sh_")===0)t[x.item]=x.who;});shotTicks=t;paintShots();},function(){});}
+shotSave=function(key,on,inp){
+ if(!sb){if(inp)inp.checked=!on;return;}
+ if(!who||!CODE){if(inp)inp.checked=!on;askWho(function(){var b=document.querySelector('[data-shot="'+key+'"]');if(b){b.checked=on;}shotSave(key,on,b);});return;}
+ if(on)shotTicks[key]=who;else delete shotTicks[key];paintShots();
+ var w=W();
+ var q=on?w.from("checks").upsert({item:key,who:who},{onConflict:"item",ignoreDuplicates:true})
+         :w.from("checks").delete().eq("item",key).select("item");
+ q.then(function(r){
+   if(badCode(r.error)||(!on&&!r.error&&(!r.data||!r.data.length))){askWho(null,"รหัสทริปไม่ถูกต้อง ลองใส่ใหม่");}
+   loadS();},function(){loadS();});};
+paintShots();
+if(sb){loadS();try{sb.channel("shots-live").on("postgres_changes",{event:"*",schema:"public",table:"checks"},function(){loadS();}).subscribe();}catch(e){}
+ document.addEventListener("visibilitychange",function(){if(!document.hidden)loadS();});}
 })();
 
 })();
