@@ -1,5 +1,5 @@
 /* Offline cache for the Dalian trip page. The build stamps VERSION so each deploy refreshes the cache. */
-const VERSION = "20261119230550";
+const VERSION = "20261120165143";
 const CACHE = "dalian-" + VERSION;
 const CORE = [
   "./", "./index.html", "./manifest.webmanifest", "./vendor/supabase.js",
@@ -12,7 +12,17 @@ const CORE = [
   "./images/tram.jpg",
   "./images/wharf.jpg",
   "./images/xinghai.jpg",
-  "./images/zhongshan.jpg"
+  "./images/zhongshan.jpg",
+  "./fonts/fonts.css",
+  "./fonts/ibmplexmono-latin-0.woff2",
+  "./fonts/mali-latin-2.woff2",
+  "./fonts/mali-latin-4.woff2",
+  "./fonts/mali-latin-6.woff2",
+  "./fonts/mali-thai-1.woff2",
+  "./fonts/mali-thai-3.woff2",
+  "./fonts/mali-thai-5.woff2",
+  "./fonts/notosansthai-latin-8.woff2",
+  "./fonts/notosansthai-thai-7.woff2"
 ];
 
 self.addEventListener("install", (e) => {

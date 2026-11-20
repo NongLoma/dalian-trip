@@ -1,0 +1,25 @@
+# Supabase free projects pause after 7 days without activity.
+# This reads one row from the hearts table every 3 days so the trip page keeps working.
+name: Keep Supabase awake
+
+on:
+  schedule:
+    - cron: "17 3 */3 * *"   # 03:17 UTC every 3 days
+  workflow_dispatch: {}
+
+permissions: {}
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Read one row from Supabase
+        env:
+          # Publishable key: designed to be public, already shipped in index.html.
+          SB_URL: https://kkacogmxnimcwinkmany.supabase.co
+          SB_KEY: sb_publishable_VMIQbo31AE8Ncqco4AR5MA_3Jj3j3w4
+        run: |
+          code=$(curl -s -o /dev/null -w "%{http_code}" "$SB_URL/rest/v1/hearts?select=place&limit=1" -H "apikey: $SB_KEY")
+          echo "Supabase answered HTTP $code"
+          test "$code" = "200"

@@ -11,8 +11,7 @@
 <link rel="icon" href="icon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <title>ต้าเหลียนหน้าหนาว</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mali:wght@500;600;700&family=Noto+Sans+Thai:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="fonts/fonts.css">
 <style>
 /* Layout: kawaii sticker travel journal — dotted cream paper, white-outlined cartoon stickers scattered on every section, washi-tape headings; each day opens with its own sticker scene */
 :root{
@@ -795,11 +794,16 @@ renderPicks=function(){var el=document.getElementById("picks");var ids=Object.ke
  el.innerHTML=ids.map(function(k){var both=counts(k)>=2;var by=both?"Jay + Aom":Object.keys(hearts[k]).map(function(w){return WHO_NAMES[w]||w;}).join("");
   return '<span class="pick'+(both?" both":"")+'">'+esc(by)+' · '+esc(NAMES[k])+'</span>';}).join("");};
 var who=store("dl-who"); if(who!=="a"&&who!=="b")who=null;
+var CODE=store("dl-code")||"";
 me=who||"none";
 var sb=null;
 try{ if(window.supabase&&window.supabase.createClient) sb=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false}}); }catch(e){ sb=null; }
+/* writes carry the trip code in a header; the database only accepts adds and deletes with the right code */
+var _w=null,_wk=null;
+function W(){if(!sb||!CODE)return null;if(_wk!==CODE){_w=window.supabase.createClient(SB_URL,SB_KEY,{auth:{persistSession:false},global:{headers:{"x-trip-code":CODE}}});_wk=CODE;}return _w;}
+function badCode(err){return err&&(err.code==="42501"||err.code==="PGRST301"||/row-level security/i.test(err.message||""));}
 
-function whoLine(){return who?("คุณคือ "+WHO_NAMES[who]+" · "):"";}
+function whoLine(){return (who?("คุณคือ "+WHO_NAMES[who]+" · "):"")+(CODE?"":"ดูอย่างเดียว (ยังไม่ได้ใส่รหัสทริป) · ");}
 function load(){
  if(!sb)return;
  sb.from("hearts").select("place,who").then(function(r){
@@ -809,39 +813,51 @@ function load(){
  },function(){setSync(whoLine()+"ต่ออินเทอร์เน็ตไม่ได้ ลองใหม่อีกครั้ง");});
 }
 
-/* who-am-i sheet */
+/* who-am-i + trip code sheet */
 var sheet=document.createElement("div");
 sheet.id="whoSheet";sheet.hidden=true;
-sheet.innerHTML='<div class="ws-card" role="dialog" aria-modal="true" aria-labelledby="ws-t"><b id="ws-t">คุณคือใคร?</b><span>เลือกครั้งเดียว เครื่องนี้จะจำไว้ หัวใจจะแยกสีให้รู้ว่าใครกด</span><div class="ws-row"><button class="btn pink" data-who="a">Jay</button><button class="btn yellow" data-who="b">Aom</button></div><button class="ws-x" data-who="x">ไว้ทีหลัง</button></div>';
+sheet.innerHTML='<form class="ws-card" role="dialog" aria-modal="true" aria-labelledby="ws-t" id="ws-form">'+
+ '<b id="ws-t">คุณคือใคร?</b><span>เลือกครั้งเดียว เครื่องนี้จะจำไว้</span>'+
+ '<label class="ws-l" for="ws-code">รหัสทริป</label><input id="ws-code" class="ws-in" type="password" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" placeholder="รหัสที่ Jay กับ Aom ตั้งไว้">'+
+ '<span class="ws-err" id="ws-err" aria-live="polite"></span>'+
+ '<div class="ws-row"><button class="btn pink" type="button" data-who="a">Jay</button><button class="btn yellow" type="button" data-who="b">Aom</button></div>'+
+ '<button class="ws-x" type="button" data-who="x">ไว้ทีหลัง ดูอย่างเดียวก่อน</button></form>';
 document.body.appendChild(sheet);
 var css=document.createElement("style");
-css.textContent='#whoSheet{position:fixed;inset:0;z-index:50;display:grid;place-items:end center;background:rgba(59,47,69,.35);padding:16px max(16px,env(safe-area-inset-left,0px)) calc(16px + env(safe-area-inset-bottom,0px))}#whoSheet[hidden]{display:none!important}.ws-card{background:var(--surface);color:var(--ink);border-radius:24px;padding:20px;width:min(420px,100%);display:grid;gap:10px;box-shadow:0 10px 30px rgba(59,47,69,.3)}.ws-card b{font-family:var(--f-display);font-size:22px}.ws-card span{color:var(--muted);font-size:14px}.ws-row{display:flex;gap:10px}.ws-row .btn{flex:1;font-size:17px;padding:12px}.ws-x{border:0;background:none;color:var(--muted);font-size:14px;padding:6px}.whoPick{display:inline-flex;gap:6px;margin-left:6px}.whoPick button{border:0;border-radius:999px;padding:1px 10px;font-size:13px;background:var(--k-sky-soft);color:var(--ink)}';
+css.textContent='#whoSheet{position:fixed;inset:0;z-index:50;display:grid;place-items:end center;background:rgba(59,47,69,.35);padding:16px max(16px,env(safe-area-inset-left,0px)) calc(16px + env(safe-area-inset-bottom,0px))}#whoSheet[hidden]{display:none!important}.ws-card{background:var(--surface);color:var(--ink);border-radius:24px;padding:20px;width:min(420px,100%);display:grid;gap:10px;box-shadow:0 10px 30px rgba(59,47,69,.3)}.ws-card b{font-family:var(--f-display);font-size:22px}.ws-card span{color:var(--muted);font-size:14px}.ws-l{font-size:13px;font-weight:600;color:var(--muted)}.ws-in{font:inherit;font-size:16px;padding:10px 12px;border:2px solid var(--line);border-radius:12px;background:var(--bg);color:var(--ink)}.ws-card .ws-err{color:var(--k-red);font-weight:600;min-height:0}.ws-row{display:flex;gap:10px}.ws-row .btn{flex:1;font-size:17px;padding:12px}.ws-x{border:0;background:none;color:var(--muted);font-size:14px;padding:6px}';
 document.head.appendChild(css);
 var pending=null;
-function askWho(then){pending=then;sheet.hidden=false;var b=sheet.querySelector('[data-who="a"]');if(b)b.focus();}
+function askWho(then,errText){pending=then;var inp=document.getElementById("ws-code");inp.value=CODE;document.getElementById("ws-err").textContent=errText||"";sheet.hidden=false;(CODE?sheet.querySelector('[data-who="'+(who||"a")+'"]'):inp).focus();}
+sheet.addEventListener("submit",function(e){e.preventDefault();});
 sheet.addEventListener("click",function(e){var b=e.target.closest("[data-who]");if(!b&&e.target!==sheet)return;
- var v=b?b.dataset.who:"x";sheet.hidden=true;
- if(v==="a"||v==="b"){who=v;me=v;store("dl-who",v);refreshHearts();load();var p=pending;pending=null;if(p)p();}
- else pending=null;});
+ var v=b?b.dataset.who:"x";
+ if(v==="a"||v==="b"){var c=document.getElementById("ws-code").value.trim();
+  if(!c){document.getElementById("ws-err").textContent="ใส่รหัสทริปก่อน";document.getElementById("ws-code").focus();return;}
+  if(!/^[\x20-\x7e]+$/.test(c)){document.getElementById("ws-err").textContent="รหัสต้องเป็นตัวอักษรภาษาอังกฤษหรือตัวเลข";return;}
+  CODE=c;store("dl-code",c);who=v;me=v;store("dl-who",v);sheet.hidden=true;refreshHearts();load();var p=pending;pending=null;if(p)p();}
+ else{sheet.hidden=true;pending=null;load();}});
 document.addEventListener("keydown",function(e){if(e.key==="Escape"&&!sheet.hidden){sheet.hidden=true;pending=null;}});
 
 /* change-who link next to sync line */
 var syncEl=document.getElementById("sync");
-var chg=document.createElement("button");chg.className="copy";chg.textContent="เปลี่ยนว่าเป็นใคร";chg.style.marginLeft="8px";
+var chg=document.createElement("button");chg.className="copy";chg.textContent="เปลี่ยนชื่อหรือรหัส";chg.style.marginLeft="8px";
 chg.addEventListener("click",function(){askWho(null);});
 syncEl.insertAdjacentElement("afterend",chg);
 
 toggle=function(id,btn){
- if(!who){askWho(function(){var nb=document.querySelector('[data-heart="'+id+'"]');toggle(id,nb||btn);});return;}
+ if(!who||!CODE){askWho(function(){var nb=document.querySelector('[data-heart="'+id+'"]');toggle(id,nb||btn);});return;}
  var on=mine(id);
  if(!hearts[id])hearts[id]={};if(on)delete hearts[id][who];else hearts[id][who]=1;
  if(btn){btn.classList.remove("pop");void btn.offsetWidth;btn.classList.add("pop");}
  refreshHearts();
- if(!sb){store("dl-hearts",JSON.stringify(hearts));return;}
- var q=on?sb.from("hearts").delete().eq("place",id).eq("who",who)
-         :sb.from("hearts").upsert({place:id,who:who},{onConflict:"place,who",ignoreDuplicates:true});
- q.then(function(r){if(r.error){setSync(whoLine()+"บันทึกหัวใจไม่สำเร็จ ("+(r.error.code||"error")+") ลองกดใหม่");load();}},
-        function(){setSync(whoLine()+"ต่ออินเทอร์เน็ตไม่ได้ หัวใจยังไม่ถูกบันทึก");load();});
+ var w=W();
+ if(!w){store("dl-hearts",JSON.stringify(hearts));return;}
+ var q=on?w.from("hearts").delete().eq("place",id).eq("who",who).select("place")
+         :w.from("hearts").upsert({place:id,who:who},{onConflict:"place,who",ignoreDuplicates:true});
+ q.then(function(r){
+   if(badCode(r.error)||(on&&!r.error&&(!r.data||!r.data.length))){load();askWho(null,"รหัสทริปไม่ถูกต้อง ลองใส่ใหม่");return;}
+   if(r.error){setSync(whoLine()+"บันทึกหัวใจไม่สำเร็จ ("+(r.error.code||"error")+") ลองกดใหม่");load();}},
+  function(){setSync(whoLine()+"ต่ออินเทอร์เน็ตไม่ได้ หัวใจยังไม่ถูกบันทึก");load();});
 };
 
 if(!sb){
@@ -906,15 +922,21 @@ document.getElementById("x-form").addEventListener("submit",function(e){e.preven
  var f=e.target,amt=parseFloat(f.amt.value),note=f.note.value.trim().slice(0,80),cat=f.cat.value,paid=f.paid.value,date=f.date.value;
  if(!(amt>0)){msg("ใส่จำนวนเงินก่อน");f.amt.focus();return;}
  if(!sb){msg("ต่อระบบซิงค์ไม่ได้ ยังบันทึกไม่ได้");return;}
+ if(!CODE){askWho(function(){f.requestSubmit();});return;}
  var btn=document.getElementById("x-add");btn.disabled=true;msg("กำลังบันทึก...");
- sb.from("expenses").insert({amount:amt,note:note,category:cat,paid_by:paid,spent_on:date}).then(function(r){btn.disabled=false;
+ W().from("expenses").insert({amount:amt,note:note,category:cat,paid_by:paid,spent_on:date}).then(function(r){btn.disabled=false;
+  if(badCode(r.error)){msg("รหัสทริปไม่ถูกต้อง ยังไม่ได้บันทึก");askWho(function(){f.requestSubmit();},"รหัสทริปไม่ถูกต้อง ลองใส่ใหม่");return;}
   if(r.error){msg("บันทึกไม่สำเร็จ ("+(r.error.code||"error")+") ลองใหม่");return;}
   msg("บันทึกแล้ว "+money(amt)+" ¥");f.amt.value="";f.note.value="";store("dl-who",paid);loadX();},
   function(){btn.disabled=false;msg("ต่ออินเทอร์เน็ตไม่ได้ ยังไม่ได้บันทึก ข้อมูลในฟอร์มยังอยู่");});});
 var armed=null;
 document.getElementById("x-list").addEventListener("click",function(e){var b=e.target.closest("[data-xdel]");if(!b||!sb)return;
  if(armed!==b){if(armed){armed.textContent="×";}armed=b;b.textContent="ลบ?";b.style.width="auto";b.style.padding="0 10px";setTimeout(function(){if(armed===b){b.textContent="×";b.style.width="";b.style.padding="";armed=null;}},3000);return;}
- armed=null;b.disabled=true;sb.from("expenses").delete().eq("id",b.dataset.xdel).then(function(r){if(r.error)msg("ลบไม่สำเร็จ ("+(r.error.code||"error")+")");loadX();},function(){msg("ต่ออินเทอร์เน็ตไม่ได้ ยังไม่ได้ลบ");b.disabled=false;});});
+ armed=null;
+ if(!CODE){b.textContent="×";b.style.width="";b.style.padding="";askWho(null);return;}
+ b.disabled=true;W().from("expenses").delete().eq("id",b.dataset.xdel).select("id").then(function(r){
+   if(badCode(r.error)||(!r.error&&(!r.data||!r.data.length))){msg("รหัสทริปไม่ถูกต้อง ยังไม่ได้ลบ");askWho(null,"รหัสทริปไม่ถูกต้อง ลองใส่ใหม่");loadX();return;}
+   if(r.error)msg("ลบไม่สำเร็จ ("+(r.error.code||"error")+")");loadX();},function(){msg("ต่ออินเทอร์เน็ตไม่ได้ ยังไม่ได้ลบ");b.disabled=false;});});
 render();
 if(sb){loadX();try{sb.channel("expenses-live").on("postgres_changes",{event:"*",schema:"public",table:"expenses"},function(){loadX();}).subscribe();}catch(e){}
  document.addEventListener("visibilitychange",function(){if(!document.hidden)loadX();});}
