@@ -637,6 +637,7 @@ body{padding-bottom:calc(72px + env(safe-area-inset-bottom,0px))}
         <li>TikTok 2 · @nirinya.p · <a href="https://www.tiktok.com/@nirinya.p/photo/7703542627613953301" target="_blank" rel="noopener">แพลนเที่ยว Dalian 4 วัน 3 คืน</a> (Jay แปะไว้ในกระดานไอเดีย)</li>
         <li>คลิป 3 · Pongphat Naegkhunthod (ที่ Aom ส่งมา) · <a href="https://www.youtube.com/watch?v=MY4QrLp3SAs" target="_blank" rel="noopener">วล็อกต้าเหลียนหน้าหนาว ธ.ค. 2025</a></li>
         <li>ภาพถ่ายสถานที่จาก Wikimedia Commons ใช้ตามสัญญาอนุญาต CC ที่ระบุใต้แต่ละภาพ ภาพย่อขนาดเพื่อแสดงผล</li>
+        <li>ภาพตัวอย่างอาหารและวิวย่านจงซานจาก Pixabay ใช้ตาม Pixabay Content License</li>
         <li>ราคาและเวลาเปิดปิดเป็นค่าประมาณ ควรเช็กอีกครั้งก่อนไป</li>
       </ul>
     </div>
@@ -743,6 +744,10 @@ var FOOD=[
 ];
 var PACK=["พาสปอร์ตเหลืออายุเกิน 6 เดือน","ผูกบัตรกับ Alipay หรือ WeChat Pay","VPN หรือซิมโรมมิ่ง","แจ็กเก็ตกันลม และฮีทเทค","หมวกไหมพรม ถุงมือ ผ้าพันคอ","แผ่นแปะร้อน","รองเท้าพื้นกันลื่นที่เดินขึ้นเนินสบาย","ถุงเท้าหนาและเสื้อสเวตเตอร์","ยาประจำตัวและยาสามัญ","สำเนาพาสปอร์ต (เก็บแยกกับตัวจริง)","เสื้อสีแดงหรือขาวไว้ถ่ายรูปทะเล","ทิชชูพกพา","ปลั๊กแปลงขา Type I (สามขาแบน) ไฟ 220V เท่าไทย","ถุงมือแบบทัชสกรีนได้","ลิปบาล์มและครีมทาผิว อากาศแห้งมาก","เงินสดหยวนเล็กน้อย ~500 หยวน","เอกสารประกันและการจองแบบออฟไลน์","จองโรงแรมย่านจงซาน","เช็กงานเคานต์ดาวน์ที่ตงกั่ง","พาวเวอร์แบงก์"];
 var PHOTOS={
+ hotel:{u:"images/hotel.jpg",c:"ย่านจงซานยามค่ำคืนหลังหิมะตก มองจากตึกสูง (ไม่ใช่โรงแรมที่เราจะพัก)",a:"Pixabay",l:"Pixabay Content License",p:"https://pixabay.com/photos/china-dalian-night-lighting-color-5963783/",s:"Pixabay"},
+ dimsum:{u:"images/dimsum.jpg",c:"ภาพตัวอย่างติ่มซำ ไม่ใช่ร้าน 小城粥道",a:"Pixabay",l:"Pixabay Content License",p:"https://pixabay.com/photos/dimsum-chinese-cuisine-chinese-food-2097947/",s:"Pixabay"},
+ feiniu:{u:"images/feiniu.jpg",c:"ภาพตัวอย่างยากิโทริ ไม่ใช่ร้าน 飛牛町",a:"Pixabay",l:"Pixabay Content License",p:"https://pixabay.com/photos/japanese-food-chicken-teriyaki-3561782/",s:"Pixabay"},
+ kbbq:{u:"images/kbbq.jpg",c:"ภาพตัวอย่างปิ้งย่างเกาหลี ไม่ใช่ร้าน Xisanpang",a:"Pixabay",l:"Pixabay Content License",p:"https://pixabay.com/photos/korean-barbecue-barbecue-korean-food-8579177/",s:"Pixabay"},
  kuahai:{u:"images/kuahai.jpg",c:"สะพานข้ามอ่าวซิงไห่กับนกนางนวล ถ่ายเดือนธันวาคม (มุมจากฝั่งซิงไห่ ไม่ใช่จุดชมวิว Kuahai โดยตรง)",a:"Yhz1221",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Dalian_Xinghai_Bay_Bridge.jpg"},
  xian:{u:"images/xian.jpg",c:"ย่านช็อปปิงถนนซีอาน ภาพปี 2009 ปัจจุบันร้านอาจเปลี่ยนไปแล้ว",a:"Yoshi Canopus",l:"CC BY-SA 3.0",p:"https://commons.wikimedia.org/wiki/File:China-Liaoning-Dalian-XianRdShopping.jpg"},
  zhongshan:{u:"images/zhongshan.jpg",c:"จัตุรัสจงซาน",a:"xiquinhosilva",l:"CC BY 2.0",p:"https://commons.wikimedia.org/wiki/File:Zhongshan_Square,_Aug2018.jpg"},
@@ -756,7 +761,7 @@ var PHOTOS={
  countdown:{u:"images/countdown.jpg",c:"ย่านตงกั่งมองจากมุมสูง",a:"HSJ233",l:"CC BY-SA 4.0",p:"https://commons.wikimedia.org/wiki/File:Donggang_Dalian.jpg"}
 };
 function photo(id){var p=PHOTOS[id];if(!p)return "";
- return '<figure class="photo"><img src="'+p.u+'" alt="'+esc(p.c)+'" loading="lazy"><figcaption><b>'+esc(p.c)+'</b> · ภาพ: '+esc(p.a)+' · <a href="'+p.p+'" target="_blank" rel="noopener">'+esc(p.l)+'</a> · Wikimedia Commons</figcaption></figure>';}
+ return '<figure class="photo"><img src="'+p.u+'" alt="'+esc(p.c)+'" loading="lazy"><figcaption><b>'+esc(p.c)+'</b> · ภาพ: '+esc(p.a)+' · <a href="'+p.p+'" target="_blank" rel="noopener">'+esc(p.l)+'</a> · '+esc(p.s||"Wikimedia Commons")+'</figcaption></figure>';}
 var PT={
  hotel:["หน้าต่างห้องหรือหน้าล็อบบี้","ตอนเพิ่งถึง ยังสดชื่น","วางกระเป๋าเดินทางคู่กันแล้วถ่ายรองเท้าสองคู่จากด้านบน เป็นรูปเปิดทริป"],
  zhongshan:["ขอบวงเวียน ให้ตึกโดมที่เปิดไฟอยู่ด้านหลัง","หลังพระอาทิตย์ตกราว 15–30 นาที ฟ้ายังเป็นสีน้ำเงินเข้ม","จับมือเดินข้ามลาน ให้อีกคนถ่ายจากด้านหลัง"],
