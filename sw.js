@@ -1,16 +1,18 @@
 /* Offline cache for the Dalian trip page. The build stamps VERSION so each deploy refreshes the cache. */
-const VERSION = "20261123191740";
+const VERSION = "20261123193803";
 const CACHE = "dalian-" + VERSION;
 const CORE = [
   "./", "./index.html", "./manifest.webmanifest", "./vendor/supabase.js",
   "./icon.svg", "./icon-192.png", "./icon-512.png", "./apple-touch-icon.png",
   "./images/countdown.jpg",
   "./images/fishmarket.jpg",
+  "./images/kuahai.jpg",
   "./images/lingjiao.jpg",
   "./images/mall.jpg",
   "./images/ride.jpg",
   "./images/tram.jpg",
   "./images/wharf.jpg",
+  "./images/xian.jpg",
   "./images/xinghai.jpg",
   "./images/zhongshan.jpg",
   "./fonts/fonts.css",
