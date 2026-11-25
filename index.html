@@ -688,7 +688,7 @@ var DAYS=[
  {id:"d28",d:"28 ธ.ค.",t:"ถึงแล้ว",ic:"plane",title:"ถึงต้าเหลียน เดินเล่นเบา ๆ",sub:"วันแรกไม่รีบ เที่ยวใกล้ที่พัก ตึกเก่าเปิดไฟสวยตอนค่ำ",cost:"~250 หยวน",tr:"สนามบินเข้าเมืองนั่งแท็กซี่หรือ DiDi ราว 30 นาที ~50 หยวน ในย่านจงซานเดินได้",
   scene:{bg:"linear-gradient(180deg,#5a5fc0 0%,#9a8fe0 60%,#ffc6a8 100%)",label:"Hello Dalian!",st:[["plane",84,-14,"8%","10%"],["building",120,0,"38%","22%"],["star",40,10,"78%","12%"],["star",30,-10,"88%","48%"],["suitcase",70,10,"74%","46%"]]},
   stops:[
-   {id:"hotel",st:"suitcase",w:"ช่วงที่ถึง",h:"เช็กอินย่านจงซาน หรือตงกั่ง",p:"จงซาน: โรงแรมเครือราคากลาง เช่น 全季 (Ji Hotel) หรือ 汉庭 ราวคืนละ 250–350 หยวน ใกล้รถไฟใต้ดิน ตงกั่ง: ตึกสูงริมทะเล คน TikTok พักชั้น 31 เห็นเมืองเวนิสกับท่าเรือยอชต์ ตกคนละราว 300 บาทต่อคืน และเดินไปจุดเคานต์ดาวน์คืนวันที่ 31 ได้ จากสนามบินนั่งรถไฟใต้ดิน 5 หยวน ราวครึ่งชั่วโมง",zh:"全季酒店 中山区 · 东港",q:"全季酒店 大连中山广场",src:[1,4],c:"130–350/คืน"},
+   {id:"hotel",st:"suitcase",w:"14:00",h:"เช็กอินที่พัก Ganghui (国泰港汇中心) ✓ จองแล้ว",p:"พัก 4 คืน 28 ธ.ค.–1 ม.ค. อพาร์ตเมนต์ในตึก 国泰港汇中心 ใกล้สถานีรถไฟต้าเหลียน เช็กอิน 14:00 เช็กเอาต์ก่อน 12:00 ระวัง: ชื่อในแอปจองมีคำว่า Four Seasons แต่ไม่ใช่โรงแรม Four Seasons ต้าเหลียน อย่าบอกแท็กซี่ว่า 四季酒店 เพราะจะพาไปผิดที่ ให้ยื่นการ์ดแท็กซี่ที่เป็นที่อยู่แทน จากสนามบินนั่งรถไฟใต้ดินมาลงแถวสถานีรถไฟต้าเหลียนได้ ดูเส้นทางใน Amap เดินไปถนนรัสเซียได้ใกล้ ๆ",zh:"国泰港汇中心 · 中山区普照街50号",q:"国泰港汇中心 大连",src:[0],c:"จ่ายแล้ว"},
    {id:"russia",st:"building",w:"บ่ายแก่",h:"ถนนสไตล์รัสเซีย",p:"ถนนคนเดินตึกสไตล์รัสเซียสีสด มีร้านของที่ระลึกและป้าย DALIAN เดินฟรี ถ่ายรูปช่วงแดดยังมี แล้วเดินต่อไปจัตุรัสจงซานได้ราว 15–20 นาที หรือนั่งแท็กซี่สั้น ๆ",zh:"俄罗斯风情街",q:"俄罗斯风情街 大连",src:[5],c:"ฟรี",ph:1},
    {id:"zhongshan",st:"building",w:"ค่ำ",h:"จัตุรัสจงซาน ตอนเปิดไฟ",p:"ตึกยุคอาณานิคมล้อมวงเวียน ถ่ายรูปคู่ตอนไฟเปิดสวยที่สุด",zh:"中山广场",q:"中山广场 大连",src:[2],c:"ฟรี",ph:1},
    {id:"dongguan",st:"camera",w:"ค่ำ",h:"ถนนตงกวน",p:"ย่านตึกเก่าที่ปรับปรุงใหม่ มีร้านเล็กและมุมถ่ายรูปเยอะ",zh:"东关街",q:"东关街 大连",src:[2],c:"ฟรี",ph:1},
@@ -767,7 +767,7 @@ var PHOTOS={
 function photo(id){var p=PHOTOS[id];if(!p)return "";
  return '<figure class="photo"><img src="'+p.u+'" alt="'+esc(p.c)+'" loading="lazy"><figcaption><b>'+esc(p.c)+'</b> · ภาพ: '+esc(p.a)+' · <a href="'+p.p+'" target="_blank" rel="noopener">'+esc(p.l)+'</a> · '+esc(p.s||"Wikimedia Commons")+'</figcaption></figure>';}
 var PT={
- hotel:["หน้าต่างห้องหรือหน้าล็อบบี้","ตอนเพิ่งถึง ยังสดชื่น","วางกระเป๋าเดินทางคู่กันแล้วถ่ายรองเท้าสองคู่จากด้านบน เป็นรูปเปิดทริป"],
+ hotel:["หน้าต่างห้อง ห้องอยู่ตึกสูงเห็นวิวเมือง","ตอนเพิ่งถึง ยังสดชื่น","วางกระเป๋าเดินทางคู่กันแล้วถ่ายรองเท้าสองคู่จากด้านบน เป็นรูปเปิดทริป"],
  russia:["กลางถนนคนเดิน ให้ตึกยอดแหลมกับตึกสูงอยู่ด้านหลัง","15:30–16:15 แดดเย็นทำให้ตึกสีส้มสว่าง","เดินเคียงกันเข้าหากล้อง หรือยืนหน้าป้าย DALIAN"],
  zhongshan:["ขอบวงเวียน ให้ตึกโดมที่เปิดไฟอยู่ด้านหลัง","หลังพระอาทิตย์ตกราว 15–30 นาที ฟ้ายังเป็นสีน้ำเงินเข้ม","จับมือเดินข้ามลาน ให้อีกคนถ่ายจากด้านหลัง"],
  dongguan:["ซอยตึกอิฐที่มีไฟประดับและประตูโค้ง","ค่ำ หลังร้านเปิดไฟ","ยืนคนละฝั่งประตูโค้งแล้วหันมามองกัน"],
@@ -945,7 +945,7 @@ document.getElementById("spin").addEventListener("click",function(){if(spinning)
 
 /* today mode: works in Dalian time (UTC+8); ?now=2026-12-31T15:10 simulates a moment for testing */
 var DDATE={d28:"2026-12-28",d29:"2026-12-29",d30:"2026-12-30",d31:"2026-12-31",d01:"2027-01-01"};
-var START={hotel:"11:00",russia:"15:30",zhongshan:"17:00",dongguan:"18:00",feiniu:"19:00",dimsum:"09:00",nanshan:"10:30",xian:"14:00",mall:"16:30",kbbq:"18:30",tram:"10:30",wharf:"12:30",lingjiao:"15:00",xinghai:"13:00",kuahai:"14:00",ride:"15:30",venice:"17:30",countdown:"21:00",fishmarket:"10:00"};
+var START={hotel:"14:00",russia:"15:30",zhongshan:"17:00",dongguan:"18:00",feiniu:"19:00",dimsum:"09:00",nanshan:"10:30",xian:"14:00",mall:"16:30",kbbq:"18:30",tram:"10:30",wharf:"12:30",lingjiao:"15:00",xinghai:"13:00",kuahai:"14:00",ride:"15:30",venice:"17:30",countdown:"21:00",fishmarket:"10:00"};
 var SUNSET=16*60+35;
 function hm(s){var p=s.split(":");return +p[0]*60+ +p[1];}
 function dlNow(){var q=/[?&]now=(\d{4}-\d\d-\d\d)T(\d\d):(\d\d)/.exec(location.search);
@@ -1001,7 +1001,7 @@ document.addEventListener("visibilitychange",function(){if(!document.hidden)mark
 })();
 
 /* taxi card + phrase cards */
-var TAXI={hotel:"",russia:"大连 俄罗斯风情街",zhongshan:"大连 中山广场",dongguan:"大连 东关街",feiniu:"飛牛町 日料烧鸟酒场（东关街店）",nanshan:"大连 南山风情街",xian:"大连 西安路",mall:"大连 恒隆广场",wharf:"老虎滩 渔人码头",lingjiao:"大连 菱角湾",xinghai:"大连 星海广场",kuahai:"飞向海边 咖啡（大连森林动物园 南门附近）",dimsum:"小城粥道 解放广场店",kbbq:"西安路 喜三胖韩式自助烤肉",ride:"星海公园 游乐园",venice:"大连 东港 东方水城",countdown:"东港 音乐喷泉广场",fishmarket:"澳深鱼市（竹青街店）"};
+var TAXI={hotel:"大连市中山区普照街50号 国泰港汇中心",russia:"大连 俄罗斯风情街",zhongshan:"大连 中山广场",dongguan:"大连 东关街",feiniu:"飛牛町 日料烧鸟酒场（东关街店）",nanshan:"大连 南山风情街",xian:"大连 西安路",mall:"大连 恒隆广场",wharf:"老虎滩 渔人码头",lingjiao:"大连 菱角湾",xinghai:"大连 星海广场",kuahai:"飞向海边 咖啡（大连森林动物园 南门附近）",dimsum:"小城粥道 解放广场店",kbbq:"西安路 喜三胖韩式自助烤肉",ride:"星海公园 游乐园",venice:"大连 东港 东方水城",countdown:"东港 音乐喷泉广场",fishmarket:"澳深鱼市（竹青街店）"};
 var PHRASES=[["不要辣","ไม่เอาเผ็ด"],["买单","เช็กบิล"],["洗手间在哪里？","ห้องน้ำอยู่ไหน"],["多少钱？","ราคาเท่าไหร่"],["可以用支付宝吗？","จ่าย Alipay ได้ไหม"],["请带我去这里","ช่วยพาไปที่นี่"],["我不会说中文","พูดภาษาจีนไม่ได้"],["请帮我们拍照","ช่วยถ่ายรูปให้หน่อย"],["谢谢","ขอบคุณ"]];
 document.getElementById("phrases").innerHTML=PHRASES.map(function(p,i){return '<button class="phr" data-phr="'+i+'"><b>'+esc(p[0])+'</b><span>'+esc(p[1])+'</span></button>';}).join("");
 var big=document.createElement("div");big.id="bigcard";big.hidden=true;big.setAttribute("role","dialog");big.setAttribute("aria-modal","true");big.setAttribute("aria-label","การ์ดภาษาจีนเต็มจอ");document.body.appendChild(big);
